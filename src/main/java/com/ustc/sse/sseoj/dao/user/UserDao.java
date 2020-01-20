@@ -1,4 +1,4 @@
-package com.ustc.sse.sseoj.dao;
+package com.ustc.sse.sseoj.dao.user;
 
 import com.ustc.sse.sseoj.model.user.AdminModel;
 import com.ustc.sse.sseoj.model.user.StudentModel;
