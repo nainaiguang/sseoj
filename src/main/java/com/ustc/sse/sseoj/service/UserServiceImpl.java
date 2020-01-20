@@ -1,7 +1,7 @@
 package com.ustc.sse.sseoj.service;
 
 import com.ustc.sse.sseoj.Data.Result;
-import com.ustc.sse.sseoj.dao.UserDao;
+import com.ustc.sse.sseoj.dao.user.UserDao;
 import com.ustc.sse.sseoj.model.user.AdminModel;
 import com.ustc.sse.sseoj.model.user.StudentModel;
 import com.ustc.sse.sseoj.model.user.TeacherModel;

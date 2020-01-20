@@ -1,14 +1,9 @@
 package com.ustc.sse.sseoj.controller;
 
-import com.ustc.sse.sseoj.dao.UserDao;
-import com.ustc.sse.sseoj.model.user.AdminModel;
-import com.ustc.sse.sseoj.service.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author 邱乃光

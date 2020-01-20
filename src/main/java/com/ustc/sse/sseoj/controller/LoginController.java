@@ -10,12 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author 邱乃光
  * @version 1.0
  * @date 2019/12/25 9:48
  */
+//@RestController//以json的方式输出
 @Controller
 @RequestMapping("/users")
 public class LoginController {
@@ -24,7 +26,7 @@ public class LoginController {
     private UserServiceImpl userService;
 
     @RequestMapping(value = "/adminLogin", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-    @ResponseBody
+    @ResponseBody//返回json格式
     public AdminModel adminlogin(AdminModel temp) {
 
         Result result=userService.adminlogin(temp);
