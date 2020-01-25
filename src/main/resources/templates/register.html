@@ -6,9 +6,16 @@
 </head>
 <body>
 <form action="/users/adminRegister" method="post">
+    记得根据不同的option访问不同的登陆或注册地址
     学号：<input type="text" name="ano"/><br>
     姓名：<input type="text" name="aname"/><br>
     密码：<input type="password" name="apassword"/><br>
+    <label>类型</label>
+    <select>
+        <option value="teacher" name="role">教师</option>
+        <option value="student" name="role">学生</option>
+        <option value="manager" name="role">管理员</option>
+    </select>
     <input type="submit" value="提交">
 </form>
 </body>

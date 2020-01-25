@@ -25,13 +25,16 @@ public class CreatId {
 
         switch (idType)
         {
-            case CourseID:
-                return IDType.CourseID.toString()+ YY+""+MM+""+DD+""+HH+""+mm+""+SS+""+MI;
+            case courseID:
+                return IDType.courseID.toString()+ YY+""+MM+""+DD+""+HH+""+mm+""+SS+""+MI;
             case homeworkID:
                 return IDType.homeworkID.toString()+ YY+""+MM+""+DD+""+HH+""+mm+""+SS+""+MI;
-
             case questionID:
                 return IDType.questionID.toString()+ YY+""+MM+""+DD+""+HH+""+mm+""+SS+""+MI;
+            case answerID:
+                return IDType.answerID.toString()+ YY+""+MM+""+DD+""+HH+""+mm+""+SS+""+MI;
+            case answercaseID:
+                return IDType.answercaseID.toString()+ YY+""+MM+""+DD+""+HH+""+mm+""+SS+""+MI;
         }
 
         return YY+""+MM+""+DD+""+HH+""+mm+""+SS+""+MI;

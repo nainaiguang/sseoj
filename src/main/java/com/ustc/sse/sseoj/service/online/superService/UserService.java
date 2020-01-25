@@ -1,4 +1,4 @@
-package com.ustc.sse.sseoj.service.superService;
+package com.ustc.sse.sseoj.service.online.superService;
 
 /**
  * @author 邱乃光
@@ -13,14 +13,14 @@ import com.ustc.sse.sseoj.model.user.TeacherModel;
 public interface UserService {
 
     //管理员登陆注册
-    Result adminregister(AdminModel user);
-    Result adminlogin(AdminModel user);
+    public Result adminregister(AdminModel user);
+    public Result adminlogin(AdminModel user);
 
     //学生登陆注册
-    Result studentregister(StudentModel user);
-    Result studentlogin(StudentModel user);
+    public Result studentregister(StudentModel user);
+    public Result studentlogin(StudentModel user);
 
     //教师登陆注册
-    Result teacherregister(TeacherModel user);
-    Result teacherlogin(TeacherModel user);
+    public Result teacherregister(TeacherModel user);
+    public Result teacherlogin(TeacherModel user);
 }
