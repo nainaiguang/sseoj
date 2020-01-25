@@ -1,4 +1,4 @@
-package com.ustc.sse.sseoj.controller;
+package com.ustc.sse.sseoj.controller.redirects;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

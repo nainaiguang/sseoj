@@ -1,11 +1,11 @@
-package com.ustc.sse.sseoj.service;
+package com.ustc.sse.sseoj.service.online;
 
 import com.ustc.sse.sseoj.Data.Result;
 import com.ustc.sse.sseoj.dao.user.UserDao;
 import com.ustc.sse.sseoj.model.user.AdminModel;
 import com.ustc.sse.sseoj.model.user.StudentModel;
 import com.ustc.sse.sseoj.model.user.TeacherModel;
-import com.ustc.sse.sseoj.service.superService.UserService;
+import com.ustc.sse.sseoj.service.online.superService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,12 @@ import org.springframework.stereotype.Service;
  * @author 邱乃光
  * @version 1.0
  * @date 2019/12/25 9:48
+ *
+ * 登陆或注册服务
  */
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
+
     private UserDao userDao;
 
     @Override

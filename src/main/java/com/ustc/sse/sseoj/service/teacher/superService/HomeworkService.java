@@ -1,4 +1,4 @@
-package com.ustc.sse.sseoj.service.superService;
+package com.ustc.sse.sseoj.service.teacher.superService;
 
 /**
  * @author 邱乃光
