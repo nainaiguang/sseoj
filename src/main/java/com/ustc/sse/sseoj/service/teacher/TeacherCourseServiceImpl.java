@@ -23,4 +23,10 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
         
         return null;
     }
+
+    @Override
+    public Result teacher_show_somebody_all_course() {
+
+        return null;
+    }
 }

@@ -33,6 +33,10 @@ public class UserController {
     @RequestMapping("/register")
     public String register() {
         return "register";};
+
+    @RequestMapping("/toMain")
+    public String toMain() {
+        return "main";};
 }
 
 
