@@ -3,13 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>登录</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
 </head>
 <body>
-<form action="/users/adminLogin" method="post">
-    记得根据不同的option访问不同的登陆或注册地址
-    学号：<input type="text" name="ano"/><br>
-    密码：<input type="password" name="apassword"/><br>
-    <input type="submit" value="提交">
-</form>
+<div class="layui-container" style="padding-top: 200px;">
+    <div class="layui-row layui-col-space10">
+        <div style="background-color: #e2e2e2;" class="layui-col-md4 layui-col-md-offset4">
+            <h1 style="text-align: center;">SSEOJ</h1>
+            <form class="layui-form" action="/users/adminLogin" method="post">
+                <!--记得根据不同的option访问不同的登陆或注册地址-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学号：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="ano" autocomplete="off" required lay-verify="required"  placeholder="请输入学号" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码：</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="apassword" required lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">登录</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+</script>
 </body>
 </html>
