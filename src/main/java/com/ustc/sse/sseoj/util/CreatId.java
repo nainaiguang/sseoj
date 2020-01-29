@@ -1,6 +1,6 @@
 package com.ustc.sse.sseoj.util;
 
-import com.ustc.sse.sseoj.common.IDType;
+import com.ustc.sse.sseoj.Data.IDType;
 
 import java.util.Calendar;
 /**

@@ -1,15 +1,18 @@
 package com.ustc.sse.sseoj.controller.online;
 
+import com.ustc.sse.sseoj.Data.Code;
+import com.ustc.sse.sseoj.Data.Mes;
 import com.ustc.sse.sseoj.Data.Result;
-import com.ustc.sse.sseoj.model.user.AdminModel;
-import com.ustc.sse.sseoj.model.user.StudentModel;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.Data.Role;
+import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import com.ustc.sse.sseoj.service.online.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.lang.invoke.SwitchPoint;
 
 /**
  * @author 邱乃光
@@ -24,93 +27,123 @@ public class LoginController {
     @Autowired
     private UserServiceImpl userService;
 
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes Login(UsersModel temp)
+    {
+        if(temp.getRole()==null)
+        {
+            return new Mes(false,Code.MISS_ROLE,null);
+        }
+
+        if(temp.getRole().equals(Role.teacher.toString()))
+        {
+            return teacherlogin(temp);
+        }
+        else if(temp.getRole().equals(Role.manager.toString()))
+        {
+            return adminlogin(temp);
+        }
+        else if(temp.getRole().equals(Role.student.toString()))
+        {
+            return studentlogin(temp);
+        }
+        else
+        {
+            return new Mes(false,Code.WRONG_ROLE,null);
+        }
+    }
+
+
+
     @RequestMapping(value = "/adminLogin", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public AdminModel adminlogin(AdminModel temp) {
+    public Mes adminlogin(UsersModel temp) {
 
         Result result=userService.adminlogin(temp);
 
         if(result instanceof Result.Success)
         {
-            AdminModel res= (AdminModel) ((Result.Success) result).getData();
+            UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
-            res.setMes("success");
-            return res;
+            Mes mes=new Mes(true, Code.SUCCESS,res);
+            return mes;
         }
         else if(result instanceof Result.Fail)
         {
-            AdminModel res= new AdminModel();
+            UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
-            res.setMes(((Result.Fail) result).getReason());
-            return res;
+            //res.setMes(((Result.Fail) result).getReason());
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            return mes;
         }
         else
         {
-            AdminModel res= new AdminModel();
+            UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
-            res.setMes("error");
-            return res;
+            Mes mes=new Mes(false,Code.ERROR,res);
+            return mes;
         }
 
     }
 
     @RequestMapping(value = "/studentLogin", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     @ResponseBody
-    public StudentModel studentlogin(StudentModel temp) {
+    public Mes studentlogin(UsersModel temp) {
 
 
         Result result=userService.studentlogin(temp);
 
         if(result instanceof Result.Success)
         {
-            StudentModel res= (StudentModel) ((Result.Success) result).getData();
+            UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
-            res.setMes("success");
-            return res;
+            Mes mes=new Mes(true, Code.SUCCESS,res);
+            return mes;
         }
         else if(result instanceof Result.Fail)
         {
-            StudentModel res= new StudentModel();
+            UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
-            res.setMes(((Result.Fail) result).getReason());
-            return res;
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            return mes;
         }
         else
         {
-            StudentModel res= new StudentModel();
+            UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
-            res.setMes("error");
-            return res;
+            Mes mes=new Mes(false,Code.ERROR,res);
+            return mes;
         }
     }
 
     @RequestMapping(value = "/teacherLogin", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     @ResponseBody
-    public TeacherModel teacherlogin(TeacherModel temp) {
+    public Mes teacherlogin(UsersModel temp) {
 
 
         Result result=userService.teacherlogin(temp);
 
         if(result instanceof Result.Success)
         {
-            TeacherModel res= (TeacherModel) ((Result.Success) result).getData();
+            UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
-            res.setMes("success");
-            return res;
+            Mes mes=new Mes(true, Code.SUCCESS,res);
+            return mes;
         }
         else if(result instanceof Result.Fail)
         {
-            TeacherModel res= new TeacherModel();
+            UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
-            res.setMes(((Result.Fail) result).getReason());
-            return res;
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            return mes;
         }
         else
         {
-            TeacherModel res= new TeacherModel();
+            UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
-            res.setMes("error");
-            return res;
+            Mes mes=new Mes(false,Code.ERROR,res);
+            return mes;
         }
     }
 }

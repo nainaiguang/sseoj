@@ -1,10 +1,9 @@
 package com.ustc.sse.sseoj.service.online;
 
+import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.Result;
 import com.ustc.sse.sseoj.dao.user.UserDao;
-import com.ustc.sse.sseoj.model.user.AdminModel;
-import com.ustc.sse.sseoj.model.user.StudentModel;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import com.ustc.sse.sseoj.service.online.superService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,17 +17,17 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl implements UserService {
-
+    @Autowired
     private UserDao userDao;
 
     @Override
-    public Result adminregister(AdminModel user) {
+    public Result adminregister(UsersModel user) {
         user.setSuccessRegister(false);//暂且设置注册失败
         try{
-        AdminModel existUser=userDao.adminNameByName(user.getAno());
+        UsersModel existUser=userDao.adminNameByName(user.getNo());
         if(existUser!=null)//用户已经存在
         {
-            return new Result.Fail("Account already exists");
+            return new Result.Fail(Code.ACCOUNT_ALREADY_EXISTS);
         }
         else
         {
@@ -45,17 +44,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result adminlogin(AdminModel user) {
-        String ano=user.getAno();
-        String apassword=user.getApassword();
+    public Result adminlogin(UsersModel user) {
+        String ano=user.getNo();
+        String apassword=user.getPassword();
         try {
-            AdminModel adminModel = userDao.adminLogin(ano, apassword);
+            UsersModel adminModel = userDao.adminLogin(ano, apassword);
             if (adminModel != null)//登陆成功
             {
                 return new Result.Success(adminModel);
             } else//登陆失败
             {
-                return new Result.Fail("Incorrect account or password");
+                return new Result.Fail(Code.INCORRECT_ACCOUNT_OR_PASSWORD);
             }
         }
         catch (Exception e)
@@ -66,13 +65,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result studentregister(StudentModel user) {
+    public Result studentregister(UsersModel user) {
         user.setSuccessRegister(false);//暂且设置注册失败
         try{
-            StudentModel existUser=userDao.studentNameByName(user.getSno());
+            UsersModel existUser=userDao.studentNameByName(user.getNo());
             if(existUser!=null)//用户已经存在
             {
-                return new Result.Fail("Account already exists");
+                return new Result.Fail(Code.ACCOUNT_ALREADY_EXISTS);
             }
             else
             {
@@ -89,17 +88,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result studentlogin(StudentModel user) {
-        String sno=user.getSno();
-        String spassword=user.getSpassword();
+    public Result studentlogin(UsersModel user) {
+        String sno=user.getNo();
+        String spassword=user.getPassword();
         try {
-            StudentModel studentModel = userDao.studentLogin(sno, spassword);
+            UsersModel studentModel = userDao.studentLogin(sno, spassword);
             if (studentModel != null)//登陆成功
             {
                 return new Result.Success(studentModel);
             } else//登陆失败
             {
-                return new Result.Fail("Incorrect account or password");
+                return new Result.Fail(Code.INCORRECT_ACCOUNT_OR_PASSWORD);
             }
         }
         catch (Exception e)
@@ -109,13 +108,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result teacherregister(TeacherModel user) {
+    public Result teacherregister(UsersModel user) {
         user.setSuccessRegister(false);//暂且设置注册失败
         try{
-            TeacherModel existUser=userDao.teacherNameByName(user.getTno());
+            UsersModel existUser=userDao.teacherNameByName(user.getNo());
             if(existUser!=null)//用户已经存在
             {
-                return new Result.Fail("Account already exists");
+                return new Result.Fail(Code.ACCOUNT_ALREADY_EXISTS);
             }
             else
             {
@@ -132,17 +131,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result teacherlogin(TeacherModel user) {
-        String tno=user.getTno();
-        String tpassword=user.getTpassword();
+    public Result teacherlogin(UsersModel user) {
+        String tno=user.getNo();
+        String tpassword=user.getPassword();
         try {
-            TeacherModel teacherModel = userDao.teacherLogin(tno,tpassword);
+            UsersModel teacherModel = userDao.teacherLogin(tno,tpassword);
             if (teacherModel != null)//登陆成功
             {
                 return new Result.Success(teacherModel);
             } else//登陆失败
             {
-                return new Result.Fail("Incorrect account or password");
+                return new Result.Fail(Code.INCORRECT_ACCOUNT_OR_PASSWORD);
             }
         }
         catch (Exception e)

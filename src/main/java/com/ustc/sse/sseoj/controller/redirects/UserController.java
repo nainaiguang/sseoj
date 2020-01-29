@@ -1,6 +1,7 @@
 package com.ustc.sse.sseoj.controller.redirects;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,8 +36,19 @@ public class UserController {
         return "register";};
 
     @RequestMapping("/toMain")
-    public String toMain() {
+    public String toMain(Model model) {
+
         return "main";};
+
+
+
+    @RequestMapping("/tempLogin")
+    public String toTempLogin() {
+        return "tempLogin";};
+
+    @RequestMapping("/tempCourse")
+    public String tempCourse() {
+        return "tempCourse";};
 }
 
 
