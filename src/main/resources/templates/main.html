@@ -1,17 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>SSEOJ</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>layer框架测试</title>
   <link rel="stylesheet" href="/layui/css/layui.css">
+  <script type="text/javascript">
+      window.onload = function() {
+          var heigh = jq(window).height() - 170;
+          jq('.layui-show iframe').attr('height',heigh);
+      };
+  </script>
 </head>
+<!--样式增强-->
+<style type="text/css">
+  .layui-tab-title{
+    background-color: #efefef;
+  }
+  .layui-tab-title li{
+    background-color: #efefef;
+  }
+  .layui-tab-title li.layui-this{
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+</style>
+<script src="/layui/layui.js"></script>
+<script src="/layui/lay/modules/jquery.js"></script>
+
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-  <div class="layui-header">
-    <div class="layui-logo">layui 后台布局</div>
+  <div class="layui-header" style="border-bottom: 0px solid #5FB878;">
+    <div class="layui-logo">USTC SSE OJ</div>
     <!-- 头部区域（可配合layui已有的水平导航） -->
-    <ul class="layui-nav layui-layout-left">
+    <ul id="menuTop" class="layui-nav layui-layout-left">
       <li class="layui-nav-item"><a href="">控制台</a></li>
       <li class="layui-nav-item"><a href="">商品管理</a></li>
       <li class="layui-nav-item"><a href="">用户</a></li>
@@ -27,26 +49,84 @@
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
         <a href="javascript:;">
-          <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-          	贤心
+          <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
         </a>
         <dl class="layui-nav-child">
-          <dd><a href="">基本资料</a></dd>
-          <dd><a href="">安全设置</a></dd>
+          <dd>
+            <a href="">基本资料</a>
+          </dd>
+          <dd>
+            <a href="">安全设置</a>
+          </dd>
         </dl>
       </li>
-      <li class="layui-nav-item"><a href="">退了</a></li>
+      <li class="layui-nav-item">
+        <a href="/user/index">退了</a>
+      </li>
     </ul>
   </div>
-  
+
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll" id="left_menu">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree" lay-filter="test">
+      </ul>
+    </div>
+  </div>
+
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <!--导航tab-->
+    <div class="layui-tab" style="margin:0;" lay-allowClose="true" lay-filter="tabtest">
+      <ul class="layui-tab-title" nomore style="margin-right: 96px;">
+        <li class="layui-this" noclose>首页</li>
+      </ul>
+      <div class="layui-tab-content" style="padding: 0px;">
+        <div class="layui-tab-item layui-show">
+          <iframe src="/user/home" name="iframe_a" width="100%" frameborder="no"></iframe>
+        </div>
+      </div>
+    </div>
+    <style>
+      #tab_opt .layui-nav-more{
+        top: 17px;
+      }
+
+    </style>
+    <!--操作导航-->
+    <ul class="layui-nav layui-layout-right" style="background-color: red;color: #000000;padding-left: 0px;padding-right: 10px;" id="tab_opt">
+      <li class="layui-nav-item" style="line-height: 40px;">
+        <a href="javascript:;" style="color: #000;">
+          关闭操作
+        </a>
+        <dl class="layui-nav-child" style="top: 45px;">
+          <dd>
+            <a href="javascript:closeAllMenu();">关闭全部</a>
+          </dd>
+          <dd>
+            <a href="javascript:closeOtherMenu();">关闭其他</a>
+          </dd>
+        </dl>
+      </li>
+
+    </ul>
+  </div>
+
+  <div class="layui-footer">
+    <!-- 底部固定区域 -->
+    © SSE OJ - 底部固定区域
+  </div>
+
+  <!--导航模板-->
+  <!--${menu}-->
   <div class="layui-side layui-bg-black">
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
         <li class="layui-nav-item layui-nav-itemed">
-          <a class="" href="javascript:;">所有商品</a>
+          <a class="" href="javascript:;">教师管理</a>
           <dl class="layui-nav-child">
-            <dd><a href="javascript:;">列表一</a></dd>
+            <dd><a href="javascript:topage('teacher/teaCourse','课程管理');">课程管理</a></dd>
             <dd><a href="javascript:;">列表二</a></dd>
             <dd><a href="javascript:;">列表三</a></dd>
             <dd><a href="">超链接</a></dd>
@@ -65,24 +145,119 @@
       </ul>
     </div>
   </div>
-  
-  <div class="layui-body">
-    <!-- 内容主体区域 -->
-    <div style="padding: 15px;">内容主体区域</div>
-  </div>
-  
-  <div class="layui-footer">
-    <!-- 底部固定区域 -->
-    © layui.com - 底部固定区域
-  </div>
+  <script type="text/javascript">
+      // $().ready(function() {
+      //     $('#menuTop>:first').addClass("layui-this");
+      //     console.log($('#menuTop>:first a').attr('class'));
+      //     jq("#left_menu").html("");
+      //     jq("#left_menu").html(jq("#" + $('#menuTop>:first a').attr('class')).html());
+      // })
+  </script>
+  <script type="text/javascript">
+      var element;
+      var jq;
+      var count = 1;
+      //JavaScript代码区域
+      layui.use('element', function() {
+          element = layui.element;
+          //事件绑定
+          element.on('tab(tabtest)', function(data){
+              var ele = jq(".layui-tab-title li").get(data.index);
+              var tabWidth = jq(".layui-tab").width() - 96;
+              var tabItemWS = ele.offsetLeft + ele.offsetWidth;
+
+              var rightW = 0;
+              //判断是否还存在后续菜单tab
+              if(jq(".layui-tab-title li").size() > data.index+1){
+                  //计算后续li宽度之和
+
+                  var size = jq(".layui-tab-title li").size();
+                  for(var i = data.index+1; i < size; i++){
+                      rightW += jq(".layui-tab-title li").get(i).offsetWidth;
+                  }
+              }
+
+              if(tabItemWS - tabWidth > 0){
+                  console.log(1);
+                  jq(".layui-tab-title").css("margin-left",tabWidth - tabItemWS - rightW);
+              }else{
+                  //如果此时后面还有
+                  if(rightW > 0){
+                      //后面距离少于面板宽度
+                      if(tabWidth>rightW){
+                          console.log(2);
+                          jq(".layui-tab-title").css("margin-left",0);
+                      }else{
+                          console.log(3);
+                          //大于等于面板宽度
+                          jq(".layui-tab-title").css("margin-left",0-ele.offsetLeft);
+                      }
+                  }else{
+                      console.log(4);
+                      jq(".layui-tab-title").css("margin-left",0);
+                  }
+
+              }
+          });
+      });
+
+      layui.use('jquery', function() {
+          jq = layui.jquery;
+      });
+
+      function closeAllMenu(){
+          jq(".layui-tab-title li").each(function(){
+              if(!this.hasAttribute("noclose")){
+                  element.tabDelete("tabtest", this.getAttribute("lay-id"));
+              }
+          });
+          jq(".layui-tab-title").css("margin-left","0px");
+      }
+
+      function closeOtherMenu(){
+          jq(".layui-tab-title li").each(function(){
+              if(!this.hasAttribute("noclose") && this.className != "layui-this"){
+                  element.tabDelete("tabtest", this.getAttribute("lay-id"));
+              }
+          });
+          jq(".layui-tab-title").css("margin-left","0px");
+      }
+
+      function topage(url,title){
+          // 只增加一次
+          if(jq(".layui-tab-title li[lay-id='"+url+"']").size() == 0){
+              element.tabAdd("tabtest",{
+                            title: title,
+                            content: createPage(url),
+                            id: url
+                          });
+          };
+          element.tabChange("tabtest",url);
+          //刷新页面
+          // alert(jq(".layui-tab-item.layui-show").get(0))
+
+          // 无限增加tab框
+/*          element.tabAdd("tabtest",{
+              title: title+count,
+              content: createPage(url),
+              id: url+count
+          });
+
+          element.tabChange("tabtest",url+count++);*/
+
+      }
+
+      function createPage(url){
+          var h = jq(window).height() - 170;
+          return  '<iframe src="/' + url + '" width="100%" height="'+h+'" frameborder="no"></iframe>';
+      }
+
+      function switchMenu(id){
+          jq("#left_menu").html("");
+          jq("#left_menu").html(jq("#" + id).html());
+          element.init();
+      }
+  </script>
 </div>
-<script src="/layui/layui.js"></script>
-<script>
-//JavaScript代码区域
-layui.use('element', function(){
-  var element = layui.element;
-  
-});
-</script>
 </body>
 </html>

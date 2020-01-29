@@ -63,6 +63,7 @@ public class TeacherCourseController {
         {
             ArrayList<CourseModel> arrayList= (ArrayList<CourseModel>) ((Result.Success) result).getData();
             Mes mes=new Mes(true,Code.SUCCESS,arrayList);
+            System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
