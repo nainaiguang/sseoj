@@ -15,21 +15,21 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">学号：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="ano" autocomplete="off" required lay-verify="required"  placeholder="请输入学号" class="layui-input">
+                        <input type="text" name="no" autocomplete="off" required lay-verify="required"  placeholder="请输入学号" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">密码：</label>
                     <div class="layui-input-inline">
-                        <input type="password" name="apassword" required lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input">
+                        <input type="password" name="password" required lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">用户类型：</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="role" value="学生" title="学生" checked>
-                        <input type="radio" name="role" value="教师" title="教师">
-                        <input type="radio" name="role" value="管理员" title="管理员">
+                        <input type="radio" name="role" value="student" title="学生" checked>
+                        <input type="radio" name="role" value="teacher" title="教师">
+                        <input type="radio" name="role" value="manager" title="管理员">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -45,15 +45,31 @@
 <script src="/layui/layui.js"></script>
 <script>
     //JavaScript代码区域
-    layui.use(['form', 'layedit', 'laydate'], function(){
+    layui.use(['form', 'layedit', 'laydate', 'jquery'], function(){
         var form = layui.form
             ,layer = layui.layer
             ,layedit = layui.layedit
-            ,laydate = layui.laydate;
+            ,laydate = layui.laydate
+            ,$ = layui.jquery;
 
         //监听提交
         form.on('submit(formDemo)', function(data){
-            layer.msg(JSON.stringify(data.field));
+            // layer.msg(JSON.stringify(data.field));
+            $.ajax({
+                url : "/users/login",
+                dataType: 'json',
+                method : 'post',
+                data : data.field,
+                traditional: true,  //阻止深度序列化，向后台传送数组
+                success : function(data){
+                    if(data.success){
+                        layer.msg('登录成功！');
+                    }
+                },
+                error: function(){
+                    layer.msg('登录失败',{icon: 2});
+                }
+            });
             return false;
         });
     });
