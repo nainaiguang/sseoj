@@ -30,7 +30,7 @@ public class RegisterController {
     {
         if(temp.getRole()==null)
         {
-            return new Mes(false,Code.MISS_ROLE,null);
+            return new Mes(false,Code.MISS_ROLE,0,null);
         }
 
         if(temp.getRole().equals(Role.teacher.toString()))
@@ -47,7 +47,7 @@ public class RegisterController {
         }
         else
         {
-            return new Mes(false,Code.WRONG_ROLE,null);
+            return new Mes(false,Code.WRONG_ROLE,0,null);
         }
     }
 
@@ -63,21 +63,21 @@ public class RegisterController {
         {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessRegister(true);
-            Mes mes=new Mes(true, Code.SUCCESS,res);
+            Mes mes=new Mes(true, Code.SUCCESS,1,res);
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
             return mes;
         }
         else
         {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            Mes mes=new Mes(false,Code.ERROR,res);
+            Mes mes=new Mes(false,Code.ERROR,0,res);
             return mes;
         }
 
@@ -95,21 +95,21 @@ public class RegisterController {
         {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessRegister(true);
-            Mes mes=new Mes(true, Code.SUCCESS,res);
+            Mes mes=new Mes(true, Code.SUCCESS,1,res);
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
             return mes;
         }
         else
         {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            Mes mes=new Mes(false,Code.ERROR,res);
+            Mes mes=new Mes(false,Code.ERROR,0,res);
             return mes;
         }
 
@@ -127,21 +127,21 @@ public class RegisterController {
         {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessRegister(true);
-            Mes mes=new Mes(true, Code.SUCCESS,res);
+            Mes mes=new Mes(true, Code.SUCCESS,1,res);
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
             return mes;
         }
         else
         {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            Mes mes=new Mes(false,Code.ERROR,res);
+            Mes mes=new Mes(false,Code.ERROR,0,res);
             return mes;
         }
 
