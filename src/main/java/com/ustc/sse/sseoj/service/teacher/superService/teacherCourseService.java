@@ -15,13 +15,16 @@ public interface teacherCourseService {
     public Result teacher_add_course(CourseModel courseModel, Curricula_variableModel curricula_variableModel);
 
     //显示该老师的所有课程
-    public Result teacher_show_somebody_all_course();
+    public Result teacher_show_somebody_all_course(Curricula_variableModel curricula_variableModel);
+
     //更改课程名
+    public Result teacher_change_courseName(CourseModel courseModel);
 
     //删除课程 课程关系
+    public Result teacher_delete_course(CourseModel courseModel);
 
     //查找某个老师自己的课程 模糊查询 通过课程名
-
+    public Result teacher_search_course_fully(CourseModel courseModel, Curricula_variableModel curricula_variableModel);
 
 
 }

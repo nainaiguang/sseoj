@@ -1,10 +1,10 @@
 package com.ustc.sse.sseoj.controller.online;
 
+import com.ustc.sse.sseoj.Data.Code;
+import com.ustc.sse.sseoj.Data.Mes;
 import com.ustc.sse.sseoj.Data.Result;
-import com.ustc.sse.sseoj.common.Role;
-import com.ustc.sse.sseoj.model.user.AdminModel;
-import com.ustc.sse.sseoj.model.user.StudentModel;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.Data.Role;
+import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import com.ustc.sse.sseoj.service.online.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,41 +24,68 @@ public class RegisterController {
     private UserServiceImpl userService;
 
 
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes register(UsersModel temp)
+    {
+        if(temp.getRole()==null)
+        {
+            return new Mes(false,Code.MISS_ROLE,null);
+        }
+
+        if(temp.getRole().equals(Role.teacher.toString()))
+        {
+            return teacherregister(temp);
+        }
+        else if(temp.getRole().equals(Role.manager.toString()))
+        {
+            return adminregister(temp);
+        }
+        else if(temp.getRole().equals(Role.student.toString()))
+        {
+            return studentregister(temp);
+        }
+        else
+        {
+            return new Mes(false,Code.WRONG_ROLE,null);
+        }
+    }
+
 
     @RequestMapping(value = "/adminRegister", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody
-    public AdminModel adminregister(AdminModel temp) {
+    public Mes adminregister(UsersModel temp) {
 
         temp.setRole(String.valueOf(Role.manager));
         Result result=userService.adminregister(temp);
 
         if(result instanceof Result.Success)
         {
-            AdminModel res= (AdminModel) ((Result.Success) result).getData();
+            UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessRegister(true);
-            res.setMes("success");
-            return res;
+            Mes mes=new Mes(true, Code.SUCCESS,res);
+            return mes;
         }
         else if(result instanceof Result.Fail)
         {
-            AdminModel res= new AdminModel();
+            UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            res.setMes(((Result.Fail) result).getReason());
-            return res;
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            return mes;
         }
         else
         {
-            AdminModel res= new AdminModel();
+            UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            res.setMes("error");
-            return res;
+            Mes mes=new Mes(false,Code.ERROR,res);
+            return mes;
         }
 
     }
 
     @RequestMapping(value = "/studentRegister", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody
-    public StudentModel studentregister(StudentModel temp) {
+    public Mes studentregister(UsersModel temp) {
 
         temp.setRole(String.valueOf(Role.student));
 
@@ -66,31 +93,31 @@ public class RegisterController {
 
         if(result instanceof Result.Success)
         {
-            StudentModel res= (StudentModel) ((Result.Success) result).getData();
+            UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessRegister(true);
-            res.setMes("success");
-            return res;
+            Mes mes=new Mes(true, Code.SUCCESS,res);
+            return mes;
         }
         else if(result instanceof Result.Fail)
         {
-            StudentModel res= new StudentModel();
+            UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            res.setMes(((Result.Fail) result).getReason());
-            return res;
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            return mes;
         }
         else
         {
-            StudentModel res= new StudentModel();
+            UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            res.setMes("error");
-            return res;
+            Mes mes=new Mes(false,Code.ERROR,res);
+            return mes;
         }
 
     }
 
     @RequestMapping(value = "/teacherRegister", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody
-    public TeacherModel teacherregister(TeacherModel temp) {
+    public Mes teacherregister(UsersModel temp) {
 
         temp.setRole(String.valueOf(Role.teacher));
 
@@ -98,24 +125,24 @@ public class RegisterController {
 
         if(result instanceof Result.Success)
         {
-            TeacherModel res= (TeacherModel) ((Result.Success) result).getData();
+            UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessRegister(true);
-            res.setMes("success");
-            return res;
+            Mes mes=new Mes(true, Code.SUCCESS,res);
+            return mes;
         }
         else if(result instanceof Result.Fail)
         {
-            TeacherModel res= new TeacherModel();
+            UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            res.setMes(((Result.Fail) result).getReason());
-            return res;
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            return mes;
         }
         else
         {
-            TeacherModel res= new TeacherModel();
+            UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
-            res.setMes("error");
-            return res;
+            Mes mes=new Mes(false,Code.ERROR,res);
+            return mes;
         }
 
     }

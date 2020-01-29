@@ -9,18 +9,19 @@ import com.ustc.sse.sseoj.Data.Result;
 import com.ustc.sse.sseoj.model.user.AdminModel;
 import com.ustc.sse.sseoj.model.user.StudentModel;
 import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 
 public interface UserService {
 
     //管理员登陆注册
-    public Result adminregister(AdminModel user);
-    public Result adminlogin(AdminModel user);
+    public Result adminregister(UsersModel user);
+    public Result adminlogin(UsersModel user);
 
     //学生登陆注册
-    public Result studentregister(StudentModel user);
-    public Result studentlogin(StudentModel user);
+    public Result studentregister(UsersModel user);
+    public Result studentlogin(UsersModel user);
 
     //教师登陆注册
-    public Result teacherregister(TeacherModel user);
-    public Result teacherlogin(TeacherModel user);
+    public Result teacherregister(UsersModel user);
+    public Result teacherlogin(UsersModel user);
 }

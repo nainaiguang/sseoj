@@ -1,4 +1,4 @@
-package com.ustc.sse.sseoj.common;
+package com.ustc.sse.sseoj.Data;
 
 /**
  * @author 邱乃光

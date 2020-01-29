@@ -17,7 +17,7 @@ import java.util.List;
 @Mapper
 public interface courseDAO {
     @Insert("insert into course (courseID,name) values(#{courseID},#{name})")//插入
-    public  CourseModel insert_course(CourseModel courseModel);
+    public  boolean insert_course(CourseModel courseModel);
 
     @Select("select courseID,name from course where name=#{name}")//通过课程名查找课程
     public CourseModel select_course_from_name(CourseModel courseModel);
@@ -27,7 +27,7 @@ public interface courseDAO {
 
 
     @Select("select * from course")//查询所有课程
-    public ArrayList<CourseModel> select_all_course(CourseModel courseModel);
+    public ArrayList<CourseModel> select_all_course();
 
 
     //通过模糊查询通过名字 查询课程编号
@@ -37,8 +37,8 @@ public interface courseDAO {
 
 
 
-    @Insert("insert into curricula_variable (tno,courseID) values(#{tno},#{courseID})")//插入
-    public Curricula_variableModel insert_curricula_variable(Curricula_variableModel curricula_variableModel);
+    @Insert("insert into curricula_variable (tno,courseID) values( #{tno},#{courseID})")//插入
+    public Boolean insert_curricula_variable(Curricula_variableModel curricula_variableModel);
 
     @Select("select tno,courseID from curricula_variable where tno=#{tno} and courseID=#{courseID}")//通过教师编号和课程编号查询是否存在
     public Curricula_variableModel select_curricula_variable_from_tno_courseID(Curricula_variableModel curricula_variableModel);
@@ -48,8 +48,6 @@ public interface courseDAO {
 
     @Select("select tno,courseID from curricula_variable where courseID=#{courseID}")//通过课程编号查询课程关系，即一个课程只能复制给一个老师
     public Curricula_variableModel select_curricula_variable_from_courseID(Curricula_variableModel curricula_variableModel);
-
-
 
 
     //查询某个老师自己的所有课程

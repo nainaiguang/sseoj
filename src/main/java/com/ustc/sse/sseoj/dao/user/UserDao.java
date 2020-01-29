@@ -1,8 +1,6 @@
 package com.ustc.sse.sseoj.dao.user;
 
-import com.ustc.sse.sseoj.model.user.AdminModel;
-import com.ustc.sse.sseoj.model.user.StudentModel;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -18,35 +16,35 @@ import java.util.List;
 public interface UserDao {
     // MyBatis 的注解
     @Select("select * from admin")
-    public List<AdminModel> getUserList();
+    public List<UsersModel> getUserList();
 
-    @Select("select admin.ano,admin.aname,admin.role from admin where admin.ano=#{ano}")
-    public AdminModel adminNameByName(String ano);
+    @Select("select admin.no,admin.name,admin.role from admin where admin.no=#{no}")
+    public UsersModel adminNameByName(String no);
 
-    @Select("select student.sno,student.sname,student.role from student where student.sno=#{sno}")
-    public StudentModel studentNameByName(String sno);
+    @Select("select student.no,student.name,student.role from student where student.no=#{no}")
+    public UsersModel studentNameByName(String no);
 
-    @Select("select teacher.tno,teacher.tname,teacher.role from teacher where teacher.tno=#{tno}")
-    public TeacherModel teacherNameByName(String tno);
-
-
-    @Select("select admin.ano,admin.aname,admin.role from admin where admin.ano=#{ano} and admin.apassword=#{apassword}")
-    public AdminModel adminLogin(String ano, String apassword);
-
-    @Select("select student.sno,student.sname,student.role from student where student.sno=#{sno} and student.spassword=#{spassword}")
-    public StudentModel studentLogin(String sno,String spassword);
-
-    @Select("select teacher.tno,teacher.tname,teacher.role from teacher where teacher.tno=#{tno} and teacher.tpassword=#{tpassword}")
-    public TeacherModel teacherLogin(String tno,String tpassword);
+    @Select("select teacher.no,teacher.name,teacher.role from teacher where teacher.no=#{no}")
+    public UsersModel teacherNameByName(String no);
 
 
-    @Select("insert into admin (ano,apassword,aname,role) values(#{ano},#{apassword},#{aname},#{role})")
-    public AdminModel adminRegist(AdminModel user);
+    @Select("select admin.no,admin.name,admin.role from admin where admin.no=#{no} and admin.password=#{password}")
+    public UsersModel adminLogin(String no, String password);
 
-    @Select("insert into student (sno,spassword,sname,role) values(#{sno},#{spassword},#{sname},#{role})\"")
-    public StudentModel studentRegist(StudentModel user);
+    @Select("select student.no,student.name,student.role from student where student.no=#{no} and student.password=#{password}")
+    public UsersModel studentLogin(String no,String password);
 
-    @Select("insert into teacher (tno,tpassword,tname,role) values(#{tno},#{tpassword},#{tname},#{role})\"")
-    public TeacherModel teacherRegist(TeacherModel user);
+    @Select("select teacher.no,teacher.name,teacher.role from teacher where teacher.no=#{no} and teacher.password=#{password}")
+    public UsersModel teacherLogin(String no,String password);
+
+
+    @Select("insert into admin (no,password,name,role) values(#{no},#{password},#{name},#{role})")
+    public UsersModel adminRegist(UsersModel user);
+
+    @Select("insert into student (no,password,name,role) values(#{no},#{password},#{name},#{role})")
+    public UsersModel studentRegist(UsersModel user);
+
+    @Select("insert into teacher (no,password,name,role) values(#{no},#{password},#{name},#{role})")
+    public UsersModel teacherRegist(UsersModel user);
 
 }

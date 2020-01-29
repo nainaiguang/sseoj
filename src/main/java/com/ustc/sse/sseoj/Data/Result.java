@@ -58,9 +58,9 @@ public class Result<T> {
     // Fail sub-class
     public final static class Fail extends Result {
         @Getter
-        private String reason;
+        private Code reason;
 
-        public Fail(String reason) {
+        public Fail(Code reason) {
             this.reason = reason;
         }
 

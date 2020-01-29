@@ -15,5 +15,5 @@ private int id;
 private String role;
 private boolean successLogin;
 private boolean successRegister;
-private String mes;
+private String no,password,name;
 }
