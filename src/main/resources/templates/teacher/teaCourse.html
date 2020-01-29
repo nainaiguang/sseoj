@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="utf-8" />
+    <title>角色管理</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body>
+<!-- 查询div -->
+<div class=" " style="margin-top: 20px;margin-left: 50px">
+    <div class="layui-row" style="margin-top: 20px;">
+        <form action="" id="queryForm" class="layui-form">
+            <div class="layui-form-item">
+                <input type="hidden" name="tno" id="tno" value="SA19225052"/>
+                <label class="layui-form-label">课程名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="roleName" id="txtroleName" placeholder="请输入课程名" autocomplete="off" class="layui-input" />
+                </div>
+                <div class="layui-input-inline" style="float: right;">
+                    <button id="searchBtn" class="layui-btn layui-btn-normal" type="button" onclick="queryRole()"><i class="layui-icon">&#xe615;</i>查询</button>
+                    <button type="reset" class="layui-btn"><i class="layui-icon">&#x1002;</i>重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 按钮栏 -->
+<div class="" id="toolbar">
+    <a><button type="button" onclick="add()" title="新增用户"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
+    <a><button type="button" onclick="edit();" title="编辑用户" id="edit" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe642;</i></button></a>
+    <a><button type="button" onclick="del()" title="删除用户" id="delete" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe640;</i></button></a>
+    <a><button type="button" onclick="editPer()" title="配置角色" id="reset" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe631;</i></button></a>
+</div>
+
+<!-- 表格栏 -->
+<div style="padding:0px 10px">
+    <table id="table"></table>
+</div>
+
+<!--<script type="text/html" id="roleTypeTpl">
+    {{#  if(d.roleType == 1){ }}
+    <span class="layui-badge layui-bg-orange" id="roleTypes">系统角色</span>
+    {{#  } else if(d.roleType == 2){ }}
+    <span class="layui-badge layui-bg-green" id="roleTypes">业务角色</span>
+    {{#  } }}
+</script>-->
+
+<!-- js引入 -->
+<script src="/layui/layui.js"></script>
+<script>
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+            query();
+        });
+
+    function query() {
+        // 执行渲染
+        table.render({
+            elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
+            url : '/teacher/course/showAllCourse',
+            id : 'courseID', // 设定容器唯一ID
+            page : true, // 是否开启分页
+            loading : true, // 是否显示加载条
+            height : 550, // 容器高度,
+            page: 1,
+            limit: 10,
+            method: 'post',
+            //,where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
+            //,method: 'post' //如果无需自定义HTTP类型，可不加该参数
+            //,request: {} //如果无需自定义请求参数，可不加该参数
+            //,response: {} //如果无需自定义数据响应名称，可不加该参数
+            // where: queryParam(),
+            where: {
+                'tno': $('#tno').val()
+            },
+            cols : [ [ // 标题栏
+                {
+                    field : 'courseID',
+                    checkbox : true,
+                    LAY_CHECKED : false
+                }, {
+                    field : 'courseID',
+                    title : '课程ID',
+                    sort : false,
+                    align : 'center',
+                    width: '400'
+                } // rowspan即纵向跨越的单元格数
+                , {
+                    field : 'name',
+                    title : '课程名',
+                    align : 'center',
+                    width: '400'
+                }
+                // , {
+                //     field : 'roleType',
+                //     title : '角色类型',
+                //     align : 'center',
+                //     templet: '#roleTypeTpl',
+                //     width: '460'
+                // } // colspan即横跨的单元格数，这种情况下不用设置field和width
+            ]], // 设置表头
+            done : function(res, curr, count) {
+                console.log(res);
+                // 得到当前页码
+                console.log(curr);
+                // 得到数据总量
+                console.log(count);
+            }
+        });
+
+    };
+
+/*    function queryParam() {
+        return {
+            page: this.page,
+            limit: this.limit,
+            sort: this.sort,
+            roleName: $('#txtroleName').val(),
+            roleCode: $('#txtroleCode').val()
+        }
+    }
+
+    // 条件查询
+    function queryRole() {
+        query();
+    }
+
+    // 获取选中行
+    function getSelections() {
+        return table.checkStatus('id');
+    };
+
+    // 新增
+    function add(){
+        layer.open({
+            type: 2,
+            content: APP.CTX + '/role/addRolePage.do',
+            maxmin: true,
+            title: '添加角色',
+            area : ['600px', '400px']
+        });
+    }
+
+    // 编辑
+    function edit(){
+        var data = getSelections().data;
+        if(data.length == 0){
+            layer.alert('请选择一条数据进行编辑！', {icon: 2});
+        } else if(data.length > 1){
+            layer.alert('请选择一条数据进行编辑！', {icon: 2});
+        } else {
+            var roleId = data[0].roleId;
+            layer.open({
+                type: 2,
+                content: APP.CTX + '/role/editRolePage.do?roleId='+roleId,
+                maxmin: true,
+                title: '编辑角色',
+                area : ['600px', '400px']
+            });
+        }
+    }
+
+    // 删除选中行
+    function del() {
+        var data = getSelections().data;
+        var roleType = document.getElementById('roleTypes').innerText;
+        if(data.length == 0){
+            layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
+        } else {
+            var roleIds = '';
+            var roleTypes = '';
+            for (var i = 0; i < data.length; i++){
+                if(i == data.length - 1){
+                    roleIds += data[i].roleId;
+                } else {
+                    roleIds += data[i].roleId+',';
+                }
+                roleTypes += data[i].roleType;
+            }
+            if(roleTypes.indexOf('1') >= 0){
+                layer.alert('系统角色不可删除！', {icon: 2});
+            } else {
+                layer.confirm("确定删除此角色吗？", function(){
+
+                    $.ajax({
+                        url : APP.CTX + "/role/deleteRoleById.do",
+                        dataType: 'json',
+                        method : 'post',
+                        data : {roleIds: roleIds},
+                        traditional: true,  //阻止深度序列化，向后台传送数组
+                        success : function(data){
+                            if(data){
+                                query();
+                                layer.msg('删除成功');
+                            }
+                        },
+                        error: function(){
+                            layer.msg('删除失败',{icon: 2});
+                        }
+                    });
+                });
+            }
+        }
+    }
+
+    var setting = {
+        check:{
+            enable: true,
+            nocheckInherit: false
+        },
+        view:{
+            selectedMulti: false
+        },
+        edit: {
+            enable: true,
+            showRenameBtn:false,
+            showRemoveBtn:false,
+        },
+        data: {
+            simpleData: {
+                enable: true,
+            }
+        },
+        callback: {
+
+        }
+    };
+
+    //编辑权限
+    var roleId;
+    var perm = [];
+    function filter(node) {
+        return node;
+    }
+
+    //所有资源
+    function resource(){
+        perm = [];
+        $.ajax({
+            type:'post',
+            url:APP.CTX+'/role/showPermission.do',
+            dataType:'json',
+            success:function(data){
+                perm = data;
+            }
+        })
+    }
+
+    function editPer(){
+        resource()
+        var data = getSelections().data;
+        if(data.length == 0){
+            warnTip("请选择一条记录后再试");
+            return;
+        }
+        if(data.length > 1){
+            warnTip("只能选择一条记录");
+            return;
+        }
+        var id = data[0].roleId;
+        roleId = id;
+        layer.open({
+            type: 2,
+            content: APP.CTX + '/role/toPermission.do?id='+id,
+            maxmin: true,
+            title: '编辑角色权限',
+            area : ['580px', '450px']
+        });
+
+    }
+
+    function warnTip(content) {
+        layer.open({
+            title:'提示',
+            content:content,
+            btn:['确定'],
+            icon:2,
+            yes:function(index){
+                layer.close(index);
+            }
+        });
+    };*/
+
+</script>
