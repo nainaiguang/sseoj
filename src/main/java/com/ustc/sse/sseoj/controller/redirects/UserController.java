@@ -35,12 +35,16 @@ public class UserController {
     public String register() {
         return "register";};
 
-    @RequestMapping("/toMain")
-    public String toMain(Model model) {
-
+    /**
+     * 功能描述: 主页
+     * @Return: java.lang.String
+     * @Author: Qianbw
+     * @Date: 2020/1/29 18:22
+     */
+    @RequestMapping("/main")
+    public String main(Model model) {
+        model.addAttribute("msg","查看使用是否可行。");
         return "main";};
-
-
 
     @RequestMapping("/tempLogin")
     public String toTempLogin() {
@@ -49,7 +53,16 @@ public class UserController {
     @RequestMapping("/tempCourse")
     public String tempCourse() {
         return "tempCourse";};
-}
 
+    /**
+     * 功能描述: 首页
+     * @Return: java.lang.String
+     * @Author: Qianbw
+     * @Date: 2020/1/29 18:22
+     */
+    @RequestMapping("/home")
+    public String home() {
+        return "home";}
+}
 
 
