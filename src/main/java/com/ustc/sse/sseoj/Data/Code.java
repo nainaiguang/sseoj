@@ -12,8 +12,9 @@ import lombok.ToString;
  */
 
 public enum  Code {  // TODO 测试 试试这个在网页中的表示
+    TEMP(1,""),
    // public static String
-    SUCCESS(1,"success"),
+    SUCCESS(0,"success"),
     SUCCESS_CHANGE_NAME(2,"success change name"),
     SUCCESS_ADD_COURSE(10,"success add course"),
     SUCCESS_DETETE_COURSE(11,"success delete course"),

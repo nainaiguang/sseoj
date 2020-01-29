@@ -37,17 +37,17 @@ public class TeacherCourseController {
         if(result instanceof Result.Success)
         {
           CourseModel resCourseModel=(CourseModel)  ((Result.Success) result).getData();
-          Mes mes=new Mes(true,Code.SUCCESS_ADD_COURSE,resCourseModel);
+          Mes mes=new Mes(true,Code.SUCCESS_ADD_COURSE,1,resCourseModel);
           return mes;
         }
         else if(result instanceof Result.Fail)
         {
-            Mes mes=new Mes(false,((Result.Fail) result).getReason(),null);
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
             return mes;
         }
         else
         {
-            Mes mes=new Mes(false,Code.ERROR,null);
+            Mes mes=new Mes(false,Code.ERROR,0,null);
             return mes;
         }
 
@@ -62,18 +62,18 @@ public class TeacherCourseController {
         if(result instanceof Result.Success)
         {
             ArrayList<CourseModel> arrayList= (ArrayList<CourseModel>) ((Result.Success) result).getData();
-            Mes mes=new Mes(true,Code.SUCCESS,arrayList);
+            Mes mes=new Mes(true,Code.SUCCESS,arrayList.size(),arrayList);
             System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
-            Mes mes=new Mes(false,((Result.Fail) result).getReason(),null);
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
             return mes;
         }
         else
         {
-            Mes mes=new Mes(false,Code.ERROR,null);
+            Mes mes=new Mes(false,Code.ERROR,0,null);
             return mes;
         }
 
@@ -87,17 +87,17 @@ public class TeacherCourseController {
         Result result=teacherCourseService.teacher_change_courseName(courseModel);
         if(result instanceof Result.Success)
         {
-            Mes mes=new Mes(true,Code.SUCCESS_DETETE_COURSE,courseModel);
+            Mes mes=new Mes(true,Code.SUCCESS_DETETE_COURSE,1,courseModel);
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
-            Mes mes=new Mes(false,((Result.Fail) result).getReason(),null);
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
             return mes;
         }
         else
         {
-            Mes mes=new Mes(false,Code.ERROR,null);
+            Mes mes=new Mes(false,Code.ERROR,0,null);
             return mes;
         }
 
@@ -110,17 +110,17 @@ public class TeacherCourseController {
         Result result=teacherCourseService.teacher_delete_course(courseModel);
         if(result instanceof Result.Success)
         {
-            Mes mes=new Mes(true,Code.SUCCESS_CHANGE_NAME,courseModel);
+            Mes mes=new Mes(true,Code.SUCCESS_CHANGE_NAME,1,courseModel);
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
-            Mes mes=new Mes(false,((Result.Fail) result).getReason(),null);
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
             return mes;
         }
         else
         {
-            Mes mes=new Mes(false,Code.ERROR,null);
+            Mes mes=new Mes(false,Code.ERROR,0,null);
             return mes;
         }
 
@@ -135,17 +135,17 @@ public class TeacherCourseController {
         if(result instanceof Result.Success)
         {
             ArrayList<CourseModel> arrayList= (ArrayList<CourseModel>) ((Result.Success) result).getData();
-            Mes mes=new Mes(true,Code.SUCCESS,arrayList);
+            Mes mes=new Mes(true,Code.SUCCESS,arrayList.size(),arrayList);
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
-            Mes mes=new Mes(false,((Result.Fail) result).getReason(),null);
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
             return mes;
         }
         else
         {
-            Mes mes=new Mes(false,Code.ERROR,null);
+            Mes mes=new Mes(false,Code.ERROR,0,null);
             return mes;
         }
 

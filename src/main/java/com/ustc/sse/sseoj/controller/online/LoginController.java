@@ -33,7 +33,7 @@ public class LoginController {
     {
         if(temp.getRole()==null)
         {
-            return new Mes(false,Code.MISS_ROLE,null);
+            return new Mes(false,Code.MISS_ROLE,0,null);
         }
 
         if(temp.getRole().equals(Role.teacher.toString()))
@@ -50,7 +50,7 @@ public class LoginController {
         }
         else
         {
-            return new Mes(false,Code.WRONG_ROLE,null);
+            return new Mes(false,Code.WRONG_ROLE,0,null);
         }
     }
 
@@ -66,7 +66,7 @@ public class LoginController {
         {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
-            Mes mes=new Mes(true, Code.SUCCESS,res);
+            Mes mes=new Mes(true, Code.SUCCESS,1,res);
             return mes;
         }
         else if(result instanceof Result.Fail)
@@ -74,14 +74,14 @@ public class LoginController {
             UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
             //res.setMes(((Result.Fail) result).getReason());
-            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
             return mes;
         }
         else
         {
             UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
-            Mes mes=new Mes(false,Code.ERROR,res);
+            Mes mes=new Mes(false,Code.ERROR,0,res);
             return mes;
         }
 
@@ -98,21 +98,21 @@ public class LoginController {
         {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
-            Mes mes=new Mes(true, Code.SUCCESS,res);
+            Mes mes=new Mes(true, Code.SUCCESS,1,res);
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
-            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
             return mes;
         }
         else
         {
             UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
-            Mes mes=new Mes(false,Code.ERROR,res);
+            Mes mes=new Mes(false,Code.ERROR,0,res);
             return mes;
         }
     }
@@ -128,21 +128,21 @@ public class LoginController {
         {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
-            Mes mes=new Mes(true, Code.SUCCESS,res);
+            Mes mes=new Mes(true, Code.SUCCESS,1,res);
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
-            Mes mes=new Mes(false,((Result.Fail) result).getReason(),res);
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
             return mes;
         }
         else
         {
             UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
-            Mes mes=new Mes(false,Code.ERROR,res);
+            Mes mes=new Mes(false,Code.ERROR,0,res);
             return mes;
         }
     }

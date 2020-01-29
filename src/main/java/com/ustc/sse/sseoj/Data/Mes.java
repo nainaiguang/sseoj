@@ -20,10 +20,15 @@ public class Mes<T> {
     @Getter
     String msg;//消息
     @Getter
+    int count=0;
+    @Getter
     @Setter
     T data;//数据
 
-    public Mes(boolean success, Code code, T data) {
+
+
+    public Mes(boolean success, Code code,int count, T data) {
+        this.count=count;
         this.success = success;
         this.data = data;
         setCode(code);
