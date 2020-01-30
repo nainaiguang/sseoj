@@ -31,5 +31,8 @@ public interface teacherCourseService {
     //查找某个老师自己的课程 模糊查询 通过课程名
     public Result teacher_search_course_fully(CourseModel courseModel, Curricula_variableModel curricula_variableModel);
 
+    //查找某个课程 通过courseID
+    public Result teacher_search_scourse_by_courseID(CourseModel courseModel);
+
 
 }
