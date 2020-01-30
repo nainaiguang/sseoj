@@ -55,16 +55,19 @@ public class TeacherCourseController<T> {
         {
           CourseModel resCourseModel=(CourseModel)  ((Result.Success) result).getData();
           Mes mes=new Mes(true,Code.SUCCESS_ADD_COURSE,1,resCourseModel);
+          System.out.println(mes.toString());
           return mes;
         }
         else if(result instanceof Result.Fail)
         {
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
             return mes;
         }
         else
         {
             Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
             return mes;
         }
 
@@ -86,11 +89,13 @@ public class TeacherCourseController<T> {
         else if(result instanceof Result.Fail)
         {
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
             return mes;
         }
         else
         {
             Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
             return mes;
         }
 
@@ -105,16 +110,19 @@ public class TeacherCourseController<T> {
         if(result instanceof Result.Success)
         {
             Mes mes=new Mes(true,Code.SUCCESS_DETETE_COURSE,1,courseModel);
+            System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
             return mes;
         }
         else
         {
             Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
             return mes;
         }
 
@@ -162,16 +170,19 @@ public class TeacherCourseController<T> {
         if(result instanceof Result.Success)
         {
             Mes mes=new Mes(true,Code.SUCCESS_CHANGE_NAME,1,courseModel);
+            System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
             return mes;
         }
         else
         {
             Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
             return mes;
         }
 
@@ -187,16 +198,19 @@ public class TeacherCourseController<T> {
         {
             ArrayList<CourseModel> arrayList= (ArrayList<CourseModel>) ((Result.Success) result).getData();
             Mes mes=new Mes(true,Code.SUCCESS,arrayList.size(),arrayList);
+            System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
             return mes;
         }
         else
         {
             Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
             return mes;
         }
 
