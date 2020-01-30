@@ -5,6 +5,8 @@ import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.Curricula_variableModel;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 /**
  * @author 邱乃光
  * @version 1.0
@@ -22,6 +24,9 @@ public interface teacherCourseService {
 
     //删除课程 课程关系
     public Result teacher_delete_course(CourseModel courseModel);
+
+    //批量删除课程 课程关系
+    public Result teacher_batch_delete_course(ArrayList<CourseModel> arrayList);
 
     //查找某个老师自己的课程 模糊查询 通过课程名
     public Result teacher_search_course_fully(CourseModel courseModel, Curricula_variableModel curricula_variableModel);

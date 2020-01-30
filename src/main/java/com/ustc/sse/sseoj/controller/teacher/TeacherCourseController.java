@@ -24,9 +24,26 @@ import java.util.ArrayList;
  */
 @Controller
 @RequestMapping("/teacher/course")
-public class TeacherCourseController {
+public class TeacherCourseController<T> {
     @Autowired
     private TeacherCourseServiceImpl teacherCourseService;
+
+
+    //老师增加课程
+    @RequestMapping(value = "/searchCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes teacher_search_course(CourseModel courseModel, Curricula_variableModel curricula_variableModel) {
+        if(courseModel.getName()==null)
+        {
+            return teacher_show_somebody_all_course(curricula_variableModel);
+        }
+        else
+        {
+            return teacher_search_course_fully(courseModel,curricula_variableModel);
+        }
+    }
+
+
 
     //老师增加课程
     @RequestMapping(value = "/addCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
@@ -99,6 +116,40 @@ public class TeacherCourseController {
         {
             Mes mes=new Mes(false,Code.ERROR,0,null);
             return mes;
+        }
+
+    }
+
+    //老师增加课程
+    @RequestMapping(value = "/deleteBatchCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes teacher_batch_delete_course(ArrayList<CourseModel> arrayList)
+    {
+        Result result=teacherCourseService.teacher_batch_delete_course(arrayList);
+
+        ArrayList<Result> ar=(ArrayList<Result>) ((Result.Success) result).getData();
+
+        boolean success=true;//是否成功
+
+        for(Result result1:ar)
+        {
+            if(result1 instanceof Result.Success)
+            {
+                continue;
+            }
+            else
+            {
+                success=false;
+            }
+        }
+
+        if(success)
+        {
+            return new Mes(true,Code.SUCCESS_CHANGE_NAME,0,null);
+        }
+        else
+        {
+            return new Mes(false,Code.ERROR,0,null);
         }
 
     }
