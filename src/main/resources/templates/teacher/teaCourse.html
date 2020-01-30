@@ -1,3 +1,7 @@
+<!--
+ @author  Qianbw
+ @create 2020-01-29
+-->
 <!DOCTYPE html>
 <html >
 <head>
@@ -14,10 +18,10 @@
                 <input type="hidden" name="tno" id="tno" value="SA19225052"/>
                 <label class="layui-form-label">课程名</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="roleName" id="txtroleName" placeholder="请输入课程名" autocomplete="off" class="layui-input" />
+                    <input type="text" name="name" id="name" placeholder="请输入课程名" autocomplete="off" class="layui-input" />
                 </div>
                 <div class="layui-input-inline" style="float: right;">
-                    <button id="searchBtn" class="layui-btn layui-btn-normal" type="button" onclick="queryRole()"><i class="layui-icon">&#xe615;</i>查询</button>
+                    <button id="searchBtn" class="layui-btn layui-btn-normal" type="button" onclick="queryCourse()"><i class="layui-icon">&#xe615;</i>查询</button>
                     <button type="reset" class="layui-btn"><i class="layui-icon">&#x1002;</i>重置</button>
                 </div>
             </div>
@@ -55,6 +59,7 @@
     var form;
     var table;
     var layedit;
+    var queryUrl = '/teacher/course/showAllCourse';
     layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
         function() {
             layer = layui.layer;
@@ -70,7 +75,7 @@
         // 执行渲染
         table.render({
             elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
-            url : '/teacher/course/showAllCourse',
+            url : queryUrl ,
             id : 'courseID', // 设定容器唯一ID
             page : true, // 是否开启分页
             loading : true, // 是否显示加载条
@@ -84,7 +89,8 @@
             //,response: {} //如果无需自定义数据响应名称，可不加该参数
             // where: queryParam(),
             where: {
-                'tno': $('#tno').val()
+                'tno': $('#tno').val(),
+                'name': $('#name').val()
             },
             cols : [ [ // 标题栏
                 {
@@ -123,7 +129,7 @@
 
     };
 
-/*    function queryParam() {
+    function queryParam() {
         return {
             page: this.page,
             limit: this.limit,
@@ -134,7 +140,8 @@
     }
 
     // 条件查询
-    function queryRole() {
+    function queryCourse() {
+        queryUrl = '/teacher/course/searchCourseFully';
         query();
     }
 
@@ -147,140 +154,140 @@
     function add(){
         layer.open({
             type: 2,
-            content: APP.CTX + '/role/addRolePage.do',
+            content: '/teacher/toAddCourse',
             maxmin: true,
-            title: '添加角色',
+            title: '添加课程',
             area : ['600px', '400px']
         });
     }
 
-    // 编辑
-    function edit(){
-        var data = getSelections().data;
-        if(data.length == 0){
-            layer.alert('请选择一条数据进行编辑！', {icon: 2});
-        } else if(data.length > 1){
-            layer.alert('请选择一条数据进行编辑！', {icon: 2});
-        } else {
-            var roleId = data[0].roleId;
-            layer.open({
-                type: 2,
-                content: APP.CTX + '/role/editRolePage.do?roleId='+roleId,
-                maxmin: true,
-                title: '编辑角色',
-                area : ['600px', '400px']
-            });
-        }
-    }
-
-    // 删除选中行
-    function del() {
-        var data = getSelections().data;
-        var roleType = document.getElementById('roleTypes').innerText;
-        if(data.length == 0){
-            layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
-        } else {
-            var roleIds = '';
-            var roleTypes = '';
-            for (var i = 0; i < data.length; i++){
-                if(i == data.length - 1){
-                    roleIds += data[i].roleId;
-                } else {
-                    roleIds += data[i].roleId+',';
-                }
-                roleTypes += data[i].roleType;
-            }
-            if(roleTypes.indexOf('1') >= 0){
-                layer.alert('系统角色不可删除！', {icon: 2});
-            } else {
-                layer.confirm("确定删除此角色吗？", function(){
-
-                    $.ajax({
-                        url : APP.CTX + "/role/deleteRoleById.do",
-                        dataType: 'json',
-                        method : 'post',
-                        data : {roleIds: roleIds},
-                        traditional: true,  //阻止深度序列化，向后台传送数组
-                        success : function(data){
-                            if(data){
-                                query();
-                                layer.msg('删除成功');
-                            }
-                        },
-                        error: function(){
-                            layer.msg('删除失败',{icon: 2});
-                        }
-                    });
-                });
-            }
-        }
-    }
-
-    var setting = {
-        check:{
-            enable: true,
-            nocheckInherit: false
-        },
-        view:{
-            selectedMulti: false
-        },
-        edit: {
-            enable: true,
-            showRenameBtn:false,
-            showRemoveBtn:false,
-        },
-        data: {
-            simpleData: {
-                enable: true,
-            }
-        },
-        callback: {
-
-        }
-    };
-
-    //编辑权限
-    var roleId;
-    var perm = [];
-    function filter(node) {
-        return node;
-    }
-
-    //所有资源
-    function resource(){
-        perm = [];
-        $.ajax({
-            type:'post',
-            url:APP.CTX+'/role/showPermission.do',
-            dataType:'json',
-            success:function(data){
-                perm = data;
-            }
-        })
-    }
-
-    function editPer(){
-        resource()
-        var data = getSelections().data;
-        if(data.length == 0){
-            warnTip("请选择一条记录后再试");
-            return;
-        }
-        if(data.length > 1){
-            warnTip("只能选择一条记录");
-            return;
-        }
-        var id = data[0].roleId;
-        roleId = id;
-        layer.open({
-            type: 2,
-            content: APP.CTX + '/role/toPermission.do?id='+id,
-            maxmin: true,
-            title: '编辑角色权限',
-            area : ['580px', '450px']
-        });
-
-    }
+    // // 编辑
+    // function edit(){
+    //     var data = getSelections().data;
+    //     if(data.length == 0){
+    //         layer.alert('请选择一条数据进行编辑！', {icon: 2});
+    //     } else if(data.length > 1){
+    //         layer.alert('请选择一条数据进行编辑！', {icon: 2});
+    //     } else {
+    //         var roleId = data[0].roleId;
+    //         layer.open({
+    //             type: 2,
+    //             content: APP.CTX + '/role/editRolePage.do?roleId='+roleId,
+    //             maxmin: true,
+    //             title: '编辑角色',
+    //             area : ['600px', '400px']
+    //         });
+    //     }
+    // }
+    //
+    // // 删除选中行
+    // function del() {
+    //     var data = getSelections().data;
+    //     var roleType = document.getElementById('roleTypes').innerText;
+    //     if(data.length == 0){
+    //         layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
+    //     } else {
+    //         var roleIds = '';
+    //         var roleTypes = '';
+    //         for (var i = 0; i < data.length; i++){
+    //             if(i == data.length - 1){
+    //                 roleIds += data[i].roleId;
+    //             } else {
+    //                 roleIds += data[i].roleId+',';
+    //             }
+    //             roleTypes += data[i].roleType;
+    //         }
+    //         if(roleTypes.indexOf('1') >= 0){
+    //             layer.alert('系统角色不可删除！', {icon: 2});
+    //         } else {
+    //             layer.confirm("确定删除此角色吗？", function(){
+    //
+    //                 $.ajax({
+    //                     url : APP.CTX + "/role/deleteRoleById.do",
+    //                     dataType: 'json',
+    //                     method : 'post',
+    //                     data : {roleIds: roleIds},
+    //                     traditional: true,  //阻止深度序列化，向后台传送数组
+    //                     success : function(data){
+    //                         if(data){
+    //                             query();
+    //                             layer.msg('删除成功');
+    //                         }
+    //                     },
+    //                     error: function(){
+    //                         layer.msg('删除失败',{icon: 2});
+    //                     }
+    //                 });
+    //             });
+    //         }
+    //     }
+    // }
+    //
+    // var setting = {
+    //     check:{
+    //         enable: true,
+    //         nocheckInherit: false
+    //     },
+    //     view:{
+    //         selectedMulti: false
+    //     },
+    //     edit: {
+    //         enable: true,
+    //         showRenameBtn:false,
+    //         showRemoveBtn:false,
+    //     },
+    //     data: {
+    //         simpleData: {
+    //             enable: true,
+    //         }
+    //     },
+    //     callback: {
+    //
+    //     }
+    // };
+    //
+    // //编辑权限
+    // var roleId;
+    // var perm = [];
+    // function filter(node) {
+    //     return node;
+    // }
+    //
+    // //所有资源
+    // function resource(){
+    //     perm = [];
+    //     $.ajax({
+    //         type:'post',
+    //         url:APP.CTX+'/role/showPermission.do',
+    //         dataType:'json',
+    //         success:function(data){
+    //             perm = data;
+    //         }
+    //     })
+    // }
+    //
+    // function editPer(){
+    //     resource()
+    //     var data = getSelections().data;
+    //     if(data.length == 0){
+    //         warnTip("请选择一条记录后再试");
+    //         return;
+    //     }
+    //     if(data.length > 1){
+    //         warnTip("只能选择一条记录");
+    //         return;
+    //     }
+    //     var id = data[0].roleId;
+    //     roleId = id;
+    //     layer.open({
+    //         type: 2,
+    //         content: APP.CTX + '/role/toPermission.do?id='+id,
+    //         maxmin: true,
+    //         title: '编辑角色权限',
+    //         area : ['580px', '450px']
+    //     });
+    //
+    // }
 
     function warnTip(content) {
         layer.open({
@@ -292,6 +299,6 @@
                 layer.close(index);
             }
         });
-    };*/
+    };
 
 </script>
