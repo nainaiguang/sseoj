@@ -2,6 +2,7 @@ package com.ustc.sse.sseoj.dao.user;
 
 import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public interface UserDao {
 
 
     @Select("select admin.no,admin.name,admin.role from admin where admin.no=#{no} and admin.password=#{password}")
-    public UsersModel adminLogin(String no, String password);
+    public UsersModel adminLogin(@Param("no") String no,@Param("password") String password);
 
     @Select("select student.no,student.name,student.role from student where student.no=#{no} and student.password=#{password}")
     public UsersModel studentLogin(String no,String password);

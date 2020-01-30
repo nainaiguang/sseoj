@@ -1,3 +1,7 @@
+<!--
+ @author  Qianbw
+ @create 2020-01-28
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,33 +13,33 @@
 <div class="layui-container" style="padding-top: 200px;">
     <div class="layui-row layui-col-space10">
         <div style="background-color: #e2e2e2;" class="layui-col-md4 layui-col-md-offset4">
-            <h1 style="text-align: center;">SSEOJ</h1>
+            <h1 style="text-align: center;">USTC SSEOJ</h1>
             <form class="layui-form" action="/users/adminRegister" method="post">
                 <!--记得根据不同的option访问不同的登陆或注册地址-->
                 <div class="layui-form-item">
                     <label class="layui-form-label">学号：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="ano" autocomplete="off" required lay-verify="required"  placeholder="请输入学号" class="layui-input">
+                        <input type="text" name="no" autocomplete="off" required lay-verify="required"  placeholder="请输入学号" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">姓名：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="aname" autocomplete="off" required lay-verify="required"  placeholder="请输入姓名" class="layui-input">
+                        <input type="text" name="name" autocomplete="off" required lay-verify="required"  placeholder="请输入姓名" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">密码：</label>
                     <div class="layui-input-inline">
-                        <input type="password" name="apassword" required lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input">
+                        <input type="password" name="password" required lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">用户类型：</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="role" value="学生" title="学生" checked>
-                        <input type="radio" name="role" value="教师" title="教师">
-                        <input type="radio" name="role" value="管理员" title="管理员">
+                        <input type="radio" name="role" value="student" title="学生" checked>
+                        <input type="radio" name="role" value="teacher" title="教师">
+                        <input type="radio" name="role" value="manager" title="管理员">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -51,15 +55,43 @@
 <script src="/layui/layui.js"></script>
 <script>
     //JavaScript代码区域
-    layui.use(['form', 'layedit', 'laydate'], function(){
+    layui.use(['form', 'layedit', 'laydate', 'jquery'], function(){
         var form = layui.form
             ,layer = layui.layer
             ,layedit = layui.layedit
-            ,laydate = layui.laydate;
+            ,laydate = layui.laydate
+            ,$ = layui.jquery;
 
         //监听提交
         form.on('submit(formDemo)', function(data){
-            layer.msg(JSON.stringify(data.field));
+            var index = layer.load();//load动画
+            // layer.msg(JSON.stringify(data.field));
+            $.ajax({
+                url : "/users/register",
+                dataType: 'json',
+                method : 'post',
+                data : data.field,
+                traditional: true,  //阻止深度序列化，向后台传送数组
+                success : function(data){
+                    if(data.success){
+                        layer.close(index);
+                        layer.msg('注册成功！',{
+                            icon:1,
+                            time: 1000
+                        },function () {
+                            window.location.href="/user/login";// 跳转到登录页面
+                        });
+
+                    } else {
+                        layer.close(index);
+                        layer.msg("登录失败！code:"+data.code,{icon: 2});
+                    }
+                },
+                error: function(){
+                    layer.close(index);
+                    layer.msg('登录失败',{icon: 2});
+                }
+            });
             return false;
         });
     });
