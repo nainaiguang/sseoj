@@ -136,5 +136,11 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
         return new Result.Success(arrayList);
     }
 
+    @Override
+    public Result teacher_search_scourse_by_courseID(CourseModel courseModel) {
+
+        return new Result.Success(courseado.select_course_from_courseID(courseModel));
+    }
+
 
 }

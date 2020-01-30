@@ -31,10 +31,10 @@
 
 <!-- 按钮栏 -->
 <div class="" id="toolbar">
-    <a><button type="button" onclick="add()" title="新增用户"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
-    <a><button type="button" onclick="edit();" title="编辑用户" id="edit" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe642;</i></button></a>
-    <a><button type="button" onclick="del()" title="删除用户" id="delete" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe640;</i></button></a>
-    <a><button type="button" onclick="editPer()" title="配置角色" id="reset" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe631;</i></button></a>
+    <a><button type="button" onclick="add()" title="添加课程"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
+    <a><button type="button" onclick="edit();" title="编辑课程" id="edit" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe642;</i></button></a>
+    <a><button type="button" onclick="del()" title="删除课程" id="delete" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe640;</i></button></a>
+    <!--<a><button type="button" onclick="editPer()" title="配置课程" id="reset" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe631;</i></button></a>-->
 </div>
 
 <!-- 表格栏 -->
@@ -147,7 +147,7 @@
 
     // 获取选中行
     function getSelections() {
-        return table.checkStatus('id');
+        return table.checkStatus('courseID');
     };
 
     // 新增
@@ -161,25 +161,25 @@
         });
     }
 
-    // // 编辑
-    // function edit(){
-    //     var data = getSelections().data;
-    //     if(data.length == 0){
-    //         layer.alert('请选择一条数据进行编辑！', {icon: 2});
-    //     } else if(data.length > 1){
-    //         layer.alert('请选择一条数据进行编辑！', {icon: 2});
-    //     } else {
-    //         var roleId = data[0].roleId;
-    //         layer.open({
-    //             type: 2,
-    //             content: APP.CTX + '/role/editRolePage.do?roleId='+roleId,
-    //             maxmin: true,
-    //             title: '编辑角色',
-    //             area : ['600px', '400px']
-    //         });
-    //     }
-    // }
-    //
+    // 编辑
+    function edit(){
+        var data = getSelections().data;
+        if(data.length == 0){
+            layer.alert('请选择一条数据进行编辑！', {icon: 2});
+        } else if(data.length > 1){
+            layer.alert('请选择一条数据进行编辑！', {icon: 2});
+        } else {
+            var courseID = data[0].courseID;
+            layer.open({
+                type: 2,
+                content: '/teacher/toEditCourse?courseID='+courseID,
+                maxmin: true,
+                title: '编辑角色',
+                area : ['600px', '400px']
+            });
+        }
+    }
+
     // // 删除选中行
     // function del() {
     //     var data = getSelections().data;
@@ -222,29 +222,29 @@
     //         }
     //     }
     // }
-    //
-    // var setting = {
-    //     check:{
-    //         enable: true,
-    //         nocheckInherit: false
-    //     },
-    //     view:{
-    //         selectedMulti: false
-    //     },
-    //     edit: {
-    //         enable: true,
-    //         showRenameBtn:false,
-    //         showRemoveBtn:false,
-    //     },
-    //     data: {
-    //         simpleData: {
-    //             enable: true,
-    //         }
-    //     },
-    //     callback: {
-    //
-    //     }
-    // };
+
+    var setting = {
+        check:{
+            enable: true,
+            nocheckInherit: false
+        },
+        view:{
+            selectedMulti: false
+        },
+        edit: {
+            enable: true,
+            showRenameBtn:false,
+            showRemoveBtn:false,
+        },
+        data: {
+            simpleData: {
+                enable: true,
+            }
+        },
+        callback: {
+
+        }
+    };
     //
     // //编辑权限
     // var roleId;
