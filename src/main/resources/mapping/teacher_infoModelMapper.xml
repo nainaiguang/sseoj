@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 邱乃光 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.teacher_infoModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.user.teacher_infoModel">
+    <id column="no" jdbcType="VARCHAR" property="no" />
+    <result column="tage" jdbcType="SMALLINT" property="tage" />
+    <result column="tsex" jdbcType="CHAR" property="tsex" />
+    <result column="tphone_number" jdbcType="VARCHAR" property="tphoneNumber" />
+    <result column="temail" jdbcType="VARCHAR" property="temail" />
+    <result column="tdept" jdbcType="VARCHAR" property="tdept" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    no, tage, tsex, tphone_number, temail, tdept
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from teacher_info
+    where no = #{no,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from teacher_info
+    where no = #{no,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.user.teacher_infoModel">
+    insert into teacher_info (no, tage, tsex, 
+      tphone_number, temail, tdept
+      )
+    values (#{no,jdbcType=VARCHAR}, #{tage,jdbcType=SMALLINT}, #{tsex,jdbcType=CHAR}, 
+      #{tphoneNumber,jdbcType=VARCHAR}, #{temail,jdbcType=VARCHAR}, #{tdept,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.user.teacher_infoModel">
+    insert into teacher_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="no != null">
+        no,
+      </if>
+      <if test="tage != null">
+        tage,
+      </if>
+      <if test="tsex != null">
+        tsex,
+      </if>
+      <if test="tphoneNumber != null">
+        tphone_number,
+      </if>
+      <if test="temail != null">
+        temail,
+      </if>
+      <if test="tdept != null">
+        tdept,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="no != null">
+        #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="tage != null">
+        #{tage,jdbcType=SMALLINT},
+      </if>
+      <if test="tsex != null">
+        #{tsex,jdbcType=CHAR},
+      </if>
+      <if test="tphoneNumber != null">
+        #{tphoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="temail != null">
+        #{temail,jdbcType=VARCHAR},
+      </if>
+      <if test="tdept != null">
+        #{tdept,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.user.teacher_infoModel">
+    update teacher_info
+    <set>
+      <if test="tage != null">
+        tage = #{tage,jdbcType=SMALLINT},
+      </if>
+      <if test="tsex != null">
+        tsex = #{tsex,jdbcType=CHAR},
+      </if>
+      <if test="tphoneNumber != null">
+        tphone_number = #{tphoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="temail != null">
+        temail = #{temail,jdbcType=VARCHAR},
+      </if>
+      <if test="tdept != null">
+        tdept = #{tdept,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where no = #{no,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.user.teacher_infoModel">
+    update teacher_info
+    set tage = #{tage,jdbcType=SMALLINT},
+      tsex = #{tsex,jdbcType=CHAR},
+      tphone_number = #{tphoneNumber,jdbcType=VARCHAR},
+      temail = #{temail,jdbcType=VARCHAR},
+      tdept = #{tdept,jdbcType=VARCHAR}
+    where no = #{no,jdbcType=VARCHAR}
+  </update>
+</mapper>

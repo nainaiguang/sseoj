@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 邱乃光 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.question_bankModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.warehouse.question_bankModel">
+    <id column="questionID" jdbcType="VARCHAR" property="questionid" />
+    <result column="question" jdbcType="VARCHAR" property="question" />
+    <result column="annotation" jdbcType="VARCHAR" property="annotation" />
+    <result column="timelimit" jdbcType="INTEGER" property="timelimit" />
+    <result column="memorylimit" jdbcType="INTEGER" property="memorylimit" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    questionID, question, annotation, timelimit, memorylimit
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from question_bank
+    where questionID = #{questionid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from question_bank
+    where questionID = #{questionid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.warehouse.question_bankModel">
+    insert into question_bank (questionID, question, annotation, 
+      timelimit, memorylimit)
+    values (#{questionid,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, #{annotation,jdbcType=VARCHAR}, 
+      #{timelimit,jdbcType=INTEGER}, #{memorylimit,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.warehouse.question_bankModel">
+    insert into question_bank
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        questionID,
+      </if>
+      <if test="question != null">
+        question,
+      </if>
+      <if test="annotation != null">
+        annotation,
+      </if>
+      <if test="timelimit != null">
+        timelimit,
+      </if>
+      <if test="memorylimit != null">
+        memorylimit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        #{questionid,jdbcType=VARCHAR},
+      </if>
+      <if test="question != null">
+        #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="annotation != null">
+        #{annotation,jdbcType=VARCHAR},
+      </if>
+      <if test="timelimit != null">
+        #{timelimit,jdbcType=INTEGER},
+      </if>
+      <if test="memorylimit != null">
+        #{memorylimit,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.warehouse.question_bankModel">
+    update question_bank
+    <set>
+      <if test="question != null">
+        question = #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="annotation != null">
+        annotation = #{annotation,jdbcType=VARCHAR},
+      </if>
+      <if test="timelimit != null">
+        timelimit = #{timelimit,jdbcType=INTEGER},
+      </if>
+      <if test="memorylimit != null">
+        memorylimit = #{memorylimit,jdbcType=INTEGER},
+      </if>
+    </set>
+    where questionID = #{questionid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.warehouse.question_bankModel">
+    update question_bank
+    set question = #{question,jdbcType=VARCHAR},
+      annotation = #{annotation,jdbcType=VARCHAR},
+      timelimit = #{timelimit,jdbcType=INTEGER},
+      memorylimit = #{memorylimit,jdbcType=INTEGER}
+    where questionID = #{questionid,jdbcType=VARCHAR}
+  </update>
+</mapper>

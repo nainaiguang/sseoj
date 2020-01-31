@@ -56,7 +56,7 @@ public interface courseDAO {
 
     //查找某个老师自己的课程 模糊查询 通过课程名
     @Select("select course.courseID,name from course INNER JOIN curricula_variable where tno=#{curricula_variableModel.tno} and course.courseID=curricula_variable.courseID and course.name like '%${courseModel.name}%'")
-    public ArrayList<CourseModel> select_course_from_tno_fuzzyCourseName(@Param("courseModel") CourseModel courseModel,@Param("curricula_variableModel") Curricula_variableModel curricula_variableModel);
+    public ArrayList<CourseModel> select_course_from_tno_fuzzyCourseName(@Param("courseModel") CourseModel courseModel, @Param("curricula_variableModel") Curricula_variableModel curricula_variableModel);
 
 
     // 这样教师就可以重复利用某课程，通过更改作业的开放时间来设定

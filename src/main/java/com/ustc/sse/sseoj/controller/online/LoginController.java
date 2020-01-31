@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.invoke.SwitchPoint;
 
 /**
@@ -29,7 +30,7 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes Login(UsersModel temp)
+    public Mes Login(UsersModel temp, HttpServletRequest request)
     {
         if(temp.getRole()==null)
         {
