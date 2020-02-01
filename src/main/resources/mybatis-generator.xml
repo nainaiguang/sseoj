@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+
+        <!-- 为了防止生成的代码中有很多注释，比较难看，加入下面的配置控制 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+        <!-- 注释控制完毕 -->
+
+        <!-- 数据库连接配置：数据库地址和账号密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://rm-wz92kq7j65jh6ao65ao.mysql.rds.aliyuncs.com:3306/ustcsseoj"
+                        userId="root"
+                        password="Guang110507">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 数据表对应的model 层  -->
+        <javaModelGenerator targetPackage="com.ustc.sse.sseoj.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成映射文件存放位置 -->
+        <sqlMapGenerator targetPackage="mapping" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 生成Dao类存放位置 -->
+        <!-- 该配置必须放在后面，否则报错 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ustc.sse.sseoj.dao.singleModel" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+
+        <!-- 生成数据表及对应的类名，并且不要使用Example文件 -->
+        <!-- 生成完成后就注释该表，防止原文件被重复生成和覆盖 -->
+
+        <!-- 数据库表模板 -->
+        <table tableName="select_course" domainObjectName="select_courseModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="student_homework" domainObjectName="student_homeworkModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="bank_teacher" domainObjectName="bank_teacherModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="course_homework" domainObjectName="course_homeworkModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="homework" domainObjectName="homeworkModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="homework_link_bank" domainObjectName="homework_link_bankModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="teacher_homework" domainObjectName="teacher_homeworkModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="admin_info" domainObjectName="admin_infoModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="student_info" domainObjectName="student_infoModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="teacher_info" domainObjectName="teacher_infoModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="answer_case" domainObjectName="answer_caseModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="question_answer" domainObjectName="question_answerModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="question_answer_case" domainObjectName="question_answer_caseModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="question_bank" domainObjectName="question_bankModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="answer" domainObjectName="answerModel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+
+        <!--        <table tableName="Article" domainObjectName="ArticleDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="ArticleData" domainObjectName="ArticleDataDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="ArticleEval" domainObjectName="ArticleEvalDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="ArticleReport" domainObjectName="ArticleReportDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="ArticleType" domainObjectName="ArticleTypeDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="Comment" domainObjectName="CommentDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="Food" domainObjectName="FoodDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="FoodType" domainObjectName="FoodTypeDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="News" domainObjectName="NewsDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="Recipe" domainObjectName="RecipeDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="RecipeCollection" domainObjectName="RecipeCollectionDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="RecipeData" domainObjectName="RecipeDataDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="RecipeEval" domainObjectName="RecipeEvalDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="RecipeType" domainObjectName="RecipeTypeDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="User" domainObjectName="UserDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+        <!--        <table tableName="UserFocus" domainObjectName="UserFocusDO"-->
+        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false">-->
+        <!--        </table>-->
+    </context>
+</generatorConfiguration>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.invoke.SwitchPoint;
 
 /**
@@ -29,7 +30,7 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes Login(UsersModel temp)
+    public Mes Login(UsersModel temp, HttpServletRequest request)
     {
         if(temp.getRole()==null)
         {
@@ -46,7 +47,7 @@ public class LoginController {
         }
         else if(temp.getRole().equals(Role.student.toString()))
         {
-            return studentlogin(temp);
+                return studentlogin(temp);
         }
         else
         {
@@ -67,6 +68,7 @@ public class LoginController {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
             Mes mes=new Mes(true, Code.SUCCESS,1,res);
+             System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
@@ -75,6 +77,7 @@ public class LoginController {
             res.setSuccessLogin(false);
             //res.setMes(((Result.Fail) result).getReason());
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
+             System.out.println(mes.toString());
             return mes;
         }
         else
@@ -82,6 +85,7 @@ public class LoginController {
             UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
             Mes mes=new Mes(false,Code.ERROR,0,res);
+             System.out.println(mes.toString());
             return mes;
         }
 
@@ -99,6 +103,7 @@ public class LoginController {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
             Mes mes=new Mes(true, Code.SUCCESS,1,res);
+             System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
@@ -106,6 +111,7 @@ public class LoginController {
             UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
+             System.out.println(mes.toString());
             return mes;
         }
         else
@@ -113,6 +119,7 @@ public class LoginController {
             UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
             Mes mes=new Mes(false,Code.ERROR,0,res);
+             System.out.println(mes.toString());
             return mes;
         }
     }
@@ -129,6 +136,7 @@ public class LoginController {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
             Mes mes=new Mes(true, Code.SUCCESS,1,res);
+             System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
@@ -136,14 +144,18 @@ public class LoginController {
             UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
+           
+             System.out.println(mes.toString());
             return mes;
+            
         }
         else
         {
             UsersModel res= new UsersModel();
             res.setSuccessLogin(false);
             Mes mes=new Mes(false,Code.ERROR,0,res);
-            return mes;
+             System.out.println(mes.toString());
+             return mes;
         }
     }
 }

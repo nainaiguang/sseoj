@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 邱乃光 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.course_homeworkModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey">
+    <id column="courseID" jdbcType="VARCHAR" property="courseid" />
+    <id column="homeworkID" jdbcType="VARCHAR" property="homeworkid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey">
+    delete from course_homework
+    where courseID = #{courseid,jdbcType=VARCHAR}
+      and homeworkID = #{homeworkid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey">
+    insert into course_homework (courseID, homeworkID)
+    values (#{courseid,jdbcType=VARCHAR}, #{homeworkid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey">
+    insert into course_homework
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courseid != null">
+        courseID,
+      </if>
+      <if test="homeworkid != null">
+        homeworkID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courseid != null">
+        #{courseid,jdbcType=VARCHAR},
+      </if>
+      <if test="homeworkid != null">
+        #{homeworkid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

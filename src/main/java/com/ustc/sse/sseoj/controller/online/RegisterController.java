@@ -64,21 +64,24 @@ public class RegisterController {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessRegister(true);
             Mes mes=new Mes(true, Code.SUCCESS,1,res);
-            return mes;
+             System.out.println(mes.toString());
+             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
-            return mes;
+             System.out.println(mes.toString());
+             return mes;
         }
         else
         {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
             Mes mes=new Mes(false,Code.ERROR,0,res);
-            return mes;
+            System.out.println(mes.toString());
+           return mes;
         }
 
     }
@@ -96,6 +99,7 @@ public class RegisterController {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessRegister(true);
             Mes mes=new Mes(true, Code.SUCCESS,1,res);
+            System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
@@ -103,6 +107,7 @@ public class RegisterController {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
+            System.out.println(mes.toString());
             return mes;
         }
         else
@@ -110,6 +115,7 @@ public class RegisterController {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
             Mes mes=new Mes(false,Code.ERROR,0,res);
+            System.out.println(mes.toString());
             return mes;
         }
 
@@ -128,6 +134,7 @@ public class RegisterController {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessRegister(true);
             Mes mes=new Mes(true, Code.SUCCESS,1,res);
+            System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
@@ -135,6 +142,7 @@ public class RegisterController {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,res);
+            System.out.println(mes.toString());
             return mes;
         }
         else
@@ -142,7 +150,8 @@ public class RegisterController {
             UsersModel res= new UsersModel();
             res.setSuccessRegister(false);
             Mes mes=new Mes(false,Code.ERROR,0,res);
-            return mes;
+             System.out.println(mes.toString());
+             return mes;
         }
 
     }

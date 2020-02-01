@@ -24,9 +24,26 @@ import java.util.ArrayList;
  */
 @Controller
 @RequestMapping("/teacher/course")
-public class TeacherCourseController {
+public class TeacherCourseController<T> {
     @Autowired
     private TeacherCourseServiceImpl teacherCourseService;
+
+
+    //老师增加课程
+    @RequestMapping(value = "/searchCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes teacher_search_course(CourseModel courseModel, Curricula_variableModel curricula_variableModel) {
+        if(courseModel.getName()==null)
+        {
+            return teacher_show_somebody_all_course(curricula_variableModel);
+        }
+        else
+        {
+            return teacher_search_course_fully(courseModel,curricula_variableModel);
+        }
+    }
+
+
 
     //老师增加课程
     @RequestMapping(value = "/addCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
@@ -38,16 +55,19 @@ public class TeacherCourseController {
         {
           CourseModel resCourseModel=(CourseModel)  ((Result.Success) result).getData();
           Mes mes=new Mes(true,Code.SUCCESS_ADD_COURSE,1,resCourseModel);
+          System.out.println(mes.toString());
           return mes;
         }
         else if(result instanceof Result.Fail)
         {
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
             return mes;
         }
         else
         {
             Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
             return mes;
         }
 
@@ -69,11 +89,13 @@ public class TeacherCourseController {
         else if(result instanceof Result.Fail)
         {
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
             return mes;
         }
         else
         {
             Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
             return mes;
         }
 
@@ -88,17 +110,54 @@ public class TeacherCourseController {
         if(result instanceof Result.Success)
         {
             Mes mes=new Mes(true,Code.SUCCESS_DETETE_COURSE,1,courseModel);
+            System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
             return mes;
         }
         else
         {
             Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
             return mes;
+        }
+
+    }
+
+    //老师增加课程
+    @RequestMapping(value = "/deleteBatchCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes teacher_batch_delete_course(ArrayList<CourseModel> arrayList)
+    {
+        Result result=teacherCourseService.teacher_batch_delete_course(arrayList);
+
+        ArrayList<Result> ar=(ArrayList<Result>) ((Result.Success) result).getData();
+
+        boolean success=true;//是否成功
+
+        for(Result result1:ar)
+        {
+            if(result1 instanceof Result.Success)
+            {
+                continue;
+            }
+            else
+            {
+                success=false;
+            }
+        }
+
+        if(success)
+        {
+            return new Mes(true,Code.SUCCESS_CHANGE_NAME,0,null);
+        }
+        else
+        {
+            return new Mes(false,Code.ERROR,0,null);
         }
 
     }
@@ -111,16 +170,19 @@ public class TeacherCourseController {
         if(result instanceof Result.Success)
         {
             Mes mes=new Mes(true,Code.SUCCESS_CHANGE_NAME,1,courseModel);
+            System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
             return mes;
         }
         else
         {
             Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
             return mes;
         }
 
@@ -136,16 +198,19 @@ public class TeacherCourseController {
         {
             ArrayList<CourseModel> arrayList= (ArrayList<CourseModel>) ((Result.Success) result).getData();
             Mes mes=new Mes(true,Code.SUCCESS,arrayList.size(),arrayList);
+            System.out.println(mes.toString());
             return mes;
         }
         else if(result instanceof Result.Fail)
         {
             Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
             return mes;
         }
         else
         {
             Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
             return mes;
         }
 
