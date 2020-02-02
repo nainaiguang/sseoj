@@ -6,9 +6,6 @@ package com.ustc.sse.sseoj.service.online.superService;
  * @date 2019/12/25 9:48
  */
 import com.ustc.sse.sseoj.Data.Result;
-import com.ustc.sse.sseoj.model.user.AdminModel;
-import com.ustc.sse.sseoj.model.user.StudentModel;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
 import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 
 public interface UserService {
