@@ -3,6 +3,8 @@ package com.ustc.sse.sseoj.model.user.superUser;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * @author 邱乃光
  * @version 1.0
@@ -10,7 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class UsersModel {
+public class UsersModel implements Serializable {
 private int id;
 private String role;
 private boolean successLogin;
