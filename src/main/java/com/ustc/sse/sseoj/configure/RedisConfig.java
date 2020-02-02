@@ -12,6 +12,7 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 import java.time.Duration;
 
@@ -21,6 +22,7 @@ import java.time.Duration;
  * @date 2020/1/31 15:25
  */
 @Configuration
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 86400*30)//session过期时间
 public class RedisConfig {
 
     //    @Bean

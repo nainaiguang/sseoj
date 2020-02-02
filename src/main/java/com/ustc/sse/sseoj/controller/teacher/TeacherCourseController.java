@@ -6,6 +6,7 @@ import com.ustc.sse.sseoj.Data.Mes;
 import com.ustc.sse.sseoj.Data.Result;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.Curricula_variableModel;
+import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import com.ustc.sse.sseoj.service.teacher.TeacherCourseServiceImpl;
 import com.ustc.sse.sseoj.util.CreatId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 /**
@@ -29,17 +31,19 @@ public class TeacherCourseController<T> {
     private TeacherCourseServiceImpl teacherCourseService;
 
 
-    //老师增加课程
+
     @RequestMapping(value = "/searchCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes teacher_search_course(CourseModel courseModel, Curricula_variableModel curricula_variableModel) {
+    public Mes teacher_search_course(CourseModel courseModel, HttpServletRequest request) {
+
+
         if(courseModel.getName()==null)
         {
-            return teacher_show_somebody_all_course(curricula_variableModel);
+            return teacher_show_somebody_all_course(request);
         }
         else
         {
-            return teacher_search_course_fully(courseModel,curricula_variableModel);
+            return teacher_search_course_fully(courseModel,request);
         }
     }
 
@@ -48,7 +52,13 @@ public class TeacherCourseController<T> {
     //老师增加课程
     @RequestMapping(value = "/addCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes teacher_add_course(CourseModel courseModel, Curricula_variableModel curricula_variableModel) {
+    public Mes teacher_add_course(CourseModel courseModel, HttpServletRequest request) {
+
+        Curricula_variableModel curricula_variableModel=new Curricula_variableModel();
+
+        UsersModel user = (UsersModel ) request.getSession().getAttribute("user");
+        curricula_variableModel.setTno(user.getNo());//通过session获取no
+
         Result result=teacherCourseService.teacher_add_course(courseModel,curricula_variableModel);
 
         if(result instanceof Result.Success)
@@ -76,7 +86,12 @@ public class TeacherCourseController<T> {
     //根据教师号获取某老师的所有课程
     @RequestMapping(value = "/showAllCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes teacher_show_somebody_all_course(Curricula_variableModel curricula_variableModel) {
+    public Mes teacher_show_somebody_all_course( HttpServletRequest request) {
+
+        Curricula_variableModel curricula_variableModel=new Curricula_variableModel();
+
+        UsersModel user = (UsersModel ) request.getSession().getAttribute("user");
+        curricula_variableModel.setTno(user.getNo());//通过session获取no
 
         Result result=teacherCourseService.teacher_show_somebody_all_course(curricula_variableModel);
         if(result instanceof Result.Success)
@@ -191,7 +206,12 @@ public class TeacherCourseController<T> {
     //根据课程名动态搜索课程课程
     @RequestMapping(value = "/searchCourseFully", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes teacher_search_course_fully(CourseModel courseModel, Curricula_variableModel curricula_variableModel) {
+    public Mes teacher_search_course_fully(CourseModel courseModel, HttpServletRequest request) {
+
+        Curricula_variableModel curricula_variableModel=new Curricula_variableModel();
+
+        UsersModel user = (UsersModel ) request.getSession().getAttribute("user");
+        curricula_variableModel.setTno(user.getNo());//通过session获取no
 
         Result result=teacherCourseService.teacher_search_course_fully(courseModel,curricula_variableModel);
         if(result instanceof Result.Success)

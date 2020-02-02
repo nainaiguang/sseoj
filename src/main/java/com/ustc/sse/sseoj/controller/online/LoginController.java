@@ -32,6 +32,8 @@ public class LoginController {
     @ResponseBody//返回json格式
     public Mes Login(UsersModel temp, HttpServletRequest request)
     {
+        request.getSession().setAttribute("successLogin",false);//先设置未登陆
+
         if(temp.getRole()==null)
         {
             return new Mes(false,Code.MISS_ROLE,0,null);
@@ -39,15 +41,15 @@ public class LoginController {
 
         if(temp.getRole().equals(Role.teacher.toString()))
         {
-            return teacherlogin(temp);
+            return teacherlogin(temp,request);
         }
         else if(temp.getRole().equals(Role.manager.toString()))
         {
-            return adminlogin(temp);
+            return adminlogin(temp,request);
         }
         else if(temp.getRole().equals(Role.student.toString()))
         {
-                return studentlogin(temp);
+                return studentlogin(temp,request);
         }
         else
         {
@@ -59,7 +61,7 @@ public class LoginController {
 
     @RequestMapping(value = "/adminLogin", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes adminlogin(UsersModel temp) {
+    public Mes adminlogin(UsersModel temp, HttpServletRequest request) {
 
         Result result=userService.adminlogin(temp);
 
@@ -67,8 +69,13 @@ public class LoginController {
         {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
+
+            //设置session
+            setSession(res,request);
+
             Mes mes=new Mes(true, Code.SUCCESS,1,res);
              System.out.println(mes.toString());
+
             return mes;
         }
         else if(result instanceof Result.Fail)
@@ -93,7 +100,7 @@ public class LoginController {
 
     @RequestMapping(value = "/studentLogin", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     @ResponseBody
-    public Mes studentlogin(UsersModel temp) {
+    public Mes studentlogin(UsersModel temp, HttpServletRequest request) {
 
 
         Result result=userService.studentlogin(temp);
@@ -102,6 +109,10 @@ public class LoginController {
         {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
+
+            //设置session
+            setSession(res,request);
+
             Mes mes=new Mes(true, Code.SUCCESS,1,res);
              System.out.println(mes.toString());
             return mes;
@@ -126,7 +137,7 @@ public class LoginController {
 
     @RequestMapping(value = "/teacherLogin", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     @ResponseBody
-    public Mes teacherlogin(UsersModel temp) {
+    public Mes teacherlogin(UsersModel temp, HttpServletRequest request) {
 
 
         Result result=userService.teacherlogin(temp);
@@ -135,6 +146,10 @@ public class LoginController {
         {
             UsersModel res= (UsersModel) ((Result.Success) result).getData();
             res.setSuccessLogin(true);
+
+            //设置session
+            setSession(res,request);
+
             Mes mes=new Mes(true, Code.SUCCESS,1,res);
              System.out.println(mes.toString());
             return mes;
@@ -157,5 +172,12 @@ public class LoginController {
              System.out.println(mes.toString());
              return mes;
         }
+    }
+
+    //设置session
+    private void setSession(UsersModel res,HttpServletRequest request)
+    {
+        request.getSession().setAttribute("user",res);
+        request.getSession().setAttribute("successLogin",true);
     }
 }
