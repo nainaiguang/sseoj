@@ -1,6 +1,5 @@
 package com.ustc.sse.sseoj.configure.intercepors;
 
-import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -40,7 +39,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         catch (Exception e)
         {
-            System.out.println(request.getContextPath());
+            System.out.println(request.getContextPath()+"/user/index");
             response.sendRedirect(request.getContextPath()+"/user/index");
             return false;
         }
