@@ -7,7 +7,7 @@ public class homeworkModel {
 
     private String name;
 
-    private String describe;
+    private String describes;
 
     private Date createtime;
 
@@ -32,11 +32,11 @@ public class homeworkModel {
     }
 
     public String getDescribe() {
-        return describe;
+        return describes;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe == null ? null : describe.trim();
+    public void setDescribes(String describes) {
+        this.describes = describes == null ? null : describes.trim();
     }
 
     public Date getCreatetime() {

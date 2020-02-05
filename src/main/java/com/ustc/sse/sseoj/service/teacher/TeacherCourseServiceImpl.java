@@ -87,21 +87,29 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
     }
 
     @Override
-    public Result teacher_change_courseName(CourseModel courseModel) {
+    public Result teacher_update_course(CourseModel courseModel) {
         if(courseModel.getCourseID()==null)
         {
             return new Result.Fail(Code.MISS_COURSEID);
         }
-        if(courseModel.getName()==null)
+        if(courseModel.getName()==null&&courseModel.getPresentation()==null)
         {
-            return new Result.Fail(Code.MISS_NEW_NAME);
+            return new Result.Fail(Code.MISS_NEW_CHANGE);
         }
         // fixme 缺少判断该课程是否存在，节省一次sql查询，因为一般认为从前端传过来的改名请求，都是已经存在的courseID
 
         try {
-            boolean success = courseado.update_courseName_from_courseID(courseModel);
-            if (success) {
-                return new Result.Success(true);//TODO 改成mes
+            boolean success1=true;
+            boolean success2=true;
+            if(courseModel.getName()!=null) {
+                success1=courseado.update_courseName_from_courseID(courseModel);
+            }
+            if(courseModel.getPresentation()!=null)
+            {
+                success2=courseado.update_coursePresentation_from_courseID(courseModel);
+            }
+            if (success1&&success2) {
+                return new Result.Success(true);
             } else {
                 return new Result.Fail(Code.UNKNOWN_WRONG);
             }
@@ -116,6 +124,10 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
     @Override
     public Result teacher_batch_delete_course(ArrayList<CourseModel> arrayList)
     {
+        if(arrayList.size()==0)
+        {
+            return new Result.Fail(Code.EMPTY_LIST);
+        }
         ArrayList<Result> ar=new ArrayList<>();
         for(CourseModel courseModel:arrayList)//检查是否存在空值
         {

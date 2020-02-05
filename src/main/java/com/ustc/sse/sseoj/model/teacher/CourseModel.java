@@ -14,4 +14,5 @@ import lombok.Setter;
 public class CourseModel {
    private String courseID;
    private String name;
+   private String presentation;
 }

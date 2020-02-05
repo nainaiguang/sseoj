@@ -116,12 +116,12 @@ public class TeacherCourseController<T> {
 
     }
 
-    //根据课程号修改课程名
-    @RequestMapping(value = "/changeCourseName", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    //根据课程号修改课程信息
+    @RequestMapping(value = "/updateCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes teacher_change_courseName(CourseModel courseModel) {
+    public Mes teacher_update_course(CourseModel courseModel) {
 
-        Result result=teacherCourseService.teacher_change_courseName(courseModel);
+        Result result=teacherCourseService.teacher_update_course(courseModel);
         if(result instanceof Result.Success)
         {
             Mes mes=new Mes(true,Code.SUCCESS_DETETE_COURSE,1,courseModel);
@@ -168,7 +168,7 @@ public class TeacherCourseController<T> {
 
         if(success)
         {
-            return new Mes(true,Code.SUCCESS_CHANGE_NAME,0,null);
+            return new Mes(true,Code.SUCCESS_DETETE_COURSE,0,null);
         }
         else
         {

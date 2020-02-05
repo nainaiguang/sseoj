@@ -34,7 +34,9 @@ public interface HomeworkService {
     public Result update_homework(homeworkModel hm);
 
     //显示某老师的作业课程，包括模糊查询
-    public Result search_homework(TeacherModel tm, homeworkModel hm);
+    public Result search_homework(TeacherModel tm, CourseModel cm,homeworkModel hm);
 
+    //显示这个作业哪几门在用
+    public Result people_use_homework(homeworkModel hm);
 
 }
