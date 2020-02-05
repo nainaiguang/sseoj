@@ -6,6 +6,16 @@
     <id column="courseID" jdbcType="VARCHAR" property="courseid" />
     <id column="homeworkID" jdbcType="VARCHAR" property="homeworkid" />
   </resultMap>
+  <sql id="Base_Column_List">
+    courseID, homeworkID
+  </sql>
+  <select id="selectByCourseID" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from course_homework
+    where courseID = #{courseid,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey">
     delete from course_homework
     where courseID = #{courseid,jdbcType=VARCHAR}

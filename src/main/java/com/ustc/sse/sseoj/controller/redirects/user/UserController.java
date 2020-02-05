@@ -1,4 +1,4 @@
-package com.ustc.sse.sseoj.controller.redirects;
+package com.ustc.sse.sseoj.controller.redirects.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

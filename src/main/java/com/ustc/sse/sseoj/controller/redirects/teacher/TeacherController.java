@@ -1,4 +1,4 @@
-package com.ustc.sse.sseoj.controller.teacher;
+package com.ustc.sse.sseoj.controller.redirects.teacher;
 
 import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.Mes;

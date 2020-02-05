@@ -16,4 +16,6 @@ public interface course_homeworkModelMapper {
     int insert(course_homeworkModelKey record);
 
     int insertSelective(course_homeworkModelKey record);
+
+    course_homeworkModelKey selectByCourseID(String courseid);
 }

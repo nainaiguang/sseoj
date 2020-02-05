@@ -39,7 +39,8 @@ public class WebConfigurer implements WebMvcConfigurer {
                 "/user/login",
                 "/user/register",
                 "/user/index",
-                "/static/**");
+                "/static/**",
+                "/user/tempCourse");
     }
 
 }

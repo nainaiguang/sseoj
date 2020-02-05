@@ -20,7 +20,7 @@ public interface teacherCourseService {
     public Result teacher_show_somebody_all_course(Curricula_variableModel curricula_variableModel);
 
     //更改课程名
-    public Result teacher_change_courseName(CourseModel courseModel);
+    public Result teacher_update_course(CourseModel courseModel);
 
     //删除课程 课程关系
     public Result teacher_delete_course(CourseModel courseModel);

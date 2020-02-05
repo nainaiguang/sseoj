@@ -16,13 +16,13 @@ import java.util.List;
 
 @Mapper
 public interface courseDAO {
-    @Insert("insert into course (courseID,name) values(#{courseID},#{name})")//插入
+    @Insert("insert into course (courseID,name,presentation) values(#{courseID},#{name},#{presentation})")//插入
     public  boolean insert_course(CourseModel courseModel);
 
-    @Select("select courseID,name from course where name=#{name}")//通过课程名查找课程
+    @Select("select courseID,name,presentation from course where name=#{name}")//通过课程名查找课程
     public CourseModel select_course_from_name(CourseModel courseModel);
 
-    @Select("select courseID,name from course where courseID=#{courseID}")//通过课程ID查找课程
+    @Select("select courseID,name,presentation from course where courseID=#{courseID}")//通过课程ID查找课程
     public CourseModel select_course_from_courseID(CourseModel courseModel);
 
 
@@ -51,11 +51,11 @@ public interface courseDAO {
 
 
     //查询某个老师自己的所有课程
-    @Select("select course.courseID,name from course INNER JOIN curricula_variable where tno=#{tno} and course.courseID=curricula_variable.courseID")
+    @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{tno} and course.courseID=curricula_variable.courseID")
     public ArrayList<CourseModel> select_course_from_tno(Curricula_variableModel curricula_variableModel);
 
     //查找某个老师自己的课程 模糊查询 通过课程名
-    @Select("select course.courseID,name from course INNER JOIN curricula_variable where tno=#{curricula_variableModel.tno} and course.courseID=curricula_variable.courseID and course.name like '%${courseModel.name}%'")
+    @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{curricula_variableModel.tno} and course.courseID=curricula_variable.courseID and course.name like '%${courseModel.name}%'")
     public ArrayList<CourseModel> select_course_from_tno_fuzzyCourseName(@Param("courseModel") CourseModel courseModel, @Param("curricula_variableModel") Curricula_variableModel curricula_variableModel);
 
 
@@ -63,6 +63,9 @@ public interface courseDAO {
     @Update("update course set name=#{name} where courseID=#{courseID}")//更改课程名
     public boolean update_courseName_from_courseID(CourseModel courseModel);
 
+    // 这样教师就可以重复利用某课程，通过更改作业的开放时间来设定
+    @Update("update course set presentation=#{presentation} where courseID=#{courseID}")//更改课程简介
+    public boolean update_coursePresentation_from_courseID(CourseModel courseModel);
 
 
     @Delete("delete from curricula_variable where courseID=#{courseID}")//删除课程关系

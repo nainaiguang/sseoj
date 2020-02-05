@@ -5,13 +5,13 @@
   <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.teacher.homeworkModel">
     <id column="homeworkID" jdbcType="VARCHAR" property="homeworkid" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="describes" jdbcType="VARCHAR" property="describes" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="beginTime" jdbcType="TIMESTAMP" property="begintime" />
     <result column="endTime" jdbcType="TIMESTAMP" property="endtime" />
   </resultMap>
   <sql id="Base_Column_List">
-    homeworkID, name, describe, createTime, beginTime, endTime
+    homeworkID, name, describes, createTime, beginTime, endTime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -24,10 +24,10 @@
     where homeworkID = #{homeworkid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.ustc.sse.sseoj.model.teacher.homeworkModel">
-    insert into homework (homeworkID, name, describe, 
+    insert into homework (homeworkID, name, describes, 
       createTime, beginTime, endTime
       )
-    values (#{homeworkid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, 
+    values (#{homeworkid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{describes,jdbcType=VARCHAR}, 
       #{createtime,jdbcType=TIMESTAMP}, #{begintime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -40,8 +40,8 @@
       <if test="name != null">
         name,
       </if>
-      <if test="describe != null">
-        describe,
+      <if test="describes != null">
+        describes,
       </if>
       <if test="createtime != null">
         createTime,
@@ -60,8 +60,8 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="describe != null">
-        #{describe,jdbcType=VARCHAR},
+      <if test="describes != null">
+        #{describes,jdbcType=VARCHAR},
       </if>
       <if test="createtime != null">
         #{createtime,jdbcType=TIMESTAMP},
@@ -80,8 +80,8 @@
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="describe != null">
-        describe = #{describe,jdbcType=VARCHAR},
+      <if test="describes != null">
+        describes = #{describes,jdbcType=VARCHAR},
       </if>
       <if test="createtime != null">
         createTime = #{createtime,jdbcType=TIMESTAMP},
@@ -98,7 +98,7 @@
   <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.teacher.homeworkModel">
     update homework
     set name = #{name,jdbcType=VARCHAR},
-      describe = #{describe,jdbcType=VARCHAR},
+      describes = #{describes,jdbcType=VARCHAR},
       createTime = #{createtime,jdbcType=TIMESTAMP},
       beginTime = #{begintime,jdbcType=TIMESTAMP},
       endTime = #{endtime,jdbcType=TIMESTAMP}
