@@ -75,7 +75,7 @@ public class HomeworkServiceImpl implements HomeworkService {
             {
                 return new Result.Fail(Code.MISS_HOMEWORKNAME);
             }
-            if(hm.getDescribe()==null)
+            if(hm.getDescribes()==null)
             {
                 hm.setDescribes("无");
             }

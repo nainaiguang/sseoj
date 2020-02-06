@@ -35,7 +35,7 @@ public class homeworkModel {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getDescribe() {
+    public String getDescribes() {
         return describes;
     }
 
