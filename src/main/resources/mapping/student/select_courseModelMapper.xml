@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 邱乃光 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.student.select_courseModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.student.select_courseModelKey">
+    <id column="sno" jdbcType="VARCHAR" property="sno" />
+    <id column="courseID" jdbcType="VARCHAR" property="courseid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.student.select_courseModelKey">
+    delete from select_course
+    where sno = #{sno,jdbcType=VARCHAR}
+      and courseID = #{courseid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.student.select_courseModelKey">
+    insert into select_course (sno, courseID)
+    values (#{sno,jdbcType=VARCHAR}, #{courseid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.student.select_courseModelKey">
+    insert into select_course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sno != null">
+        sno,
+      </if>
+      <if test="courseid != null">
+        courseID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sno != null">
+        #{sno,jdbcType=VARCHAR},
+      </if>
+      <if test="courseid != null">
+        #{courseid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -5,6 +5,8 @@ import com.ustc.sse.sseoj.model.student.student_homeworkModelKey;
 import java.util.Date;
 
 public class student_homeworkModel extends student_homeworkModelKey {
+    private String answers;
+
     private String answerFileLocation;
 
     private String langauge;
@@ -12,6 +14,14 @@ public class student_homeworkModel extends student_homeworkModelKey {
     private Short answerResult;
 
     private Date sumitTime;
+
+    public String getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(String answers) {
+        this.answers = answers == null ? null : answers.trim();
+    }
 
     public String getAnswerFileLocation() {
         return answerFileLocation;
