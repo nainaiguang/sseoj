@@ -1,7 +1,6 @@
 package com.ustc.sse.sseoj.dao.teacher.homework;
 
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
-import com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
 import com.ustc.sse.sseoj.model.user.TeacherModel;
 import org.apache.ibatis.annotations.Mapper;
