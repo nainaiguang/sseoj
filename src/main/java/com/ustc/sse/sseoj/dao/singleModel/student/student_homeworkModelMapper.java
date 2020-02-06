@@ -2,7 +2,11 @@ package com.ustc.sse.sseoj.dao.singleModel.student;
 
 import com.ustc.sse.sseoj.model.student.student_homeworkModel;
 import com.ustc.sse.sseoj.model.student.student_homeworkModelKey;
-
+/**
+ * @author 邱乃光
+ * @version 1.0
+ * @date 2020/2/4 14:52
+ */
 public interface student_homeworkModelMapper {
     int deleteByPrimaryKey(student_homeworkModelKey key);
 
