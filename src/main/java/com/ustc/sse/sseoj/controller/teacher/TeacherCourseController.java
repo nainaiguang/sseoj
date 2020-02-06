@@ -30,7 +30,29 @@ public class TeacherCourseController<T> {
     @Autowired
     private TeacherCourseServiceImpl teacherCourseService;
 
+    //获取某个课程详细信息
+    @RequestMapping(value = "/searchOneCourseDetail", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes get_one_course_detail(CourseModel courseModel) {
+        Result result=teacherCourseService.teacher_search_course_by_courseID(courseModel);
+        if(result instanceof Result.Success)
+        {
+            return new Mes(true,Code.SUCCESS,1,((CourseModel)((Result.Success) result).getData()));
+        }
+        else if(result instanceof Result.Fail)
+        {
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+        else
+        {
+            Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
 
+    }
 
     @RequestMapping(value = "/searchCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式

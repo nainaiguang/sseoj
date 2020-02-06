@@ -54,7 +54,7 @@ public class TeacherController {
      */
     @RequestMapping("/toEditCourse")
     public String toEditCourse(Model model, CourseModel courseModel) {
-        Result result = teacherCourseService.teacher_search_scourse_by_courseID(courseModel);
+        Result result = teacherCourseService.teacher_search_course_by_courseID(courseModel);
         if(result instanceof Result.Success)
         {
             courseModel =(CourseModel) ((Result.Success) result).getData();

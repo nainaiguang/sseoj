@@ -29,6 +29,30 @@ public class TeacherHomeworkController {
 
     @Autowired
     HomeworkServiceImpl homeworkService;
+
+    //获取某个作业详细信息
+    @RequestMapping(value = "/searchOneHomeworkDetail", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes get_one_homework_detail(homeworkModel hm)
+    {
+        Result result=homeworkService.get_one_homework_detail(hm);
+        if(result instanceof Result.Success)
+        {
+            return new Mes(true,Code.SUCCESS,1,((CourseModel)((Result.Success) result).getData()));
+        }
+        else if(result instanceof Result.Fail)
+        {
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+        else
+        {
+            Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+    }
     //教师添加作业
     //其中 如果作业本身不存在，则创建作业，否则不创建
     // 且课程id不存在，则添加作业，连接教师与作业

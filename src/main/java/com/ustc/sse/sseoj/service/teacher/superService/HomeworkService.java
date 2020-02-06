@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 public interface HomeworkService {
 
+    public Result get_one_homework_detail(homeworkModel hm);
+
 
     //教师添加作业
     //其中 如果作业本身不存在，则创建作业，否则不创建

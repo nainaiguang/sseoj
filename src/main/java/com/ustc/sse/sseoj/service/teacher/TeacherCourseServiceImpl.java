@@ -181,9 +181,18 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
     }
 
     @Override
-    public Result teacher_search_scourse_by_courseID(CourseModel courseModel) {
-
-        return new Result.Success(courseado.select_course_from_courseID(courseModel));
+    public Result teacher_search_course_by_courseID(CourseModel courseModel) {
+        if(courseModel.getCourseID()==null)
+        {
+            return new Result.Fail(Code.MISS_COURSEID);
+        }
+        try{
+            return new Result.Success(courseado.select_course_from_courseID(courseModel));
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
     }
 
 

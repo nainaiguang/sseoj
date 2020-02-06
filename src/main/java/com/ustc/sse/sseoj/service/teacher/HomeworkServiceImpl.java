@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * @author 邱乃光
@@ -37,6 +36,24 @@ public class HomeworkServiceImpl implements HomeworkService {
 
     @Autowired
     HomeworkDao homeworkDao;
+
+    @Override
+    public Result get_one_homework_detail(homeworkModel hm) {
+        if(hm.getHomeworkid()==null)
+        {
+            return new Result.Fail(Code.MISS_HOMEWORKID);
+        }
+        try
+        {
+            homeworkModel hmres= hwmm.selectByPrimaryKey(hm.getHomeworkid());
+            return new Result.Success(hmres);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
+
     //教师添加作业
     //其中 如果作业本身不存在，则创建作业，否则不创建
     // 且课程id不存在，则添加作业，连接教师与作业
