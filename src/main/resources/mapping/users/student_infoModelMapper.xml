@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 邱乃光 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.users.student_infoModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.user.student_infoModel">
+    <id column="no" jdbcType="VARCHAR" property="no" />
+    <result column="sage" jdbcType="SMALLINT" property="sage" />
+    <result column="ssex" jdbcType="CHAR" property="ssex" />
+    <result column="sgrade" jdbcType="VARCHAR" property="sgrade" />
+    <result column="sphone_number" jdbcType="VARCHAR" property="sphoneNumber" />
+    <result column="semail" jdbcType="VARCHAR" property="semail" />
+    <result column="sdept" jdbcType="VARCHAR" property="sdept" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    no, sage, ssex, sgrade, sphone_number, semail, sdept
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student_info
+    where no = #{no,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from student_info
+    where no = #{no,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.user.student_infoModel">
+    insert into student_info (no, sage, ssex, 
+      sgrade, sphone_number, semail, 
+      sdept)
+    values (#{no,jdbcType=VARCHAR}, #{sage,jdbcType=SMALLINT}, #{ssex,jdbcType=CHAR}, 
+      #{sgrade,jdbcType=VARCHAR}, #{sphoneNumber,jdbcType=VARCHAR}, #{semail,jdbcType=VARCHAR}, 
+      #{sdept,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.user.student_infoModel">
+    insert into student_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="no != null">
+        no,
+      </if>
+      <if test="sage != null">
+        sage,
+      </if>
+      <if test="ssex != null">
+        ssex,
+      </if>
+      <if test="sgrade != null">
+        sgrade,
+      </if>
+      <if test="sphoneNumber != null">
+        sphone_number,
+      </if>
+      <if test="semail != null">
+        semail,
+      </if>
+      <if test="sdept != null">
+        sdept,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="no != null">
+        #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="sage != null">
+        #{sage,jdbcType=SMALLINT},
+      </if>
+      <if test="ssex != null">
+        #{ssex,jdbcType=CHAR},
+      </if>
+      <if test="sgrade != null">
+        #{sgrade,jdbcType=VARCHAR},
+      </if>
+      <if test="sphoneNumber != null">
+        #{sphoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="semail != null">
+        #{semail,jdbcType=VARCHAR},
+      </if>
+      <if test="sdept != null">
+        #{sdept,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.user.student_infoModel">
+    update student_info
+    <set>
+      <if test="sage != null">
+        sage = #{sage,jdbcType=SMALLINT},
+      </if>
+      <if test="ssex != null">
+        ssex = #{ssex,jdbcType=CHAR},
+      </if>
+      <if test="sgrade != null">
+        sgrade = #{sgrade,jdbcType=VARCHAR},
+      </if>
+      <if test="sphoneNumber != null">
+        sphone_number = #{sphoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="semail != null">
+        semail = #{semail,jdbcType=VARCHAR},
+      </if>
+      <if test="sdept != null">
+        sdept = #{sdept,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where no = #{no,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.user.student_infoModel">
+    update student_info
+    set sage = #{sage,jdbcType=SMALLINT},
+      ssex = #{ssex,jdbcType=CHAR},
+      sgrade = #{sgrade,jdbcType=VARCHAR},
+      sphone_number = #{sphoneNumber,jdbcType=VARCHAR},
+      semail = #{semail,jdbcType=VARCHAR},
+      sdept = #{sdept,jdbcType=VARCHAR}
+    where no = #{no,jdbcType=VARCHAR}
+  </update>
+</mapper>

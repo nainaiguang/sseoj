@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 邱乃光 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.student.student_homeworkModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.student.student_homeworkModel">
+    <id column="sno" jdbcType="VARCHAR" property="sno" />
+    <id column="courseID" jdbcType="VARCHAR" property="courseid" />
+    <id column="homeworkID" jdbcType="VARCHAR" property="homeworkid" />
+    <id column="questionID" jdbcType="VARCHAR" property="questionid" />
+    <result column="answers" jdbcType="VARCHAR" property="answers" />
+    <result column="answer_file_location" jdbcType="VARCHAR" property="answerFileLocation" />
+    <result column="langauge" jdbcType="CHAR" property="langauge" />
+    <result column="answer_result" jdbcType="SMALLINT" property="answerResult" />
+    <result column="sumit_time" jdbcType="TIMESTAMP" property="sumitTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sno, courseID, homeworkID, questionID, answers, answer_file_location, langauge, answer_result, 
+    sumit_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModelKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student_homework
+    where sno = #{sno,jdbcType=VARCHAR}
+      and courseID = #{courseid,jdbcType=VARCHAR}
+      and homeworkID = #{homeworkid,jdbcType=VARCHAR}
+      and questionID = #{questionid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModelKey">
+    delete from student_homework
+    where sno = #{sno,jdbcType=VARCHAR}
+      and courseID = #{courseid,jdbcType=VARCHAR}
+      and homeworkID = #{homeworkid,jdbcType=VARCHAR}
+      and questionID = #{questionid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
+    insert into student_homework (sno, courseID, homeworkID, 
+      questionID, answers, answer_file_location, 
+      langauge, answer_result, sumit_time
+      )
+    values (#{sno,jdbcType=VARCHAR}, #{courseid,jdbcType=VARCHAR}, #{homeworkid,jdbcType=VARCHAR}, 
+      #{questionid,jdbcType=VARCHAR}, #{answers,jdbcType=VARCHAR}, #{answerFileLocation,jdbcType=VARCHAR}, 
+      #{langauge,jdbcType=CHAR}, #{answerResult,jdbcType=SMALLINT}, #{sumitTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
+    insert into student_homework
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sno != null">
+        sno,
+      </if>
+      <if test="courseid != null">
+        courseID,
+      </if>
+      <if test="homeworkid != null">
+        homeworkID,
+      </if>
+      <if test="questionid != null">
+        questionID,
+      </if>
+      <if test="answers != null">
+        answers,
+      </if>
+      <if test="answerFileLocation != null">
+        answer_file_location,
+      </if>
+      <if test="langauge != null">
+        langauge,
+      </if>
+      <if test="answerResult != null">
+        answer_result,
+      </if>
+      <if test="sumitTime != null">
+        sumit_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sno != null">
+        #{sno,jdbcType=VARCHAR},
+      </if>
+      <if test="courseid != null">
+        #{courseid,jdbcType=VARCHAR},
+      </if>
+      <if test="homeworkid != null">
+        #{homeworkid,jdbcType=VARCHAR},
+      </if>
+      <if test="questionid != null">
+        #{questionid,jdbcType=VARCHAR},
+      </if>
+      <if test="answers != null">
+        #{answers,jdbcType=VARCHAR},
+      </if>
+      <if test="answerFileLocation != null">
+        #{answerFileLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="langauge != null">
+        #{langauge,jdbcType=CHAR},
+      </if>
+      <if test="answerResult != null">
+        #{answerResult,jdbcType=SMALLINT},
+      </if>
+      <if test="sumitTime != null">
+        #{sumitTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
+    update student_homework
+    <set>
+      <if test="answers != null">
+        answers = #{answers,jdbcType=VARCHAR},
+      </if>
+      <if test="answerFileLocation != null">
+        answer_file_location = #{answerFileLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="langauge != null">
+        langauge = #{langauge,jdbcType=CHAR},
+      </if>
+      <if test="answerResult != null">
+        answer_result = #{answerResult,jdbcType=SMALLINT},
+      </if>
+      <if test="sumitTime != null">
+        sumit_time = #{sumitTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where sno = #{sno,jdbcType=VARCHAR}
+      and courseID = #{courseid,jdbcType=VARCHAR}
+      and homeworkID = #{homeworkid,jdbcType=VARCHAR}
+      and questionID = #{questionid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
+    update student_homework
+    set answers = #{answers,jdbcType=VARCHAR},
+      answer_file_location = #{answerFileLocation,jdbcType=VARCHAR},
+      langauge = #{langauge,jdbcType=CHAR},
+      answer_result = #{answerResult,jdbcType=SMALLINT},
+      sumit_time = #{sumitTime,jdbcType=TIMESTAMP}
+    where sno = #{sno,jdbcType=VARCHAR}
+      and courseID = #{courseid,jdbcType=VARCHAR}
+      and homeworkID = #{homeworkid,jdbcType=VARCHAR}
+      and questionID = #{questionid,jdbcType=VARCHAR}
+  </update>
+</mapper>

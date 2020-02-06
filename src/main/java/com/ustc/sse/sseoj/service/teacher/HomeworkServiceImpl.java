@@ -3,9 +3,9 @@ package com.ustc.sse.sseoj.service.teacher;
 import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.IDType;
 import com.ustc.sse.sseoj.Data.Result;
-import com.ustc.sse.sseoj.dao.singleModel.course_homeworkModelMapper;
-import com.ustc.sse.sseoj.dao.singleModel.homeworkModelMapper;
-import com.ustc.sse.sseoj.dao.singleModel.teacher_homeworkModelMapper;
+import com.ustc.sse.sseoj.dao.singleModel.teacher.course_homeworkModelMapper;
+import com.ustc.sse.sseoj.dao.singleModel.teacher.homeworkModelMapper;
+import com.ustc.sse.sseoj.dao.singleModel.teacher.teacher_homeworkModelMapper;
 import com.ustc.sse.sseoj.dao.teacher.homework.HomeworkDao;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * @author 邱乃光
@@ -37,6 +36,24 @@ public class HomeworkServiceImpl implements HomeworkService {
 
     @Autowired
     HomeworkDao homeworkDao;
+
+    @Override
+    public Result get_one_homework_detail(homeworkModel hm) {
+        if(hm.getHomeworkid()==null)
+        {
+            return new Result.Fail(Code.MISS_HOMEWORKID);
+        }
+        try
+        {
+            homeworkModel hmres= hwmm.selectByPrimaryKey(hm.getHomeworkid());
+            return new Result.Success(hmres);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
+
     //教师添加作业
     //其中 如果作业本身不存在，则创建作业，否则不创建
     // 且课程id不存在，则添加作业，连接教师与作业
@@ -58,7 +75,7 @@ public class HomeworkServiceImpl implements HomeworkService {
             {
                 return new Result.Fail(Code.MISS_HOMEWORKNAME);
             }
-            if(hm.getDescribe()==null)
+            if(hm.getDescribes()==null)
             {
                 hm.setDescribes("无");
             }

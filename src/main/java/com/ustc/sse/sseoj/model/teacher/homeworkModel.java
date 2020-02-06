@@ -1,7 +1,11 @@
 package com.ustc.sse.sseoj.model.teacher;
 
 import java.util.Date;
-
+/**
+ * @author 邱乃光
+ * @version 1.0
+ * @date 2020/2/4 14:52
+ */
 public class homeworkModel {
     private String homeworkid;
 
@@ -31,7 +35,7 @@ public class homeworkModel {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getDescribe() {
+    public String getDescribes() {
         return describes;
     }
 
