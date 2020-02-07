@@ -15,9 +15,6 @@
     <div class="layui-row" style="margin-top: 20px;">
         <form action="" id="queryForm" class="layui-form">
             <div class="layui-form-item">
-                <input th:value="${session.user.no}" type="hidden" name="tno" id="tno"/>
-                <!--<input th:value="${courseID}" type="hidden" name="courseID" id="courseID"/>-->
-                <!--<input type="hidden" name="courseID" id="courseID" value="123123"/>-->
                 <label class="layui-form-label">作业名</label>
                 <div class="layui-input-inline">
                     <input type="text" name="name" id="name" placeholder="请输入作业名" autocomplete="off" class="layui-input" />
@@ -34,6 +31,7 @@
 <!-- 按钮栏 -->
 <div class="" id="toolbar" style="padding:0px 10px">
     <a><button type="button" onclick="add()" title="添加作业"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
+    <a><button type="button" onclick="del()" title="删除作业" id="delete" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe640;</i></button></a>
 </div>
 
 <!-- 表格栏 -->
@@ -43,7 +41,6 @@
 
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">移除</a>
 </script>
 
 <!-- js引入 -->
@@ -87,11 +84,15 @@
             //,response: {} //如果无需自定义数据响应名称，可不加该参数
             // where: queryParam(),
             where: {
-                'courseID': $('#courseID').val(),
                 'name': $('#name').val()
             },
             cols : [ [ // 标题栏
                 {
+                    field : 'homeworkid',
+                    checkbox : true,
+                    LAY_CHECKED : false,
+                    width: '50'
+                },{
                     field : 'homeworkid',
                     title : '作业ID',
                     sort : false,
@@ -146,32 +147,7 @@
     function optionTool() {
         table.on('tool(demo)', function(obj){
             var data = obj.data;
-            if(obj.event === 'del'){// 移除此作业
-                layer.confirm("确定移除此作业吗？", function(){
-                    var index = layer.load();//load动画
-                    $.ajax({
-                        url : "/teacher/course/homework/deleteHomework",
-                        dataType: 'json',
-                        method : 'post',
-                        data : [{"homeworkid" : data.homeworkid}],
-                        traditional: true,  //阻止深度序列化，向后台传送数组
-                        success : function(data){
-                            if (data.success) {
-                                layer.close(index);
-                                query();
-                                layer.msg('移除成功', {icon: 1});
-                            } else {
-                                layer.close(index);
-                                layer.msg("移除失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
-                            }
-                        },
-                        error: function(){
-                            layer.close(index);
-                            layer.msg("移除失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
-                        }
-                    });
-                });
-            } else if(obj.event === 'edit'){//编辑作业
+            if(obj.event === 'edit'){//编辑作业
                 var homeworkid = data.homeworkid;
                 layer.open({
                     type: 2,
@@ -205,64 +181,56 @@
         query();
     }
 
-    // // 获取选中行
-    // function getSelections() {
-    //     return table.checkStatus('courseID');
-    // };
+    // 获取选中行
+    function getSelections() {
+        return table.checkStatus('homeworkid');
+    };
 
     // 新增
     function add(){
         layer.open({
             type: 2,
-            content: '/teacher/toAddCourseHomework?courseID='+$("#courseID").val(),
+            content: '/teacher/toAddCourseHomework',
             maxmin: true,
             title: '添加作业',
             area : ['700px', '450px']
         });
     }
 
-    // // 删除选中行
-    // function del() {
-    //     var data = getSelections().data;
-    //     var roleType = document.getElementById('roleTypes').innerText;
-    //     if(data.length == 0){
-    //         layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
-    //     } else {
-    //         var roleIds = '';
-    //         var roleTypes = '';
-    //         for (var i = 0; i < data.length; i++){
-    //             if(i == data.length - 1){
-    //                 roleIds += data[i].roleId;
-    //             } else {
-    //                 roleIds += data[i].roleId+',';
-    //             }
-    //             roleTypes += data[i].roleType;
-    //         }
-    //         if(roleTypes.indexOf('1') >= 0){
-    //             layer.alert('系统角色不可删除！', {icon: 2});
-    //         } else {
-    //             layer.confirm("确定删除此角色吗？", function(){
-    //
-    //                 $.ajax({
-    //                     url : APP.CTX + "/role/deleteRoleById.do",
-    //                     dataType: 'json',
-    //                     method : 'post',
-    //                     data : {roleIds: roleIds},
-    //                     traditional: true,  //阻止深度序列化，向后台传送数组
-    //                     success : function(data){
-    //                         if(data){
-    //                             query();
-    //                             layer.msg('删除成功');
-    //                         }
-    //                     },
-    //                     error: function(){
-    //                         layer.msg('删除失败',{icon: 2});
-    //                     }
-    //                 });
-    //             });
-    //         }
-    //     }
-    // }
+    // 批量删除选中行
+    function del() {
+        var data = getSelections().data;
+        if(data.length == 0){
+            layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
+        } else {
+            layer.confirm("确定删除作业吗？", function () {
+                var index = layer.load();//load动画
+                $.ajax({
+                    url: "/teacher/course/homework/deleteHomework",
+                    dataType: 'json',
+                    method: 'post',
+                    contentType : 'application/json; charset=UTF-8',
+                    data:JSON.stringify(data),
+                    traditional: true,  //阻止深度序列化，向后台传送数组
+                    success: function (data) {
+                        if (data.success) {
+                            layer.close(index);
+                            query();
+                            layer.msg('删除成功', {icon: 1});
+                        } else {
+                            layer.close(index);
+                            layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
+                        }
+                    },
+                    error: function () {
+                        layer.close(index);
+                        layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
+                    }
+                });
+            });
+        }
+    }
+
 
     var setting = {
         check:{

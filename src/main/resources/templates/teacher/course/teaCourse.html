@@ -32,9 +32,7 @@
 <!-- 按钮栏 -->
 <div class="" id="toolbar" style="padding:0px 10px">
     <a><button type="button" onclick="add()" title="添加课程"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
-    <a><button type="button" onclick="edit();" title="编辑课程" id="edit" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe642;</i></button></a>
     <a><button type="button" onclick="del()" title="删除课程" id="delete" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe640;</i></button></a>
-    <!--<a><button type="button" onclick="editPer()" title="配置课程" id="reset" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe631;</i></button></a>-->
 </div>
 
 <!-- 表格栏 -->
@@ -109,6 +107,7 @@
                     field : 'name',
                     title : '课程名',
                     align : 'center',
+                    sort: true,
                     width: '200'
                 }, {
                     field : 'presentation',
@@ -162,14 +161,6 @@
         });
     }
 
-    // function queryParam() {
-    //     return {
-    //         page: this.page,
-    //         limit: this.limit,
-    //         sort: this.sort,
-    //         name: $('#name').val()
-    //     }
-    // }
 
     // 条件查询
     function queryCourse() {
@@ -218,48 +209,40 @@
         }
     }
 
-    // // 删除选中行
-    // function del() {
-    //     var data = getSelections().data;
-    //     var roleType = document.getElementById('roleTypes').innerText;
-    //     if(data.length == 0){
-    //         layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
-    //     } else {
-    //         var roleIds = '';
-    //         var roleTypes = '';
-    //         for (var i = 0; i < data.length; i++){
-    //             if(i == data.length - 1){
-    //                 roleIds += data[i].roleId;
-    //             } else {
-    //                 roleIds += data[i].roleId+',';
-    //             }
-    //             roleTypes += data[i].roleType;
-    //         }
-    //         if(roleTypes.indexOf('1') >= 0){
-    //             layer.alert('系统角色不可删除！', {icon: 2});
-    //         } else {
-    //             layer.confirm("确定删除此角色吗？", function(){
-    //
-    //                 $.ajax({
-    //                     url : APP.CTX + "/role/deleteRoleById.do",
-    //                     dataType: 'json',
-    //                     method : 'post',
-    //                     data : {roleIds: roleIds},
-    //                     traditional: true,  //阻止深度序列化，向后台传送数组
-    //                     success : function(data){
-    //                         if(data){
-    //                             query();
-    //                             layer.msg('删除成功');
-    //                         }
-    //                     },
-    //                     error: function(){
-    //                         layer.msg('删除失败',{icon: 2});
-    //                     }
-    //                 });
-    //             });
-    //         }
-    //     }
-    // }
+    // 批量删除选中行
+    function del() {
+        var data = getSelections().data;
+        if(data.length == 0){
+            layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
+        } else {
+            layer.confirm("课程下可能有作业，确定删除课程吗？", function () {
+                var index = layer.load();//load动画
+                $.ajax({
+                    url: "/teacher/course/deleteBatchCourse",
+                    dataType: 'json',
+                    method: 'post',
+                    contentType : 'application/json; charset=UTF-8',
+                    data:JSON.stringify(data),
+                    traditional: true,  //阻止深度序列化，向后台传送数组
+                    success: function (data) {
+                        if (data.success) {
+                            layer.close(index);
+                            query();
+                            layer.msg('删除成功', {icon: 1});
+                        } else {
+                            layer.close(index);
+                            layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
+                        }
+                    },
+                    error: function () {
+                        layer.close(index);
+                        layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
+                    }
+                });
+            });
+        }
+    }
+
 
     var setting = {
         check:{

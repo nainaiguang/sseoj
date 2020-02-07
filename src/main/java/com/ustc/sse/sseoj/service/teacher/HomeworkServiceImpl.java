@@ -96,7 +96,7 @@ public class HomeworkServiceImpl implements HomeworkService {
         }
 
 
-        if(cm.getCourseID()!=null)//绑定课程
+        if(cm.getCourseID()!=null&&cm.getCourseID()!="")//绑定课程
         {
             try{
                 course_homeworkModelKey chmk=new course_homeworkModelKey();
