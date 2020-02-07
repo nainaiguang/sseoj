@@ -37,7 +37,7 @@
         <div class="layui-form-item layui-form-text" style="margin-bottom:30px;">
             <label class="layui-form-label">作业描述</label>
             <div class="layui-input-block">
-                <textarea name="describes" th:value="${homeworkModel.describes}" placeholder="请输入作业描述" class="layui-textarea"></textarea>
+                <textarea name="describes" th:text="${homeworkModel.describes}" placeholder="请输入作业描述" class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item" >
