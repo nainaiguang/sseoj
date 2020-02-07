@@ -2,6 +2,7 @@ package com.ustc.sse.sseoj.model.teacher;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author 邱乃光
@@ -10,6 +11,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
+@ToString
 public class Curricula_variableModel {
     private String tno;
     private String courseID;

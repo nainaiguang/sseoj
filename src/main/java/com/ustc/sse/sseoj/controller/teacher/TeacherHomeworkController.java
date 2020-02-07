@@ -97,7 +97,6 @@ public class TeacherHomeworkController {
     public Mes delete_homework(@RequestBody ArrayList<homeworkModel> arrayList)
     {
 
-
         Result res=homeworkService.delete_homework(arrayList);
         if(res instanceof Result.Success)
         {
@@ -142,6 +141,7 @@ public class TeacherHomeworkController {
     @ResponseBody//返回json格式
     public Mes delete_homework_link_with_course(@RequestBody ArrayList<course_homeworkModelKey> arrayList)
     {
+        System.out.println(arrayList);
         Result res=homeworkService.delete_homework_link_with_course(arrayList);
         if(res instanceof Result.Success)
         {
@@ -211,11 +211,9 @@ public class TeacherHomeworkController {
     public Mes search_homework(CourseModel cm,homeworkModel hm, HttpServletRequest request)//TODO 测
     {
         TeacherModel tm=new TeacherModel();
-        if(cm.getCourseID()==null)//课程为空查询全部
-        {
+
             UsersModel user= (UsersModel) request.getSession().getAttribute("user");
             tm.setTno(user.getNo());
-        }
 
         Result res=homeworkService.search_homework(tm,cm,hm);
         if(res instanceof Result.Success)
@@ -259,10 +257,39 @@ public class TeacherHomeworkController {
         }
     }
 
+    //显示目前属于该教师，但没有在该课程下的所有作业
+    @RequestMapping(value = "/searchHomeworkWithoutUsing", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes search_homework_without_using(CourseModel cm, HttpServletRequest request)
+    {
+        TeacherModel tm=new TeacherModel();
+
+        UsersModel user= (UsersModel) request.getSession().getAttribute("user");
+        tm.setTno(user.getNo());
+
+        Result res=homeworkService.search_homework_without_using(tm,cm);
+        if(res instanceof Result.Success)
+        {
+            ArrayList<homeworkModel> ar=(ArrayList<homeworkModel>) ((Result.Success) res).getData();
+            return new Mes(true,Code.SUCCESS,ar.size(),ar);
+        }
+        else if(res instanceof Result.Fail)
+        {
+            Mes mes=new Mes(false,((Result.Fail) res).getReason(),0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+        else
+        {
+            return getErrorMes(res);
+        }
+    }
+
     private Mes getErrorMes(Result result)
     {
         Mes mes=new Mes(false,Code.ERROR,0,null);
         System.out.println(mes.toString());
         return mes;
     }
+
 }

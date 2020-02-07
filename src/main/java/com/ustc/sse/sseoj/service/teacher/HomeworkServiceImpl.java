@@ -214,7 +214,7 @@ public class HomeworkServiceImpl implements HomeworkService {
                 hm.setName("");
             }
             try{
-                ArrayList<homeworkModel> arrayres=homeworkDao.search_homework_for_name_fully_in_course(cm,hm);
+                ArrayList<homeworkModel> arrayres=homeworkDao.search_homework_for_name_fully_in_course(tm,cm,hm);
                 return new Result.Success(arrayres);
             }
             catch (Exception e)
@@ -258,6 +258,28 @@ public class HomeworkServiceImpl implements HomeworkService {
             return new Result.Error(e);
         }
 
+
+    }
+
+    //显示目前属于该教师，但没有在该课程下的所有作业
+    @Override
+    public Result search_homework_without_using(TeacherModel tm, CourseModel cm) {
+        if(tm.getTno()==null)
+        {
+            return new Result.Fail(Code.MISS_TNO);
+        }
+        if(cm.getCourseID()==null)
+        {
+            return new Result.Fail(Code.MISS_COURSEID);
+        }
+        try{
+            ArrayList<homeworkModel> arrayRes=homeworkDao.search_homework_without_using(tm,cm);
+            return new Result.Success(arrayRes);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
 
     }
 }
