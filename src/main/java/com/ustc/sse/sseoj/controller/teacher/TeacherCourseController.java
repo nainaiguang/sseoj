@@ -11,6 +11,7 @@ import com.ustc.sse.sseoj.service.teacher.TeacherCourseServiceImpl;
 import com.ustc.sse.sseoj.util.CreatId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -168,7 +169,7 @@ public class TeacherCourseController<T> {
     //老师增加课程
     @RequestMapping(value = "/deleteBatchCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes teacher_batch_delete_course(ArrayList<CourseModel> arrayList)
+    public Mes teacher_batch_delete_course(@RequestBody ArrayList<CourseModel> arrayList)
     {
         Result result=teacherCourseService.teacher_batch_delete_course(arrayList);
 

@@ -11,12 +11,11 @@ import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import com.ustc.sse.sseoj.service.teacher.HomeworkServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 邱乃光
@@ -95,8 +94,10 @@ public class TeacherHomeworkController {
     //教师删除作业，直接删除，包括批量 homeworkid
     @RequestMapping(value = "/deleteHomework", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes delete_homework(ArrayList<homeworkModel> arrayList)
+    public Mes delete_homework(@RequestBody ArrayList<homeworkModel> arrayList)
     {
+
+
         Result res=homeworkService.delete_homework(arrayList);
         if(res instanceof Result.Success)
         {
@@ -133,12 +134,13 @@ public class TeacherHomeworkController {
         {
             return getErrorMes(res);
         }
+
     }
 
     //删除课程与作业的关系，包括批量
     @RequestMapping(value = "/deleteHomeworkLinkCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes delete_homework_link_with_course(ArrayList<course_homeworkModelKey> arrayList)
+    public Mes delete_homework_link_with_course(@RequestBody ArrayList<course_homeworkModelKey> arrayList)
     {
         Result res=homeworkService.delete_homework_link_with_course(arrayList);
         if(res instanceof Result.Success)
@@ -214,7 +216,6 @@ public class TeacherHomeworkController {
             UsersModel user= (UsersModel) request.getSession().getAttribute("user");
             tm.setTno(user.getNo());
         }
-
 
         Result res=homeworkService.search_homework(tm,cm,hm);
         if(res instanceof Result.Success)

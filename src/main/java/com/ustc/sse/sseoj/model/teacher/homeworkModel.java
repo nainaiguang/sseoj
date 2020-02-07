@@ -1,9 +1,11 @@
 package com.ustc.sse.sseoj.model.teacher;
 
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+@ToString
 public class homeworkModel {
     private String homeworkid;
 
