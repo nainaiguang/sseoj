@@ -3,9 +3,9 @@ package com.ustc.sse.sseoj.service.teacher;
 import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.IDType;
 import com.ustc.sse.sseoj.Data.Result;
-import com.ustc.sse.sseoj.dao.singleModel.course_homeworkModelMapper;
-import com.ustc.sse.sseoj.dao.singleModel.homeworkModelMapper;
-import com.ustc.sse.sseoj.dao.singleModel.teacher_homeworkModelMapper;
+import com.ustc.sse.sseoj.dao.singleModel.teacher.course_homeworkModelMapper;
+import com.ustc.sse.sseoj.dao.singleModel.teacher.homeworkModelMapper;
+import com.ustc.sse.sseoj.dao.singleModel.teacher.teacher_homeworkModelMapper;
 import com.ustc.sse.sseoj.dao.teacher.homework.HomeworkDao;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * @author 邱乃光
@@ -37,6 +36,24 @@ public class HomeworkServiceImpl implements HomeworkService {
 
     @Autowired
     HomeworkDao homeworkDao;
+
+    @Override
+    public Result get_one_homework_detail(homeworkModel hm) {
+        if(hm.getHomeworkid()==null)
+        {
+            return new Result.Fail(Code.MISS_HOMEWORKID);
+        }
+        try
+        {
+            homeworkModel hmres= hwmm.selectByPrimaryKey(hm.getHomeworkid());
+            return new Result.Success(hmres);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
+
     //教师添加作业
     //其中 如果作业本身不存在，则创建作业，否则不创建
     // 且课程id不存在，则添加作业，连接教师与作业
@@ -58,7 +75,7 @@ public class HomeworkServiceImpl implements HomeworkService {
             {
                 return new Result.Fail(Code.MISS_HOMEWORKNAME);
             }
-            if(hm.getDescribe()==null)
+            if(hm.getDescribes()==null)
             {
                 hm.setDescribes("无");
             }
@@ -79,7 +96,7 @@ public class HomeworkServiceImpl implements HomeworkService {
         }
 
 
-        if(cm.getCourseID()!=null)//绑定课程
+        if(cm.getCourseID()!=null&&cm.getCourseID()!="")//绑定课程
         {
             try{
                 course_homeworkModelKey chmk=new course_homeworkModelKey();
@@ -197,7 +214,7 @@ public class HomeworkServiceImpl implements HomeworkService {
                 hm.setName("");
             }
             try{
-                ArrayList<homeworkModel> arrayres=homeworkDao.search_homework_for_name_fully_in_course(cm,hm);
+                ArrayList<homeworkModel> arrayres=homeworkDao.search_homework_for_name_fully_in_course(tm,cm,hm);
                 return new Result.Success(arrayres);
             }
             catch (Exception e)
@@ -241,6 +258,28 @@ public class HomeworkServiceImpl implements HomeworkService {
             return new Result.Error(e);
         }
 
+
+    }
+
+    //显示目前属于该教师，但没有在该课程下的所有作业
+    @Override
+    public Result search_homework_without_using(TeacherModel tm, CourseModel cm) {
+        if(tm.getTno()==null)
+        {
+            return new Result.Fail(Code.MISS_TNO);
+        }
+        if(cm.getCourseID()==null)
+        {
+            return new Result.Fail(Code.MISS_COURSEID);
+        }
+        try{
+            ArrayList<homeworkModel> arrayRes=homeworkDao.search_homework_without_using(tm,cm);
+            return new Result.Success(arrayRes);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
 
     }
 }

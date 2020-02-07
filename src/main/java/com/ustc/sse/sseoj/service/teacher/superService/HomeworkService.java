@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public interface HomeworkService {
 
+    public Result get_one_homework_detail(homeworkModel hm);
 
     //教师添加作业
     //其中 如果作业本身不存在，则创建作业，否则不创建
@@ -39,4 +40,6 @@ public interface HomeworkService {
     //显示这个作业哪几门在用
     public Result people_use_homework(homeworkModel hm);
 
+    //显示目前没有在改课程下应用的该教师的作业
+    public Result search_homework_without_using(TeacherModel tm,CourseModel cm);
 }

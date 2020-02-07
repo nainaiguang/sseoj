@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 邱乃光 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.warehouse.questionModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.warehouse.questionModel">
+    <id column="questionID" jdbcType="VARCHAR" property="questionid" />
+    <result column="questionType" jdbcType="CHAR" property="questiontype" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl" />
+    <result column="input_explain" jdbcType="VARCHAR" property="inputExplain" />
+    <result column="output_explain" jdbcType="VARCHAR" property="outputExplain" />
+    <result column="annotation" jdbcType="VARCHAR" property="annotation" />
+    <result column="timelimit" jdbcType="INTEGER" property="timelimit" />
+    <result column="memorylimit" jdbcType="INTEGER" property="memorylimit" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    questionID, questionType, title, description, picture_url, input_explain, output_explain, 
+    annotation, timelimit, memorylimit
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from question
+    where questionID = #{questionid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from question
+    where questionID = #{questionid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.warehouse.questionModel">
+    insert into question (questionID, questionType, title, 
+      description, picture_url, input_explain, 
+      output_explain, annotation, timelimit, 
+      memorylimit)
+    values (#{questionid,jdbcType=VARCHAR}, #{questiontype,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{pictureUrl,jdbcType=VARCHAR}, #{inputExplain,jdbcType=VARCHAR}, 
+      #{outputExplain,jdbcType=VARCHAR}, #{annotation,jdbcType=VARCHAR}, #{timelimit,jdbcType=INTEGER}, 
+      #{memorylimit,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.warehouse.questionModel">
+    insert into question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        questionID,
+      </if>
+      <if test="questiontype != null">
+        questionType,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="pictureUrl != null">
+        picture_url,
+      </if>
+      <if test="inputExplain != null">
+        input_explain,
+      </if>
+      <if test="outputExplain != null">
+        output_explain,
+      </if>
+      <if test="annotation != null">
+        annotation,
+      </if>
+      <if test="timelimit != null">
+        timelimit,
+      </if>
+      <if test="memorylimit != null">
+        memorylimit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        #{questionid,jdbcType=VARCHAR},
+      </if>
+      <if test="questiontype != null">
+        #{questiontype,jdbcType=CHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrl != null">
+        #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="inputExplain != null">
+        #{inputExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="outputExplain != null">
+        #{outputExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="annotation != null">
+        #{annotation,jdbcType=VARCHAR},
+      </if>
+      <if test="timelimit != null">
+        #{timelimit,jdbcType=INTEGER},
+      </if>
+      <if test="memorylimit != null">
+        #{memorylimit,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.warehouse.questionModel">
+    update question
+    <set>
+      <if test="questiontype != null">
+        questionType = #{questiontype,jdbcType=CHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrl != null">
+        picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="inputExplain != null">
+        input_explain = #{inputExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="outputExplain != null">
+        output_explain = #{outputExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="annotation != null">
+        annotation = #{annotation,jdbcType=VARCHAR},
+      </if>
+      <if test="timelimit != null">
+        timelimit = #{timelimit,jdbcType=INTEGER},
+      </if>
+      <if test="memorylimit != null">
+        memorylimit = #{memorylimit,jdbcType=INTEGER},
+      </if>
+    </set>
+    where questionID = #{questionid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.warehouse.questionModel">
+    update question
+    set questionType = #{questiontype,jdbcType=CHAR},
+      title = #{title,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      input_explain = #{inputExplain,jdbcType=VARCHAR},
+      output_explain = #{outputExplain,jdbcType=VARCHAR},
+      annotation = #{annotation,jdbcType=VARCHAR},
+      timelimit = #{timelimit,jdbcType=INTEGER},
+      memorylimit = #{memorylimit,jdbcType=INTEGER}
+    where questionID = #{questionid,jdbcType=VARCHAR}
+  </update>
+</mapper>

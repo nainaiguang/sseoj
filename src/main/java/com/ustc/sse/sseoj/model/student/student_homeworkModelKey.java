@@ -1,7 +1,13 @@
 package com.ustc.sse.sseoj.model.student;
-
+/**
+ * @author 邱乃光
+ * @version 1.0
+ * @date 2020/2/4 14:52
+ */
 public class student_homeworkModelKey {
     private String sno;
+
+    private String courseid;
 
     private String homeworkid;
 
@@ -13,6 +19,14 @@ public class student_homeworkModelKey {
 
     public void setSno(String sno) {
         this.sno = sno == null ? null : sno.trim();
+    }
+
+    public String getCourseid() {
+        return courseid;
+    }
+
+    public void setCourseid(String courseid) {
+        this.courseid = courseid == null ? null : courseid.trim();
     }
 
     public String getHomeworkid() {

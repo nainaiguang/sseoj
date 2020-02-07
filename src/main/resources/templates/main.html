@@ -3,11 +3,11 @@
  @create 2020-01-28
 -->
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>layer框架测试</title>
+  <title>USTC SSE OJ</title>
   <link rel="stylesheet" href="/static/layui/css/layui.css">
   <script type="text/javascript">
       window.onload = function() {
@@ -53,7 +53,7 @@
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
         <a href="javascript:;">
-          <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+          <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> <span th:text="${session.user.name}" >用户名</span>
         </a>
         <dl class="layui-nav-child">
           <dd>
@@ -131,7 +131,7 @@
           <a class="" href="javascript:;">教师管理</a>
           <dl class="layui-nav-child">
             <dd><a href="javascript:topage('teacher/teaCourse','课程管理');">课程管理</a></dd>
-            <dd><a href="javascript:;">列表二</a></dd>
+            <dd><a href="javascript:topage('teacher/teaHomework','作业管理');">作业管理</a></dd>
             <dd><a href="javascript:;">列表三</a></dd>
             <dd><a href="">超链接</a></dd>
           </dl>
@@ -231,23 +231,23 @@
           // 只增加一次
           if(jq(".layui-tab-title li[lay-id='"+url+"']").size() == 0){
               element.tabAdd("tabtest",{
-                            title: title,
-                            content: createPage(url),
-                            id: url
-                          });
+                  title: title,
+                  content: createPage(url),
+                  id: url
+              });
           };
           element.tabChange("tabtest",url);
           //刷新页面
           // alert(jq(".layui-tab-item.layui-show").get(0))
 
           // 无限增加tab框
-/*          element.tabAdd("tabtest",{
-              title: title+count,
-              content: createPage(url),
-              id: url+count
-          });
+          /*          element.tabAdd("tabtest",{
+                        title: title+count,
+                        content: createPage(url),
+                        id: url+count
+                    });
 
-          element.tabChange("tabtest",url+count++);*/
+                    element.tabChange("tabtest",url+count++);*/
 
       }
 

@@ -1,0 +1,125 @@
+<!--
+ @author  Qianbw
+ @create 2020-02-06 17:28
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>编辑作业</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+</head>
+<body>
+<div style="display: flex; justify-content: center; margin-top: 30px;">
+    <form name="addCourseForm" class="layui-form" action="" method="post">
+        <!--<input th:value="${courseID}" type="hidden" name="courseID" id="courseID"/>-->
+        <!--<input type="hidden" name="courseID" id="courseID" value="123123"/>-->
+        <!--<input th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}" type="hidden" name="createtime" id="createtime"/>-->
+        <input th:value="${homeworkModel.homeworkid}" type="hidden" name="homeworkid" id="homeworkid"/>
+        <div class="layui-form-item" style="margin-bottom:30px;">
+            <label class="layui-form-label">作业名</label>
+            <div class="layui-input-inline">
+                <input type="text" th:value="${homeworkModel.name}" name="name" required  lay-verify="name" placeholder="请输入作业名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom:30px;">
+            <label class="layui-form-label">开始时间</label>
+            <div class="layui-input-inline">
+                <input type="text" th:value="${#dates.format(homeworkModel.begintime, 'yyyy-MM-dd HH:mm:ss')}"  name="begintime" class="layui-input" id="begintime" placeholder="请输入开始时间">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom:30px;">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+                <input type="text" th:value="${#dates.format(homeworkModel.endtime, 'yyyy-MM-dd HH:mm:ss')}"  name="endtime" class="layui-input" id="endtime" placeholder="请输入结束时间">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text" style="margin-bottom:30px;">
+            <label class="layui-form-label">作业描述</label>
+            <div class="layui-input-block">
+                <textarea name="describes" th:text="${homeworkModel.describes}" placeholder="请输入作业描述" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <div class="layui-input-block">
+                <button style="width:170px;" class="layui-btn" lay-submit type="button"  lay-filter="form">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- js引入 -->
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript">
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+            Valid();
+            eventinit();
+            dateTool();
+
+        });
+
+    function Valid(){
+        form.verify({
+            name: function(value) {
+                if(value.length < 1) {
+                    return '请填写作业名';
+                }
+            }
+        });
+    }
+
+    function eventinit(){
+        form.on('submit(form)', function(data){
+            var index = layer.load();//load动画
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/teacher/course/homework/updateHomework',
+                data: data.field,
+                success: function(data){
+                    if(data.success){
+                        layer.close(index);
+                        layer.msg('编辑成功',{icon: 1});
+                        setTimeout(function(){
+                            parent.layer.closeAll();
+                        }, 500);
+                        parent.query();
+                    } else {
+                        layer.close(index);
+                        layer.msg("编辑失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                    }
+                },
+                error: function(){
+                    layer.close(index);
+                    layer.msg("编辑失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                }
+            });
+        });
+    }
+
+    function dateTool() {
+        laydate.render({
+            elem: '#begintime'
+            ,type: 'datetime'
+        });
+
+        laydate.render({
+            elem: '#endtime'
+            ,type: 'datetime'
+        });
+    }
+</script>
+</body>
+</html>

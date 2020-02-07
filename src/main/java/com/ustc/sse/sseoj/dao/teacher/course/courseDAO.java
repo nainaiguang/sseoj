@@ -52,7 +52,7 @@ public interface courseDAO {
 
     //查询某个老师自己的所有课程
     @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{tno} and course.courseID=curricula_variable.courseID")
-    public ArrayList<CourseModel> select_course_from_tno(Curricula_variableModel curricula_variableModel);
+    public ArrayList<CourseModel> select_course_from_tno( Curricula_variableModel curricula_variableModel);
 
     //查找某个老师自己的课程 模糊查询 通过课程名
     @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{curricula_variableModel.tno} and course.courseID=curricula_variable.courseID and course.name like '%${courseModel.name}%'")

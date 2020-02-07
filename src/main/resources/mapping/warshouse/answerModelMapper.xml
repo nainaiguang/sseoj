@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 邱乃光 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.warehouse.answerModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.warehouse.answerModel">
+    <id column="answerID" jdbcType="VARCHAR" property="answerid" />
+    <result column="input" jdbcType="VARCHAR" property="input" />
+    <result column="output" jdbcType="VARCHAR" property="output" />
+    <result column="answer_type" jdbcType="CHAR" property="answerType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    answerID, input, output, answer_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from answer
+    where answerID = #{answerid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from answer
+    where answerID = #{answerid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.warehouse.answerModel">
+    insert into answer (answerID, input, output, 
+      answer_type)
+    values (#{answerid,jdbcType=VARCHAR}, #{input,jdbcType=VARCHAR}, #{output,jdbcType=VARCHAR}, 
+      #{answerType,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.warehouse.answerModel">
+    insert into answer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="answerid != null">
+        answerID,
+      </if>
+      <if test="input != null">
+        input,
+      </if>
+      <if test="output != null">
+        output,
+      </if>
+      <if test="answerType != null">
+        answer_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="answerid != null">
+        #{answerid,jdbcType=VARCHAR},
+      </if>
+      <if test="input != null">
+        #{input,jdbcType=VARCHAR},
+      </if>
+      <if test="output != null">
+        #{output,jdbcType=VARCHAR},
+      </if>
+      <if test="answerType != null">
+        #{answerType,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.warehouse.answerModel">
+    update answer
+    <set>
+      <if test="input != null">
+        input = #{input,jdbcType=VARCHAR},
+      </if>
+      <if test="output != null">
+        output = #{output,jdbcType=VARCHAR},
+      </if>
+      <if test="answerType != null">
+        answer_type = #{answerType,jdbcType=CHAR},
+      </if>
+    </set>
+    where answerID = #{answerid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.warehouse.answerModel">
+    update answer
+    set input = #{input,jdbcType=VARCHAR},
+      output = #{output,jdbcType=VARCHAR},
+      answer_type = #{answerType,jdbcType=CHAR}
+    where answerID = #{answerid,jdbcType=VARCHAR}
+  </update>
+</mapper>

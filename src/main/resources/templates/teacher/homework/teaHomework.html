@@ -1,0 +1,271 @@
+<!--
+ @author  Qianbw
+ @create 2020-02-07 13:30
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>作业管理</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+</head>
+<body>
+<!-- 查询div -->
+<div class=" " style="margin-top: 20px;margin-left: 50px">
+    <div class="layui-row" style="margin-top: 20px;">
+        <form action="" id="queryForm" class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label">作业名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" id="name" placeholder="请输入作业名" autocomplete="off" class="layui-input" />
+                </div>
+                <div class="layui-input-inline" style="float: right;">
+                    <button id="searchBtn" class="layui-btn layui-btn-normal" type="button" onclick="queryCourse()"><i class="layui-icon">&#xe615;</i>查询</button>
+                    <button type="button" class="layui-btn" onclick="queryReset()"><i class="layui-icon">&#x1002;</i>重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 按钮栏 -->
+<div class="" id="toolbar" style="padding:0px 10px">
+    <a><button type="button" onclick="add()" title="添加作业"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
+    <a><button type="button" onclick="del()" title="删除作业" id="delete" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe640;</i></button></a>
+</div>
+
+<!-- 表格栏 -->
+<div style="padding:0px 10px">
+    <table id="table" lay-filter="demo"></table>
+</div>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+
+<!-- js引入 -->
+<script src="/static/layui/layui.js"></script>
+<script>
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+            query();
+            optionTool();//监听工具条
+
+
+        });
+
+    function query() {
+        // 执行渲染
+        table.render({
+            elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
+            url : '/teacher/course/homework/searchHomework' ,
+            id : 'homeworkid', // 设定容器唯一ID
+            page : true, // 是否开启分页
+            loading : true, // 是否显示加载条
+            height : 550, // 容器高度,
+            page: 1,
+            limit: 10,
+            method: 'post',
+            //,where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
+            //,method: 'post' //如果无需自定义HTTP类型，可不加该参数
+            //,request: {} //如果无需自定义请求参数，可不加该参数
+            //,response: {} //如果无需自定义数据响应名称，可不加该参数
+            // where: queryParam(),
+            where: {
+                'name': $('#name').val()
+            },
+            cols : [ [ // 标题栏
+                {
+                    field : 'homeworkid',
+                    checkbox : true,
+                    LAY_CHECKED : false,
+                    width: '50'
+                },{
+                    field : 'homeworkid',
+                    title : '作业ID',
+                    sort : false,
+                    align : 'center',
+                    width: '150'
+                } // rowspan即纵向跨越的单元格数
+                , {
+                    field : 'name',
+                    title : '作业名',
+                    align : 'center',
+                    width: '150'
+                }, {
+                    field : 'describes',
+                    title : '作业描述',
+                    align : 'center',
+                    minWidth: '300'
+                }, {
+                    field : 'createtime',
+                    title : '创建日期',
+                    align : 'center',
+                    width: '200'
+                }, {
+                    field : 'begintime',
+                    title : '开始时间',
+                    align : 'center',
+                    width: '200'
+                }, {
+                    field : 'endtime',
+                    title : '结束时间',
+                    align : 'center',
+                    width: '200'
+                }, {
+                    fixed : 'right',
+                    title :'操作',
+                    toolbar : '#barDemo',
+                    align : 'center',
+                    width : '150'
+                }
+                // colspan即横跨的单元格数，这种情况下不用设置field和width
+            ]], // 设置表头
+            done : function(res, curr, count) {
+                console.log(res);
+                // 得到当前页码
+                console.log(curr);
+                // 得到数据总量
+                console.log(count);
+            }
+        });
+
+    };
+
+    function optionTool() {
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'edit'){//编辑作业
+                var homeworkid = data.homeworkid;
+                layer.open({
+                    type: 2,
+                    content: '/teacher/toEditCourseHomework?homeworkid='+homeworkid,
+                    maxmin: true,
+                    title: '编辑作业',
+                    area : ['600px', '400px']
+                });
+                // layer.alert('编辑行：<br>'+ JSON.stringify(data))
+            }
+        });
+    }
+
+    // function queryParam() {
+    //     return {
+    //         page: this.page,
+    //         limit: this.limit,
+    //         sort: this.sort,
+    //         name: $('#name').val()
+    //     }
+    // }
+
+    // 条件查询
+    function queryCourse() {
+        query();
+    }
+
+    // 重置查询
+    function queryReset() {
+        $('#name').val('');
+        query();
+    }
+
+    // 获取选中行
+    function getSelections() {
+        return table.checkStatus('homeworkid');
+    };
+
+    // 新增
+    function add(){
+        layer.open({
+            type: 2,
+            content: '/teacher/toAddCourseHomework',
+            maxmin: true,
+            title: '添加作业',
+            area : ['700px', '450px']
+        });
+    }
+
+    // 批量删除选中行
+    function del() {
+        var data = getSelections().data;
+        if(data.length == 0){
+            layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
+        } else {
+            layer.confirm("确定删除作业吗？", function () {
+                var index = layer.load();//load动画
+                $.ajax({
+                    url: "/teacher/course/homework/deleteHomework",
+                    dataType: 'json',
+                    method: 'post',
+                    contentType : 'application/json; charset=UTF-8',
+                    data:JSON.stringify(data),
+                    traditional: true,  //阻止深度序列化，向后台传送数组
+                    success: function (data) {
+                        if (data.success) {
+                            layer.close(index);
+                            query();
+                            layer.msg('删除成功', {icon: 1});
+                        } else {
+                            layer.close(index);
+                            layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
+                        }
+                    },
+                    error: function () {
+                        layer.close(index);
+                        layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
+                    }
+                });
+            });
+        }
+    }
+
+
+    var setting = {
+        check:{
+            enable: true,
+            nocheckInherit: false
+        },
+        view:{
+            selectedMulti: false
+        },
+        edit: {
+            enable: true,
+            showRenameBtn:false,
+            showRemoveBtn:false,
+        },
+        data: {
+            simpleData: {
+                enable: true,
+            }
+        },
+        callback: {
+
+        }
+    };
+
+
+    function warnTip(content) {
+        layer.open({
+            title:'提示',
+            content:content,
+            btn:['确定'],
+            icon:2,
+            yes:function(index){
+                layer.close(index);
+            }
+        });
+    };
+
+</script>

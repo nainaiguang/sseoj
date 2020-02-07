@@ -11,12 +11,11 @@ import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import com.ustc.sse.sseoj.service.teacher.HomeworkServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 邱乃光
@@ -29,6 +28,30 @@ public class TeacherHomeworkController {
 
     @Autowired
     HomeworkServiceImpl homeworkService;
+
+    //获取某个作业详细信息
+    @RequestMapping(value = "/searchOneHomeworkDetail", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes get_one_homework_detail(homeworkModel hm)
+    {
+        Result result=homeworkService.get_one_homework_detail(hm);
+        if(result instanceof Result.Success)
+        {
+            return new Mes(true,Code.SUCCESS,1,((CourseModel)((Result.Success) result).getData()));
+        }
+        else if(result instanceof Result.Fail)
+        {
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+        else
+        {
+            Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+    }
     //教师添加作业
     //其中 如果作业本身不存在，则创建作业，否则不创建
     // 且课程id不存在，则添加作业，连接教师与作业
@@ -71,8 +94,9 @@ public class TeacherHomeworkController {
     //教师删除作业，直接删除，包括批量 homeworkid
     @RequestMapping(value = "/deleteHomework", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes delete_homework(ArrayList<homeworkModel> arrayList)
+    public Mes delete_homework(@RequestBody ArrayList<homeworkModel> arrayList)
     {
+
         Result res=homeworkService.delete_homework(arrayList);
         if(res instanceof Result.Success)
         {
@@ -109,13 +133,15 @@ public class TeacherHomeworkController {
         {
             return getErrorMes(res);
         }
+
     }
 
     //删除课程与作业的关系，包括批量
     @RequestMapping(value = "/deleteHomeworkLinkCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes delete_homework_link_with_course(ArrayList<course_homeworkModelKey> arrayList)
+    public Mes delete_homework_link_with_course(@RequestBody ArrayList<course_homeworkModelKey> arrayList)
     {
+        System.out.println(arrayList);
         Result res=homeworkService.delete_homework_link_with_course(arrayList);
         if(res instanceof Result.Success)
         {
@@ -185,12 +211,9 @@ public class TeacherHomeworkController {
     public Mes search_homework(CourseModel cm,homeworkModel hm, HttpServletRequest request)//TODO 测
     {
         TeacherModel tm=new TeacherModel();
-        if(cm.getCourseID()==null)//课程为空查询全部
-        {
+
             UsersModel user= (UsersModel) request.getSession().getAttribute("user");
             tm.setTno(user.getNo());
-        }
-
 
         Result res=homeworkService.search_homework(tm,cm,hm);
         if(res instanceof Result.Success)
@@ -234,10 +257,39 @@ public class TeacherHomeworkController {
         }
     }
 
+    //显示目前属于该教师，但没有在该课程下的所有作业
+    @RequestMapping(value = "/searchHomeworkWithoutUsing", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes search_homework_without_using(CourseModel cm, HttpServletRequest request)
+    {
+        TeacherModel tm=new TeacherModel();
+
+        UsersModel user= (UsersModel) request.getSession().getAttribute("user");
+        tm.setTno(user.getNo());
+
+        Result res=homeworkService.search_homework_without_using(tm,cm);
+        if(res instanceof Result.Success)
+        {
+            ArrayList<homeworkModel> ar=(ArrayList<homeworkModel>) ((Result.Success) res).getData();
+            return new Mes(true,Code.SUCCESS,ar.size(),ar);
+        }
+        else if(res instanceof Result.Fail)
+        {
+            Mes mes=new Mes(false,((Result.Fail) res).getReason(),0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+        else
+        {
+            return getErrorMes(res);
+        }
+    }
+
     private Mes getErrorMes(Result result)
     {
         Mes mes=new Mes(false,Code.ERROR,0,null);
         System.out.println(mes.toString());
         return mes;
     }
+
 }

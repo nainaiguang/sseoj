@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 邱乃光 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.warehouse.question_answerModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.warehouse.question_answerModelKey">
+    <id column="questionID" jdbcType="VARCHAR" property="questionid" />
+    <id column="answerID" jdbcType="VARCHAR" property="answerid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.warehouse.question_answerModelKey">
+    delete from question_answer
+    where questionID = #{questionid,jdbcType=VARCHAR}
+      and answerID = #{answerid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.warehouse.question_answerModelKey">
+    insert into question_answer (questionID, answerID)
+    values (#{questionid,jdbcType=VARCHAR}, #{answerid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.warehouse.question_answerModelKey">
+    insert into question_answer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        questionID,
+      </if>
+      <if test="answerid != null">
+        answerID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        #{questionid,jdbcType=VARCHAR},
+      </if>
+      <if test="answerid != null">
+        #{answerid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

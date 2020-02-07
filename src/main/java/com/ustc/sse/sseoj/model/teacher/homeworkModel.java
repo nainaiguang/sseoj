@@ -1,7 +1,11 @@
 package com.ustc.sse.sseoj.model.teacher;
 
+import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
+@ToString
 public class homeworkModel {
     private String homeworkid;
 
@@ -9,10 +13,11 @@ public class homeworkModel {
 
     private String describes;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createtime;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date begintime;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endtime;
 
     public String getHomeworkid() {
@@ -31,7 +36,7 @@ public class homeworkModel {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getDescribe() {
+    public String getDescribes() {
         return describes;
     }
 

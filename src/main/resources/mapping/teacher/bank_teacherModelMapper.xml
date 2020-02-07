@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 邱乃光 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.teacher.bank_teacherModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.teacher.bank_teacherModelKey">
+    <id column="tno" jdbcType="VARCHAR" property="tno" />
+    <id column="questionID" jdbcType="VARCHAR" property="questionid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.teacher.bank_teacherModelKey">
+    delete from bank_teacher
+    where tno = #{tno,jdbcType=VARCHAR}
+      and questionID = #{questionid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.teacher.bank_teacherModelKey">
+    insert into bank_teacher (tno, questionID)
+    values (#{tno,jdbcType=VARCHAR}, #{questionid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.teacher.bank_teacherModelKey">
+    insert into bank_teacher
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tno != null">
+        tno,
+      </if>
+      <if test="questionid != null">
+        questionID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tno != null">
+        #{tno,jdbcType=VARCHAR},
+      </if>
+      <if test="questionid != null">
+        #{questionid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

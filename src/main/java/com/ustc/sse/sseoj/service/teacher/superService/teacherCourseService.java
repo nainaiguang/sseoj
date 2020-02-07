@@ -32,7 +32,7 @@ public interface teacherCourseService {
     public Result teacher_search_course_fully(CourseModel courseModel, Curricula_variableModel curricula_variableModel);
 
     //查找某个课程 通过courseID
-    public Result teacher_search_scourse_by_courseID(CourseModel courseModel);
+    public Result teacher_search_course_by_courseID(CourseModel courseModel);
 
 
 }
