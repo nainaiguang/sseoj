@@ -1,12 +1,12 @@
 <!--
  @author  Qianbw
- @create 2020-02-06 13:54
+ @create 2020-01-29
 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>作业管理</title>
+    <title>课程管理</title>
     <link rel="stylesheet" href="/static/layui/css/layui.css">
 </head>
 <body>
@@ -16,11 +16,9 @@
         <form action="" id="queryForm" class="layui-form">
             <div class="layui-form-item">
                 <input th:value="${session.user.no}" type="hidden" name="tno" id="tno"/>
-                <input th:value="${courseID}" type="hidden" name="courseID" id="courseID"/>
-                <!--<input type="hidden" name="courseID" id="courseID" value="123123"/>-->
-                <label class="layui-form-label">作业名</label>
+                <label class="layui-form-label">课程名</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="name" id="name" placeholder="请输入作业名" autocomplete="off" class="layui-input" />
+                    <input type="text" name="name" id="name" placeholder="请输入课程名" autocomplete="off" class="layui-input" />
                 </div>
                 <div class="layui-input-inline" style="float: right;">
                     <button id="searchBtn" class="layui-btn layui-btn-normal" type="button" onclick="queryCourse()"><i class="layui-icon">&#xe615;</i>查询</button>
@@ -33,7 +31,10 @@
 
 <!-- 按钮栏 -->
 <div class="" id="toolbar" style="padding:0px 10px">
-    <a><button type="button" onclick="add()" title="添加作业"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
+    <a><button type="button" onclick="add()" title="添加课程"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
+    <a><button type="button" onclick="edit();" title="编辑课程" id="edit" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe642;</i></button></a>
+    <a><button type="button" onclick="del()" title="删除课程" id="delete" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe640;</i></button></a>
+    <!--<a><button type="button" onclick="editPer()" title="配置课程" id="reset" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe631;</i></button></a>-->
 </div>
 
 <!-- 表格栏 -->
@@ -43,7 +44,7 @@
 
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">移除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="homework">作业管理</a>
 </script>
 
 <!-- js引入 -->
@@ -55,6 +56,7 @@
     var form;
     var table;
     var layedit;
+    var queryUrl = '/teacher/course/showAllCourse';
     layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
         function() {
             layer = layui.layer;
@@ -73,8 +75,8 @@
         // 执行渲染
         table.render({
             elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
-            url : '/teacher/course/homework/searchHomework' ,
-            id : 'homeworkid', // 设定容器唯一ID
+            url : queryUrl ,
+            id : 'courseID', // 设定容器唯一ID
             page : true, // 是否开启分页
             loading : true, // 是否显示加载条
             height : 550, // 容器高度,
@@ -87,48 +89,38 @@
             //,response: {} //如果无需自定义数据响应名称，可不加该参数
             // where: queryParam(),
             where: {
-                'courseID': $('#courseID').val(),
+                'tno': $('#tno').val(),
                 'name': $('#name').val()
             },
             cols : [ [ // 标题栏
                 {
-                    field : 'homeworkid',
-                    title : '作业ID',
+                    field : 'courseID',
+                    checkbox : true,
+                    LAY_CHECKED : false,
+                    width: '50'
+                }, {
+                    field : 'courseID',
+                    title : '课程ID',
                     sort : false,
                     align : 'center',
-                    width: '150'
+                    width: '350'
                 } // rowspan即纵向跨越的单元格数
                 , {
                     field : 'name',
-                    title : '作业名',
-                    align : 'center',
-                    width: '150'
-                }, {
-                    field : 'describes',
-                    title : '作业描述',
-                    align : 'center',
-                    minWidth: '300'
-                }, {
-                    field : 'createtime',
-                    title : '创建日期',
+                    title : '课程名',
                     align : 'center',
                     width: '200'
                 }, {
-                    field : 'begintime',
-                    title : '开始时间',
+                    field : 'presentation',
+                    title : '课程描述',
                     align : 'center',
-                    width: '200'
-                }, {
-                    field : 'endtime',
-                    title : '结束时间',
-                    align : 'center',
-                    width: '200'
-                }, {
+                    minWidth: '600'
+                },{
                     fixed : 'right',
                     title :'操作',
                     toolbar : '#barDemo',
                     align : 'center',
-                    width : '150'
+                    width : '200'
                 }
                 // colspan即横跨的单元格数，这种情况下不用设置field和width
             ]], // 设置表头
@@ -146,38 +138,23 @@
     function optionTool() {
         table.on('tool(demo)', function(obj){
             var data = obj.data;
-            if(obj.event === 'del'){// 移除此作业
-                layer.confirm("确定移除此作业吗？", function(){
-                    var index = layer.load();//load动画
-                    $.ajax({
-                        url : "/teacher/course/homework/deleteHomework",
-                        dataType: 'json',
-                        method : 'post',
-                        data : [{homeworkid : data.homeworkid}],
-                        traditional: true,  //阻止深度序列化，向后台传送数组
-                        success : function(data){
-                            if (data.success) {
-                                layer.close(index);
-                                query();
-                                layer.msg('移除成功', {icon: 1});
-                            } else {
-                                layer.close(index);
-                                layer.msg("移除失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
-                            }
-                        },
-                        error: function(){
-                            layer.close(index);
-                            layer.msg("移除失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
-                        }
-                    });
-                });
-            } else if(obj.event === 'edit'){//编辑作业
-                var homeworkid = data.homeworkid;
+            if(obj.event === 'homework'){//该课程的作业管理
+                var courseID = data.courseID;
                 layer.open({
                     type: 2,
-                    content: '/teacher/toEditCourseHomework?homeworkid='+homeworkid,
+                    content: '/teacher/toCourseHomework?courseID='+courseID,
                     maxmin: true,
-                    title: '编辑作业',
+                    title: '作业管理',
+                    area : ['1200px', '700px']
+                });
+                // layer.msg('ID：'+ data.id + ' 的查看操作');
+            } else if(obj.event === 'edit'){//该课程编辑
+                var courseID = data.courseID;
+                layer.open({
+                    type: 2,
+                    content: '/teacher/toEditCourse?courseID='+courseID,
+                    maxmin: true,
+                    title: '编辑角色',
                     area : ['600px', '400px']
                 });
                 // layer.alert('编辑行：<br>'+ JSON.stringify(data))
@@ -196,6 +173,7 @@
 
     // 条件查询
     function queryCourse() {
+        queryUrl = '/teacher/course/searchCourseFully';
         query();
     }
 
@@ -205,20 +183,39 @@
         query();
     }
 
-    // // 获取选中行
-    // function getSelections() {
-    //     return table.checkStatus('courseID');
-    // };
+    // 获取选中行
+    function getSelections() {
+        return table.checkStatus('courseID');
+    };
 
     // 新增
     function add(){
         layer.open({
             type: 2,
-            content: '/teacher/toAddCourseHomework?courseID='+$("#courseID").val(),
+            content: '/teacher/toAddCourse',
             maxmin: true,
-            title: '添加作业',
-            area : ['700px', '450px']
+            title: '添加课程',
+            area : ['600px', '400px']
         });
+    }
+
+    // 编辑
+    function edit(){
+        var data = getSelections().data;
+        if(data.length == 0){
+            layer.alert('请选择一条数据进行编辑！', {icon: 2});
+        } else if(data.length > 1){
+            layer.alert('请选择一条数据进行编辑！', {icon: 2});
+        } else {
+            var courseID = data[0].courseID;
+            layer.open({
+                type: 2,
+                content: '/teacher/toEditCourse?courseID='+courseID,
+                maxmin: true,
+                title: '编辑角色',
+                area : ['600px', '400px']
+            });
+        }
     }
 
     // // 删除选中行

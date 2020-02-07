@@ -1,22 +1,33 @@
 <!--
  @author  Qianbw
- @create 2020-01-30 12:01
+ @create 2020-01-30 13:27
 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>添加课程</title>
+    <title>修改课程</title>
     <link rel="stylesheet" href="/static/layui/css/layui.css">
 </head>
 <body>
-<div style="display: flex; justify-content: center; margin-top: 80px;">
-    <form name="addCourseForm" class="layui-form" action="/teacher/course/addCourse" method="post">
-        <input type="hidden" name="tno" id="tno" value="SA19225052" />
-        <div class="layui-form-item" style="margin-bottom:50px;">
+<div style="display: flex; justify-content: center; margin-top: 30px;">
+    <form name="addCourseForm" class="layui-form" action="" method="post">
+        <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">课程名</label>
             <div class="layui-input-inline">
-                <input type="text" name="name" required  lay-verify="name" placeholder="请输入课程名" autocomplete="off" class="layui-input">
+                <input th:value="${courseModel.name}" type="text" name="name" required  lay-verify="name" placeholder="请输入课程名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom:30px;">
+            <label class="layui-form-label">课程编码</label>
+            <div class="layui-input-inline">
+                <input th:value="${courseModel.courseID}" type="text" name="CourseID" disabled placeholder="请输入课程编码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text" style="margin-bottom:30px;">
+            <label class="layui-form-label">课程描述</label>
+            <div class="layui-input-block">
+                <textarea th:value="${courseModel.presentation}" name="presentation" placeholder="请输入课程描述" class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item" >
@@ -63,24 +74,24 @@
             $.ajax({
                 type: 'post',
                 dataType: 'json',
-                url: '/teacher/course/addCourse',
+                url: '/teacher/course/updateCourse',
                 data: data.field,
                 success: function(data){
                     if(data.success){
                         layer.close(index);
-                        layer.msg('添加成功');
+                        layer.msg('修改成功',{icon: 1});
                         setTimeout(function(){
                             parent.layer.closeAll();
                         }, 500);
                         parent.query();
                     } else {
                         layer.close(index);
-                        layer.msg("添加失败！code:"+data.code,{icon: 2});
+                        layer.msg("修改失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
                     }
                 },
                 error: function(){
                     layer.close(index);
-                    layer.msg("添加失败！code:"+data.code,{icon: 2});
+                    layer.msg("修改失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
                 }
             });
         });

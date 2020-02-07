@@ -1,5 +1,7 @@
 package com.ustc.sse.sseoj.model.teacher;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class homeworkModel {
@@ -9,10 +11,11 @@ public class homeworkModel {
 
     private String describes;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createtime;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date begintime;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endtime;
 
     public String getHomeworkid() {
