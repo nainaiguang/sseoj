@@ -82,6 +82,7 @@
     function eventinit(){
         form.on('submit(form)', function(data){
             var index = layer.load();//load动画
+            console.log(data.field);
             $.ajax({
                 type: 'post',
                 dataType: 'json',
@@ -102,7 +103,7 @@
                 },
                 error: function(){
                     layer.close(index);
-                    layer.msg("添加失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                    layer.msg("添加失败！", {icon: 2});
                 }
             });
         });
