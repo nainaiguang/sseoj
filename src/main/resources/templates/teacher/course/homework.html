@@ -171,7 +171,7 @@
                         },
                         error: function(){
                             layer.close(index);
-                            layer.msg("移除失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                            layer.msg("移除失败！", {icon: 2});
                         }
                     });
                 });
@@ -208,7 +208,7 @@
             type: 2,
             content: '/teacher/toAddCourseHomework?courseID='+$("#courseID").val(),
             maxmin: true,
-            title: '添加作业',
+            title: '新建作业',
             area : ['700px', '450px']
         });
     }
@@ -217,10 +217,10 @@
     function add(){
         layer.open({
             type: 2,
-            content: '/teacher/toAddCourseHomework?courseID='+$("#courseID").val(),
+            content: '/teacher/toSelectCourseHomework?courseID='+$("#courseID").val(),
             maxmin: true,
             title: '添加作业',
-            area : ['700px', '450px']
+            area : ['850px', '450px']
         });
     }
 

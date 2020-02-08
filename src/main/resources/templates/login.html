@@ -78,7 +78,7 @@
 
                     } else {
                         layer.close(index);
-                        layer.msg("登录失败！code:"+data.code,{icon: 2});
+                        layer.msg("登录失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
                     }
                 },
                 error: function(){
