@@ -120,4 +120,17 @@ public class TeacherController {
     public String teaHomework() {
         return "teacher/homework/teaHomework";
     }
+
+    /**
+     * 功能描述: 进入作业选择页面
+     * @Param: [model, courseModel]
+     * @Return: java.lang.String
+     * @Author: Qianbw
+     * @Date: 2020/2/7 19:39
+     */
+    @RequestMapping("/toSelectCourseHomework")
+    public String toSelectCourseHomework(Model model, CourseModel courseModel){
+        model.addAttribute("courseID", courseModel.getCourseID());
+        return "teacher/course/selectHomework";
+    }
 }
