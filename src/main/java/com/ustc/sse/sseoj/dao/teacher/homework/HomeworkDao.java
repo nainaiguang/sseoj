@@ -60,6 +60,7 @@ public interface HomeworkDao {
             "INNER JOIN teacher_homework B ON A.homeworkID = B.homeworkID\n" +
             "WHERE\n" +
             "\tB.tno = #{tm.tno}\n" +
+            "AND A.name LIKE '%${hm.name}%'"+//新加
             "AND A.homeworkID NOT IN (\n" +
             "\tSELECT\n" +
             "\t\thomeworkID\n" +
@@ -68,5 +69,5 @@ public interface HomeworkDao {
             "\tWHERE\n" +
             "\t\tcourseID = #{cm.courseID}\n" +
             ")")
-    public ArrayList<homeworkModel> search_homework_without_using(@Param("tm") TeacherModel tm,@Param("cm") CourseModel cm);
+    public ArrayList<homeworkModel> search_homework_without_using(@Param("tm") TeacherModel tm,@Param("cm") CourseModel cm,@Param("hm") homeworkModel hm);
 }

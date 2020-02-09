@@ -260,14 +260,14 @@ public class TeacherHomeworkController {
     //显示目前属于该教师，但没有在该课程下的所有作业
     @RequestMapping(value = "/searchHomeworkWithoutUsing", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes search_homework_without_using(CourseModel cm, HttpServletRequest request)
+    public Mes search_homework_without_using(CourseModel cm,homeworkModel hm ,HttpServletRequest request)
     {
         TeacherModel tm=new TeacherModel();
 
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
 
-        Result res=homeworkService.search_homework_without_using(tm,cm);
+        Result res=homeworkService.search_homework_without_using(tm,cm,hm);
         if(res instanceof Result.Success)
         {
             ArrayList<homeworkModel> ar=(ArrayList<homeworkModel>) ((Result.Success) res).getData();
