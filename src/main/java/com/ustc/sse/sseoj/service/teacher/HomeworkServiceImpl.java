@@ -263,7 +263,7 @@ public class HomeworkServiceImpl implements HomeworkService {
 
     //显示目前属于该教师，但没有在该课程下的所有作业
     @Override
-    public Result search_homework_without_using(TeacherModel tm, CourseModel cm) {
+    public Result search_homework_without_using(TeacherModel tm, CourseModel cm,homeworkModel hm) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -272,8 +272,12 @@ public class HomeworkServiceImpl implements HomeworkService {
         {
             return new Result.Fail(Code.MISS_COURSEID);
         }
+        if(hm.getName()==null)
+        {
+            hm.setName("");
+        }
         try{
-            ArrayList<homeworkModel> arrayRes=homeworkDao.search_homework_without_using(tm,cm);
+            ArrayList<homeworkModel> arrayRes=homeworkDao.search_homework_without_using(tm,cm,hm);
             return new Result.Success(arrayRes);
         }
         catch (Exception e)

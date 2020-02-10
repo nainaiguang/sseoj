@@ -41,5 +41,5 @@ public interface HomeworkService {
     public Result people_use_homework(homeworkModel hm);
 
     //显示目前没有在改课程下应用的该教师的作业
-    public Result search_homework_without_using(TeacherModel tm,CourseModel cm);
+    public Result search_homework_without_using(TeacherModel tm,CourseModel cm,homeworkModel hm);
 }
