@@ -148,7 +148,7 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
         try {
             boolean success = courseado.delete_course_from_courseID(courseModel);
             if (success) {
-                return new Result.Success(true);//TODO 改成mes
+                return new Result.Success(true);
             } else {
                 return new Result.Fail(Code.UNKNOWN_WRONG);
             }

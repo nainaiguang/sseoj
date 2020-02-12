@@ -40,10 +40,16 @@ public enum  Code {  // TODO 测试 试试这个在网页中的表示
     MISS_NEW_CHANGE(302,"miss new change"),
     MISS_HOMEWORKID(303,"miss homeworkID"),
     MISS_HOMEWORKNAME(304,"miss homeworkName"),
+    MISS_QUESTIONID(305,"miss questionID"),
+    MISS_ANSWERID(306,"miss answerID"),
     MISS_TNO(310,"miss tno"),
     MISS_ROLE(320,"miss role"),
-    MISS_PARAMETE(305,"miss parameter"),
-    EMPTY_LIST(306,"empty list"),
+    MISS_PARAMETE(307,"miss parameter"),
+    EMPTY_LIST(308,"empty list"),
+
+    MISS_QUESTION_TYPE(330,"miss question type"),
+    MISS_QUESTION_TITLE(331,"miss question title"),
+    MISS_QUESTION_DESCRIPTION(332,"miss question description"),
    //未知错误
    UNKNOWN_WRONG(999,"unknown wrong");
 
@@ -61,4 +67,8 @@ public enum  Code {  // TODO 测试 试试这个在网页中的表示
         setMsg(mes);
     }
 
+   @Override
+   public String toString() {
+       return "Code["+this.code+","+this.msg+"]";
+   }
 }
