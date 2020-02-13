@@ -208,7 +208,7 @@ public class TeacherHomeworkController {
     //courseID|""  name!""
     @RequestMapping(value = "/searchHomework", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes search_homework(CourseModel cm,homeworkModel hm, HttpServletRequest request)//TODO 测
+    public Mes search_homework(CourseModel cm,homeworkModel hm, HttpServletRequest request)
     {
         TeacherModel tm=new TeacherModel();
 

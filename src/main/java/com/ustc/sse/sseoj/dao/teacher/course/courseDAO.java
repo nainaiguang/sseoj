@@ -71,7 +71,7 @@ public interface courseDAO {
     @Delete("delete from curricula_variable where courseID=#{courseID}")//删除课程关系
     public boolean delete_curricula_variable_from_courseID(Curricula_variableModel curricula_variableModel);
 
-    //删除课程 Todo 删除的的时候记得把课程关系也删除了，不仅仅删除课程   试试利用数据库本身
+    //删除课程
     @Delete("delete from course where courseID=#{courseID}")
     public boolean delete_course_from_courseID(CourseModel courseModel);
 
