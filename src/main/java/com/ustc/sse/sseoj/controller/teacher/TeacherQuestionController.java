@@ -58,7 +58,7 @@ public class TeacherQuestionController {
 
     }
 
-    //添加问题与课程关系
+    //添加问题与作业关系
     @RequestMapping(value = "/addHomeworkQuestionRelationship", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
     public Mes add_relationship_homework_question(homework_link_bankModelKey hlbm){
@@ -242,7 +242,6 @@ public class TeacherQuestionController {
         Result result=qsimpl.get_question_detail(qm);
         if(result instanceof Result.Success)
         {
-
             return new Mes(true,Code.SUCCESS,1,((questionModel)((Result.Success) result).getData()));
         }
         else if(result instanceof Result.Fail)
@@ -335,6 +334,9 @@ public class TeacherQuestionController {
     }
 
     //得到某个题目的所有样例
+    //得到某个题目的所有样例或答案
+    @RequestMapping(value = "/getAllCase", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
     private   Mes get_all_case(questionModel qm){
         Result result=qsimpl.get_all_case(qm);
         if(result instanceof Result.Success)
@@ -357,6 +359,9 @@ public class TeacherQuestionController {
     }
 
     //得到某个题目的所有答案
+    //得到某个题目的所有样例或答案
+    @RequestMapping(value = "/getAllAnswer", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
     private Mes get_all_answer(questionModel qm){
         Result result=qsimpl.get_all_answer(qm);
         if(result instanceof Result.Success)
