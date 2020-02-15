@@ -1,8 +1,10 @@
 package com.ustc.sse.sseoj.model.teacher;
 
+import lombok.Getter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @ToString
@@ -20,6 +22,12 @@ public class homeworkModel {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endtime;
 
+    @Getter
+    private String createtimeStr;
+    @Getter
+    private String begintimeStr;
+    @Getter
+    private String endtimeStr;
 
     public String getHomeworkid() {
         return homeworkid;
@@ -51,14 +59,20 @@ public class homeworkModel {
 
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.createtimeStr=formatter.format(createtime);
     }
 
     public Date getBegintime() {
         return begintime;
+
     }
 
     public void setBegintime(Date begintime) {
         this.begintime = begintime;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.begintimeStr=formatter.format(begintime);
     }
 
     public Date getEndtime() {
@@ -67,5 +81,7 @@ public class homeworkModel {
 
     public void setEndtime(Date endtime) {
         this.endtime = endtime;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.endtimeStr=formatter.format(endtime);
     }
 }
