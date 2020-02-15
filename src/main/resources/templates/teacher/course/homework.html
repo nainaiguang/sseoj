@@ -69,39 +69,39 @@
         });
 
     function query() {
-        // 执行渲染
-        table.render({
-            elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
-            url : '/teacher/course/homework/searchHomework' ,
-            id : 'homeworkid', // 设定容器唯一ID
-            page : true, // 是否开启分页
-            loading : true, // 是否显示加载条
-            height : 550, // 容器高度,
-            page: 1,
-            limit: 10,
-            method: 'post',
-            //,where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
-            //,method: 'post' //如果无需自定义HTTP类型，可不加该参数
-            //,request: {} //如果无需自定义请求参数，可不加该参数
-            //,response: {} //如果无需自定义数据响应名称，可不加该参数
-            // where: queryParam(),
-            where: {
-                'courseID': $('#courseID').val(),
-                'name': $('#name').val()
-            },
-            cols : [ [ // 标题栏
-                {
-                    field : 'homeworkid',
-                    title : '作业ID',
-                    sort : false,
-                    align : 'center',
-                    width: '150'
-                } // rowspan即纵向跨越的单元格数
-                , {
-                    field : 'name',
-                    title : '作业名',
-                    align : 'center',
-                    sort: true,
+                    // 执行渲染
+                    table.render({
+                    elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
+                    url : '/teacher/course/homework/searchHomework' ,
+                    id : 'homeworkid', // 设定容器唯一ID
+                    page : true, // 是否开启分页
+                    loading : true, // 是否显示加载条
+                    height : 550, // 容器高度,
+                    page: 1,
+                    limit: 10,
+                    method: 'post',
+                    //,where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
+                    //,method: 'post' //如果无需自定义HTTP类型，可不加该参数
+                    //,request: {} //如果无需自定义请求参数，可不加该参数
+                    //,response: {} //如果无需自定义数据响应名称，可不加该参数
+                    // where: queryParam(),
+                    where: {
+                        'courseID': $('#courseID').val(),
+                        'name': $('#name').val()
+                    },
+                    cols : [ [ // 标题栏
+                        {
+                            field : 'homeworkid',
+                            title : '作业ID',
+                            sort : false,
+                            align : 'center',
+                            width: '150'
+                        } // rowspan即纵向跨越的单元格数
+                        , {
+                            field : 'name',
+                            title : '作业名',
+                            align : 'center',
+                            sort: true,
                     width: '150'
                 }, {
                     field : 'describes',
@@ -109,17 +109,17 @@
                     align : 'center',
                     minWidth: '300'
                 }, {
-                    field : 'createtime',
+                    field : 'createtimeStr',
                     title : '创建日期',
                     align : 'center',
                     width: '200'
                 }, {
-                    field : 'begintime',
+                    field : 'begintimeStr',
                     title : '开始时间',
                     align : 'center',
                     width: '200'
                 }, {
-                    field : 'endtime',
+                    field : 'endtimeStr',
                     title : '结束时间',
                     align : 'center',
                     width: '200'
@@ -182,7 +182,7 @@
                     content: '/teacher/toEditCourseHomework?homeworkid='+homeworkid,
                     maxmin: true,
                     title: '编辑作业',
-                    area : ['600px', '400px']
+                    area : ['900px', '600px']
                 });
                 // layer.alert('编辑行：<br>'+ JSON.stringify(data))
             }
@@ -209,19 +209,19 @@
             content: '/teacher/toAddCourseHomework?courseID='+$("#courseID").val(),
             maxmin: true,
             title: '新建作业',
-            area : ['700px', '450px']
+            area : ['900px', '600px']
         });
     }
 
     // 添加作业
     function add(){
-        layer.open({
+        var index = layer.open({
             type: 2,
             content: '/teacher/toSelectCourseHomework?courseID='+$("#courseID").val(),
-            maxmin: true,
-            title: '添加作业',
-            area : ['850px', '450px']
+            maxmin: false,
+            title: '添加作业'
         });
+        layer.full(index);
     }
 
 

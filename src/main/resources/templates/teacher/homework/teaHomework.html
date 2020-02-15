@@ -41,6 +41,7 @@
 
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="question">题库管理</a>
 </script>
 
 <!-- js引入 -->
@@ -110,17 +111,17 @@
                     align : 'center',
                     minWidth: '300'
                 }, {
-                    field : 'createtime',
+                    field : 'createtimeStr',
                     title : '创建日期',
                     align : 'center',
                     width: '200'
                 }, {
-                    field : 'begintime',
+                    field : 'begintimeStr',
                     title : '开始时间',
                     align : 'center',
                     width: '200'
                 }, {
-                    field : 'endtime',
+                    field : 'endtimeStr',
                     title : '结束时间',
                     align : 'center',
                     width: '200'
@@ -154,9 +155,17 @@
                     content: '/teacher/toEditCourseHomework?homeworkid='+homeworkid,
                     maxmin: true,
                     title: '编辑作业',
-                    area : ['600px', '400px']
+                    area : ['900px', '600px']
                 });
                 // layer.alert('编辑行：<br>'+ JSON.stringify(data))
+            } else if (obj.event === 'question'){//题库管理
+                var index = layer.open({
+                    type: 2,
+                    content: '/teacherQuestion/toQuestion?homeworkid='+obj.data.homeworkid,
+                    maxmin: false,
+                    title: obj.data.name + '-->题库管理'
+                });
+                layer.full(index);
             }
         });
     }
@@ -193,7 +202,7 @@
             content: '/teacher/toAddCourseHomework',
             maxmin: true,
             title: '添加作业',
-            area : ['700px', '450px']
+            area : ['900px', '600px']
         });
     }
 

@@ -139,13 +139,13 @@
             var data = obj.data;
             if(obj.event === 'homework'){//该课程的作业管理
                 var courseID = data.courseID;
-                layer.open({
+                var index = layer.open({
                     type: 2,
                     content: '/teacher/toCourseHomework?courseID='+courseID,
-                    maxmin: true,
-                    title: '作业管理',
-                    area : ['1200px', '700px']
+                    maxmin: false,
+                    title: obj.data.name + '-->作业管理'
                 });
+                layer.full(index);
                 // layer.msg('ID：'+ data.id + ' 的查看操作');
             } else if(obj.event === 'edit'){//该课程编辑
                 var courseID = data.courseID;
@@ -153,7 +153,7 @@
                     type: 2,
                     content: '/teacher/toEditCourse?courseID='+courseID,
                     maxmin: true,
-                    title: '编辑角色',
+                    title: '编辑课程',
                     area : ['600px', '400px']
                 });
                 // layer.alert('编辑行：<br>'+ JSON.stringify(data))
