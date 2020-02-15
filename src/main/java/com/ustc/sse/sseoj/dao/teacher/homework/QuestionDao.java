@@ -44,7 +44,7 @@ public interface QuestionDao {
             "\tAND question.title LIKE '%${qm.title}%'")
     public ArrayList<questionModel> get_all_question_from_course_on_teacher(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm,@Param("qm") questionModel qm);
 
-    //查询该问题有几个作业在使用  todo bug： 有可能该作业不属于同一个教师
+    //查询该问题有几个作业在使用
     @Select("SELECT\n" +
             "\thomework.*\n" +
             "FROM\n" +
@@ -76,7 +76,7 @@ public interface QuestionDao {
             "WHERE\n" +
             "\tquestionID = #{qm.questionid}\n" +
             "AND answer.answer_type = 'answers'")
-    public ArrayList<answerModel> get_all_answer(questionModel qm);
+    public ArrayList<answerModel> get_all_answer(@Param("qm") questionModel qm);
 
     //搜索该老师的，该作业外的其他题目
     @Select("SELECT\n" +

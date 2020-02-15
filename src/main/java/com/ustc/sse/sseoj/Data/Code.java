@@ -11,7 +11,7 @@ import lombok.ToString;
  * 错误代码合集
  */
 
-public enum  Code {  // TODO 测试 试试这个在网页中的表示
+public enum  Code {
     TEMP(1,""),
    // public static String
     SUCCESS(0,"success"),
@@ -33,6 +33,7 @@ public enum  Code {  // TODO 测试 试试这个在网页中的表示
     WRONG_COURSEID(211,"wrong courseID"),
     WRONG_HOMEWORKID(212,"wrong homeworkID"),
     WRONG_PARAMETER(201,"wrong parameter"),
+    WRONG_ANSWERTYPE(213,"wrong answer type"),
 
     //缺少信息
     MISS_COIRSE_NAME(300," miss course name"),

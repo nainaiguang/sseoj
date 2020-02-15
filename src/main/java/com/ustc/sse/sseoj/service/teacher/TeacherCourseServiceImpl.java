@@ -96,7 +96,7 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
         {
             return new Result.Fail(Code.MISS_NEW_CHANGE);
         }
-        // fixme 缺少判断该课程是否存在，节省一次sql查询，因为一般认为从前端传过来的改名请求，都是已经存在的courseID
+
 
         try {
             boolean success1=true;

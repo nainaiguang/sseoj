@@ -1,5 +1,6 @@
 package com.ustc.sse.sseoj.service.teacher;
 
+import com.ustc.sse.sseoj.Data.AnswerType;
 import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.IDType;
 import com.ustc.sse.sseoj.Data.Result;
@@ -171,7 +172,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 
 
-    //更新问题  todo 测
+    //更新问题
     @Override
     public Result update_question(questionModel qm) {
         if(qm.getQuestionid()==null)
@@ -188,7 +189,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
-    //删除问题与作业关系 todo 测
+    //删除问题与作业关系
     @Override
     public Result delete_relationship_homework_question(homework_link_bankModelKey hlbm) {
         if(hlbm.getQuestionid()==null)
@@ -210,7 +211,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
-    //删除问题 todo 测
+    //删除问题
     @Override
     public Result delete_question(questionModel qm) {
         if(qm.getQuestionid()==null)
@@ -291,7 +292,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
-    //得到某个答案详细信息 todo 测
+    //得到某个答案详细信息
     @Override
     public Result get_answer_detail(answerModel am) {
         if(am.getAnswerid()==null)
@@ -310,7 +311,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     }
 
-    //得到某个题目的所有样例 todo 测
+    //得到某个题目的所有样例
     @Override
     public Result get_all_case(questionModel qm) {
         if(qm.getQuestionid()==null)
@@ -328,7 +329,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     }
 
-    //得到某个题目的所有答案 todo 测
+    //得到某个题目的所有答案
     @Override
     public Result get_all_answer(questionModel qm) {
         if(qm.getQuestionid()==null)
@@ -353,6 +354,10 @@ public class QuestionServiceImpl implements QuestionService {
         {
             return new Result.Fail(Code.MISS_QUESTIONID);
         }
+        if(!(am.getAnswerType().equals(AnswerType.answers.toString())||am.getAnswerType().equals(AnswerType.cases.toString())))//todo 测
+        {
+            return new Result.Fail(Code.WRONG_ANSWERTYPE);
+        }
         am.setAnswerid(CreatId.getSole_id(IDType.answerID));
         try{
             ammp.insertSelective(am);
@@ -369,7 +374,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
-    //修改答案 todo 测
+    //修改答案
     @Override
     public Result update_answer_or_case(answerModel am) {
         if(am.getAnswerid()==null)
@@ -387,7 +392,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
-    //删除答案 todo 测
+    //删除答案
     @Override
     public Result delete_answer_or_case(answerModel am) {
         if(am.getAnswerid()==null)
