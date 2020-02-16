@@ -3,7 +3,7 @@ package com.ustc.sse.sseoj.controller.teacher;
 
 import com.ustc.sse.sseoj.Data.*;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
-import com.ustc.sse.sseoj.model.teacher.homework_link_bankModelKey;
+import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
 import com.ustc.sse.sseoj.model.user.TeacherModel;
 import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import com.ustc.sse.sseoj.model.warehouse.answerModel;
@@ -11,6 +11,7 @@ import com.ustc.sse.sseoj.model.warehouse.questionModel;
 import com.ustc.sse.sseoj.service.teacher.QuestionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -61,7 +62,7 @@ public class TeacherQuestionController {
     //添加问题与作业关系
     @RequestMapping(value = "/addHomeworkQuestionRelationship", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes add_relationship_homework_question(homework_link_bankModelKey hlbm){
+    public Mes add_relationship_homework_question(homework_link_bankModel hlbm){
         Result result=qsimpl.add_relationship_homework_question(hlbm);
         if(result instanceof Result.Success)
         {
@@ -164,7 +165,7 @@ public class TeacherQuestionController {
     //删除问题与作业关系
     @RequestMapping(value = "/deleteHomeworkQuestionRelationship", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes delete_relationship_homework_question(homework_link_bankModelKey hlbm){
+    public Mes delete_relationship_homework_question(homework_link_bankModel hlbm){
         Result result=qsimpl.delete_relationship_homework_question(hlbm);
         if(result instanceof Result.Success)
         {
@@ -288,7 +289,53 @@ public class TeacherQuestionController {
         }
     }
 
+    //刷新某次作业的所有题号
+    @RequestMapping(value = "/ReflashQuestionNumber", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes reflash_questionNumber(homework_link_bankModel hlbm)
+    {
+        Result result=qsimpl.reflash_questionNumber(hlbm);
+        if(result instanceof Result.Success)
+        {
+            return new Mes(true,Code.SUCCESS,1,true);
+        }
+        else if(result instanceof Result.Fail)
+        {
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+        else
+        {
+            Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+    }
 
+    //批量更改问题的题号
+    @RequestMapping(value = "/updateQuestionNumberBatch", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes updateQuestionNumberBatch(@RequestBody ArrayList<homework_link_bankModel> arrayList)
+    {
+        Result result=qsimpl.updateQuestionNumberBatch(arrayList);
+        if(result instanceof Result.Success)
+        {
+            return new Mes(true,Code.SUCCESS,1,true);
+        }
+        else if(result instanceof Result.Fail)
+        {
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+        else
+        {
+            Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+    }
 
     //得到某个答案详细信息
     @RequestMapping(value = "/getAnswerDetail", method = RequestMethod.POST, produces = "application/json; charset=utf-8")

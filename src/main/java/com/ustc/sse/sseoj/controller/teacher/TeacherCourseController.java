@@ -109,7 +109,7 @@ public class TeacherCourseController<T> {
     //根据教师号获取某老师的所有课程
     @RequestMapping(value = "/showAllCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes teacher_show_somebody_all_course( HttpServletRequest request) {
+    public Mes teacher_show_somebody_all_course(HttpServletRequest request) {
 
         Curricula_variableModel curricula_variableModel=new Curricula_variableModel();
 

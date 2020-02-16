@@ -3,6 +3,7 @@ package com.ustc.sse.sseoj.dao.teacher.homework;
 import com.ustc.sse.sseoj.Data.Result;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
+import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
 import com.ustc.sse.sseoj.model.user.TeacherModel;
 import com.ustc.sse.sseoj.model.warehouse.answerModel;
 import com.ustc.sse.sseoj.model.warehouse.questionModel;
@@ -33,7 +34,7 @@ public interface QuestionDao {
 
     //得到教师某作业下的所有问题
     @Select("SELECT\n" +
-            "\tquestion.*\n" +
+            "\tquestion.*,homework_link_bank.questionNumber\n" +
             "FROM\n" +
             "\tquestion\n" +
             "INNER JOIN homework_link_bank ON question.questionID = homework_link_bank.questionID\n" +
@@ -41,7 +42,8 @@ public interface QuestionDao {
             "WHERE\n" +
             "\thomework_link_bank.homeworkID = #{hm.homeworkid}\n" +
             "AND bank_teacher.tno = #{tm.tno}"+
-            "\tAND question.title LIKE '%${qm.title}%'")
+            "\tAND question.title LIKE '%${qm.title}%'\n" +
+            "\tORDER BY homework_link_bank.questionNumber")
     public ArrayList<questionModel> get_all_question_from_course_on_teacher(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm,@Param("qm") questionModel qm);
 
     //查询该问题有几个作业在使用
@@ -92,5 +94,15 @@ public interface QuestionDao {
             "\thomework_link_bank\n" +
             "WHERE\n" +
             "\thomework_link_bank.homeworkID = #{hm.homeworkid} )")
-    public ArrayList<questionModel> get_question_except_using(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm) ;
+    public ArrayList<questionModel> get_question_except_using(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm);
+
+    @Select("SELECT\n" +
+            "\t*\n" +
+            "FROM\n" +
+            "\thomework_link_bank\n" +
+            "WHERE\n" +
+            "\thomework_link_bank.homeworkID = #{hlbm.homeworkid}\n" +
+            "ORDER BY\n" +
+            "\thomework_link_bank.questionNumber")
+    public ArrayList<homework_link_bankModel> get_homework_bank_order_questionNumber(@Param("hlbm") homework_link_bankModel hlbm);
 }

@@ -2,11 +2,13 @@ package com.ustc.sse.sseoj.service.teacher.superService;
 
 import com.ustc.sse.sseoj.Data.Result;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
+import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModelKey;
 import com.ustc.sse.sseoj.model.user.TeacherModel;
 import com.ustc.sse.sseoj.model.warehouse.answerModel;
 import com.ustc.sse.sseoj.model.warehouse.questionModel;
-import org.apache.ibatis.annotations.Mapper;
+
+import java.util.ArrayList;
 
 /**
  * @author 邱乃光
@@ -22,7 +24,7 @@ public interface QuestionService {
     public Result add_question(TeacherModel tm,homeworkModel hm, questionModel qm);
 
     //添加问题与课程关系
-    public Result add_relationship_homework_question(homework_link_bankModelKey hlbm);
+    public Result add_relationship_homework_question(homework_link_bankModel hlbm);
 
     //获取该教师的，某作业的所有题目（包括模糊）
     public  Result get_all_question_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm);
@@ -45,6 +47,11 @@ public interface QuestionService {
     //得到某个题目详细信息
     public Result get_question_detail(questionModel qm);
 
+    //对某作业的题号进行重新整理
+    public Result reflash_questionNumber(homework_link_bankModel hlbm);
+
+    //批量更改该作业的题号
+    public Result updateQuestionNumberBatch(ArrayList<homework_link_bankModel> arrayList);
 
     //搜索该老师的，该作业外的其他题目,包括模糊
     public Result get_question_except_using(TeacherModel tm,homeworkModel hm);
