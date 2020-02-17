@@ -1,5 +1,6 @@
 package com.ustc.sse.sseoj.dao.teacher.course;
 
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.Curricula_variableModel;
 import org.apache.ibatis.annotations.*;
@@ -51,12 +52,12 @@ public interface courseDAO {
 
 
     //查询某个老师自己的所有课程
-    @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{tno} and course.courseID=curricula_variable.courseID")
-    public ArrayList<CourseModel> select_course_from_tno( Curricula_variableModel curricula_variableModel);
+    @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{cv.tno} and course.courseID=curricula_variable.courseID LIMIT #{pl.limit_head},#{pl.limit_tail}")
+    public ArrayList<CourseModel> select_course_from_tno(@Param("cv")Curricula_variableModel curricula_variableModel, @Param("pl")pageLimit pl);
 
     //查找某个老师自己的课程 模糊查询 通过课程名
-    @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{curricula_variableModel.tno} and course.courseID=curricula_variable.courseID and course.name like '%${courseModel.name}%'")
-    public ArrayList<CourseModel> select_course_from_tno_fuzzyCourseName(@Param("courseModel") CourseModel courseModel, @Param("curricula_variableModel") Curricula_variableModel curricula_variableModel);
+    @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{curricula_variableModel.tno} and course.courseID=curricula_variable.courseID and course.name like '%${courseModel.name}%' LIMIT #{pl.limit_head},#{pl.limit_tail}")
+    public ArrayList<CourseModel> select_course_from_tno_fuzzyCourseName(@Param("courseModel") CourseModel courseModel, @Param("curricula_variableModel") Curricula_variableModel curricula_variableModel, @Param("pl")pageLimit pl);
 
 
     // 这样教师就可以重复利用某课程，通过更改作业的开放时间来设定

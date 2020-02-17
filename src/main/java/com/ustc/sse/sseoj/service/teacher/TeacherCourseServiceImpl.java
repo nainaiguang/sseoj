@@ -4,6 +4,7 @@ import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.Result;
 import com.ustc.sse.sseoj.Data.IDType;
 import com.ustc.sse.sseoj.dao.teacher.course.courseDAO;
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.Curricula_variableModel;
 import com.ustc.sse.sseoj.service.teacher.superService.teacherCourseService;
@@ -69,15 +70,20 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
         }
     }
 
+
     @Override
-    public Result teacher_show_somebody_all_course(Curricula_variableModel curricula_variableModel) {
+    public Result teacher_show_somebody_all_course(Curricula_variableModel curricula_variableModel, pageLimit pl) {
 
         if(curricula_variableModel.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
         }
+        if(pl.getPage_limit()==0)
+        {
+            return new Result.Fail(Code.MISS_PAGE_LIMIT);
+        }
         try {
-            ArrayList<CourseModel> arrayList = courseado.select_course_from_tno(curricula_variableModel);
+            ArrayList<CourseModel> arrayList = courseado.select_course_from_tno(curricula_variableModel,pl);
             return new Result.Success(arrayList);
         }
         catch (Exception e)
@@ -161,7 +167,7 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
     }
 
     @Override
-    public Result teacher_search_course_fully(CourseModel courseModel, Curricula_variableModel curricula_variableModel) {
+    public Result teacher_search_course_fully(CourseModel courseModel, Curricula_variableModel curricula_variableModel, pageLimit pl) {
         if(courseModel.getName()==null)
         {
             return new Result.Fail(Code.MISS_COIRSE_NAME);
@@ -170,8 +176,12 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
         {
             return new Result.Fail(Code.MISS_TNO);
         }
+        if(pl.getPage_limit()==0)
+        {
+            return new Result.Fail(Code.MISS_PAGE_LIMIT);
+        }
         try {
-            ArrayList<CourseModel> arrayList = courseado.select_course_from_tno_fuzzyCourseName(courseModel, curricula_variableModel);
+            ArrayList<CourseModel> arrayList = courseado.select_course_from_tno_fuzzyCourseName(courseModel, curricula_variableModel,pl);
             return new Result.Success(arrayList);
         }
         catch (Exception e)

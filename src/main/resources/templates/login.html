@@ -10,52 +10,95 @@
             background-repeat: repeat-x;
             background-position: center 0;
        background-color: #d7d7e3;
-
-
-
         }
     </style>
     <meta charset="UTF-8">
+
     <title>登录</title>
-    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+<!--    <link rel="stylesheet" href="../static/loginStyle/css/font-awesome-4.7.0/css/font-awesome.min.css">-->
+<!--    <link rel="stylesheet" href="../static/loginStyle/css/style.css">-->
+
+
 </head>
 <body>
-<div class="layui-container" style="margin: 12% auto">
-    <div class="layui-row layui-col-space20">
-        <div style="background-color:white" class="layui-col-md4 layui-col-md-offset4">
-            <h1 style="text-align: center; padding:5%; font-size:1.8em;">USTC SSEOJ</h1>
-            <form class="layui-form" action="/users/adminLogin" method="post">
-                <!--记得根据不同的option访问不同的登陆或注册地址-->
-                <div class="layui-form-item">
-                    <label class="layui-form-label" style="font-size:1.2em;">学 号：</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="no" autocomplete="off" required lay-verify="required"  placeholder="请输入学号" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label" style="font-size:1.2em;">密 码：</label>
-                    <div class="layui-input-inline">
-                        <input type="password" name="password" required lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label" style="font-size:1.0em;">用户类型：</label>
-                    <div class="layui-input-block" style="font-size:1.0em;">
-                        <input type="radio" name="role" value="student" title="学生" checked>
-                        <input type="radio" name="role" value="teacher" title="教师">
-                        <input type="radio" name="role" value="manager" title="管理员">
-                    </div>
-                </div>
 
-                <div class="layui-form-item" >
-                    <div class="layui-input-block">
-                        <button type="submit" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="formDemo" style="margin:10px 50px 10px -10px">登录</button>
-                        <button type="reset" class="layui-btn layui-btn-radius layui-btn-primary" style="margin:10px 50px 10px 0px "  >重置</button>
+
+
+<!--<div class="materialContainer">-->
+<!--    <form action="/users/adminLogin" method="post">-->
+<!--        <div class="box">-->
+<!--            <div class="title">登录</div>-->
+<!--            <div class="input">-->
+<!--                <label for="name">用户名</label>-->
+<!--                <input type="text" name="no" id="name" autocomplete="off" required lay-verify="required">-->
+<!--                <span class="spin"></span>-->
+<!--            </div>-->
+<!--            <div class="input">-->
+<!--                <label for="password">密码</label>-->
+<!--                <input type="password" name="ppassword" id="password" autocomplete="off" required lay-verify="required">-->
+<!--                <span class="spin"></span>-->
+<!--            </div>-->
+<!--            <div class="layui-form-item">-->
+<!--                <div style="font-size:1.0em;">&ndash;&gt;-->
+<!--                    <input type="radio" name="role" value="student" title="学生" checked>-->
+<!--                    <input type="radio" name="role" value="teacher" title="教师">-->
+<!--                    <input type="radio" name="role" value="manager" title="管理员">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="button login">-->
+<!--                <button lay-submit="" lay-filter="formDemo">-->
+<!--                    <span>登录</span>-->
+<!--                    <i class="fa fa-check"></i>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            <a href="javascript:" class="pass-forgot">忘记密码？</a>-->
+<!--        </div>-->
+<!--    </form>-->
+
+
+<!--</div>-->
+
+
+
+
+    <div class="layui-container" style="margin: 12% auto">
+        <div class="layui-row layui-col-space20">
+            <div style="background-color:white" class="layui-col-md4 layui-col-md-offset4">
+                <h1 style="text-align: center; padding:5%; font-size:1.8em;">USTC SSEOJ</h1>
+                <form class="layui-form" action="/users/adminLogin" method="post">
+                    <!--记得根据不同的option访问不同的登陆或注册地址-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="font-size:1.2em;">学 号：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="no" autocomplete="off" required lay-verify="required"  placeholder="请输入学号" class="layui-input">
+                        </div>
                     </div>
-                </div>
-            </form>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="font-size:1.2em;">密 码：</label>
+                        <div class="layui-input-inline">
+                            <input type="password" name="password" required lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="font-size:1.0em;">用户类型：</label>
+                        <div class="layui-input-block" style="font-size:1.0em;">
+                            <input type="radio" name="role" value="student" title="学生" checked>
+                            <input type="radio" name="role" value="teacher" title="教师">
+                            <input type="radio" name="role" value="manager" title="管理员">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item" >
+                        <div class="layui-input-block">
+                            <button type="submit" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="formDemo" style="margin:10px 50px 10px -10px">登录</button>
+                            <button type="reset" class="layui-btn layui-btn-radius layui-btn-primary" style="margin:10px 50px 10px 0px "  >重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+<!--    </div>-->
 </div>
 <script src="../static/layui/layui.js"></script>
 <script>
@@ -101,5 +144,8 @@
         });
     });
 </script>
+<script src="../../static/loginStyle/js/jquery.min.js"></script>
+<script src="../../static/loginStyle/js/index.js"></script>
+
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.ustc.sse.sseoj.dao.teacher.homework;
 
 import com.ustc.sse.sseoj.Data.Result;
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 @Mapper
 public interface QuestionDao {
 
-    //得到教师的所有问题
+    //得到教师的所有问题 todo 改
     @Select("SELECT\n" +
             "\tquestion.*\n" +
             "FROM\n" +
@@ -29,10 +30,10 @@ public interface QuestionDao {
             "INNER JOIN bank_teacher ON bank_teacher.questionID = question.questionID\n" +
             "WHERE\n" +
             "\tbank_teacher.tno = #{tm.tno}\n" +
-            "\tAND question.title LIKE '%${qm.title}%' ")
-    public ArrayList<questionModel> get_all_question_from_teacher(@Param("tm") TeacherModel tm,@Param("qm") questionModel qm);
+            "\tAND question.title LIKE '%${qm.title}%' LIMIT #{pl.limit_head},#{pl.limit_tail} ")
+    public ArrayList<questionModel> get_all_question_from_teacher(@Param("tm") TeacherModel tm,@Param("qm") questionModel qm,@Param("pl") pageLimit pl);
 
-    //得到教师某作业下的所有问题
+    //得到教师某作业下的所有问题 todo 改
     @Select("SELECT\n" +
             "\tquestion.*,homework_link_bank.questionNumber\n" +
             "FROM\n" +
@@ -43,8 +44,8 @@ public interface QuestionDao {
             "\thomework_link_bank.homeworkID = #{hm.homeworkid}\n" +
             "AND bank_teacher.tno = #{tm.tno}"+
             "\tAND question.title LIKE '%${qm.title}%'\n" +
-            "\tORDER BY homework_link_bank.questionNumber")
-    public ArrayList<questionModel> get_all_question_from_course_on_teacher(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm,@Param("qm") questionModel qm);
+            "\tORDER BY homework_link_bank.questionNumber  LIMIT #{pl.limit_head},#{pl.limit_tail} ")
+    public ArrayList<questionModel> get_all_question_from_course_on_teacher(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm,@Param("qm") questionModel qm,@Param("pl")pageLimit pl);
 
     //查询该问题有几个作业在使用
     @Select("SELECT\n" +
@@ -80,7 +81,7 @@ public interface QuestionDao {
             "AND answer.answer_type = 'answers'")
     public ArrayList<answerModel> get_all_answer(@Param("qm") questionModel qm);
 
-    //搜索该老师的，该作业外的其他题目
+    //搜索该老师的，该作业外的其他题目 todo 改
     @Select("SELECT\n" +
             "\tquestion.*\n" +
             "FROM\n" +
@@ -93,9 +94,10 @@ public interface QuestionDao {
             "FROM\n" +
             "\thomework_link_bank\n" +
             "WHERE\n" +
-            "\thomework_link_bank.homeworkID = #{hm.homeworkid} )")
-    public ArrayList<questionModel> get_question_except_using(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm);
+            "\thomework_link_bank.homeworkID = #{hm.homeworkid} ) LIMIT #{pl.limit_head},#{pl.limit_tail} ")
+    public ArrayList<questionModel> get_question_except_using(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm,@Param("pl")pageLimit pl);
 
+    // 得到所有问题ip即题号
     @Select("SELECT\n" +
             "\t*\n" +
             "FROM\n" +

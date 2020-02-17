@@ -28,6 +28,7 @@ public class WebConfigurer implements WebMvcConfigurer {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
     }
 
+    // 现在就是相应需要设置contentType
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -40,7 +41,8 @@ public class WebConfigurer implements WebMvcConfigurer {
                 "/user/register",
                 "/user/index",
                 "/static/**",
-                "/user/tempCourse");
+                "/user/tempCourse"
+                );
     }
 
 }

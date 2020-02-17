@@ -1,5 +1,6 @@
 package com.ustc.sse.sseoj.model.warehouse;
 
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

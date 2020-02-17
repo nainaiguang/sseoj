@@ -8,6 +8,7 @@ import com.ustc.sse.sseoj.dao.singleModel.teacher.homework_link_bankModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.teacher.bank_teacherModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.warehouse.*;
 import com.ustc.sse.sseoj.dao.teacher.homework.QuestionDao;
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.bank_teacherModelKey;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
@@ -53,10 +54,7 @@ public class QuestionServiceImpl implements QuestionService {
         {
             return new Result.Fail(Code.MISS_TNO);
         }
-        if(hm.getHomeworkid()==null)
-        {
-            return new Result.Fail(Code.MISS_HOMEWORKID);
-        }
+
 
         if(qm.getQuestionid()==null)
         {
@@ -89,14 +87,18 @@ public class QuestionServiceImpl implements QuestionService {
                 return new Result.Error(e);
             }
         }
+        if(hm.getHomeworkid()!=null)
+        {
+            homework_link_bankModel temphlbm=new homework_link_bankModel();
+            temphlbm.setHomeworkid(hm.getHomeworkid());
+            temphlbm.setQuestionid(qm.getQuestionid());
+            temphlbm.setQuestionnumber(new Integer(qm.getQuestionNumber()));
+            Result res= add_relationship_homework_question(temphlbm);
+            return  res;
+        }
 
-        homework_link_bankModel temphlbm=new homework_link_bankModel();
-        temphlbm.setHomeworkid(hm.getHomeworkid());
-        temphlbm.setQuestionid(qm.getQuestionid());
-        temphlbm.setQuestionnumber(new Integer(qm.getQuestionNumber()));
-        Result res= add_relationship_homework_question(temphlbm);
 
-        return res;
+        return new Result.Success(true);
 
     }
 
@@ -127,9 +129,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     }
 
-    //获取该教师的，某作业的所有题目
+    //获取该教师的，某作业的所有题目 //todo 改
     @Override
-    public Result get_all_question_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm) {
+    public Result get_all_question_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm,pageLimit pl) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -138,12 +140,16 @@ public class QuestionServiceImpl implements QuestionService {
         {
             return new Result.Fail(Code.MISS_HOMEWORKID);
         }
+        if(pl.getPage_limit()==0)
+        {
+            return new Result.Fail(Code.MISS_PAGE_LIMIT);
+        }
         if(qm.getTitle()==null)
         {
             qm.setTitle("");
         }
         try{
-            ArrayList<questionModel> reslist= qdao.get_all_question_from_course_on_teacher(tm,hm,qm);
+            ArrayList<questionModel> reslist= qdao.get_all_question_from_course_on_teacher(tm,hm,qm,pl);
             return new Result.Success(reslist);
         }
         catch (Exception e)
@@ -153,20 +159,24 @@ public class QuestionServiceImpl implements QuestionService {
 
     }
 
-    //搜索题目,该老师的（包括模糊搜索，根据题目名）
+    //搜索题目,该老师的（包括模糊搜索，根据题目名） //todo 改
     @Override
-    public Result search_question(TeacherModel tm, questionModel qm) {
+    public Result search_question(TeacherModel tm, questionModel qm, pageLimit pl) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
         }
+        if(pl.getPage_limit()==0)
+        {
+            return new Result.Fail(Code.MISS_PAGE_LIMIT);
+        }
         if(qm.getTitle()==null)
         {
             qm.setTitle("");
         }
 
         try{
-            ArrayList<questionModel> reslist= qdao.get_all_question_from_teacher(tm,qm);
+            ArrayList<questionModel> reslist= qdao.get_all_question_from_teacher(tm,qm,pl);
             return new Result.Success(reslist);
         }
         catch (Exception e)
@@ -176,8 +186,6 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 
-
-    //todo 批量更新题号 用homework_link_bank表得到所有该作业的题目，然后一条条更新
     @Override
     public Result reflash_questionNumber(homework_link_bankModel hlbm){
         if(hlbm.getHomeworkid()==null)
@@ -320,9 +328,9 @@ public class QuestionServiceImpl implements QuestionService {
 
 
 
-    //搜索该老师的，该作业外的其他题目
+    //搜索该老师的，该作业外的其他题目 //todo 改
     @Override
-    public Result get_question_except_using(TeacherModel tm, homeworkModel hm) {
+    public Result get_question_except_using(TeacherModel tm, homeworkModel hm,pageLimit pl) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -331,8 +339,12 @@ public class QuestionServiceImpl implements QuestionService {
         {
             return new Result.Fail(Code.MISS_HOMEWORKID);
         }
+        if(pl.getPage_limit()==0)
+        {
+            return new Result.Fail(Code.MISS_PAGE_LIMIT);
+        }
         try{
-            ArrayList<questionModel> reslist=qdao.get_question_except_using(tm,hm);
+            ArrayList<questionModel> reslist=qdao.get_question_except_using(tm,hm,pl);
             return new Result.Success(reslist);
         }
         catch (Exception e)

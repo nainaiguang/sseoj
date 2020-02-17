@@ -2,6 +2,7 @@ package com.ustc.sse.sseoj.controller.teacher;
 
 
 import com.ustc.sse.sseoj.Data.*;
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
 import com.ustc.sse.sseoj.model.user.TeacherModel;
@@ -85,11 +86,11 @@ public class TeacherQuestionController {
     //获取该教师的，某作业的所有题目（包括模糊）
     @RequestMapping(value = "/getAllQuestionFromHomework", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public  Mes get_all_question_from_homework(homeworkModel hm,questionModel qm,HttpServletRequest request){
+    public  Mes get_all_question_from_homework(homeworkModel hm,questionModel qm,pageLimit pl ,HttpServletRequest request){
         TeacherModel tm=new TeacherModel();
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
-        Result result=qsimpl.get_all_question_from_homework(tm,hm,qm);
+        Result result=qsimpl.get_all_question_from_homework(tm,hm,qm,pl);
         if(result instanceof Result.Success)
         {
             ArrayList<questionModel> arrayList=((ArrayList<questionModel>)((Result.Success) result).getData());
@@ -112,12 +113,12 @@ public class TeacherQuestionController {
     //搜索题目,该老师的（包括模糊搜索，根据题目名）
     @RequestMapping(value = "/searchQuestion", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes search_question(questionModel qm,HttpServletRequest request){
+    public Mes search_question(questionModel qm, pageLimit pl ,HttpServletRequest request){
         TeacherModel tm=new TeacherModel();
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
 
-        Result result=qsimpl.search_question(tm,qm);
+        Result result=qsimpl.search_question(tm,qm,pl);
 
         if(result instanceof Result.Success)
         {
@@ -263,12 +264,12 @@ public class TeacherQuestionController {
     //搜索该老师的，该作业外的其他题目,包括模糊
     @RequestMapping(value = "/getQuestionExceptUsing", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes get_question_except_using(homeworkModel hm,HttpServletRequest request){
+    public Mes get_question_except_using(homeworkModel hm,pageLimit pl ,HttpServletRequest request){
         TeacherModel tm=new TeacherModel();
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
 
-        Result result= qsimpl.get_question_except_using(tm,hm);
+        Result result= qsimpl.get_question_except_using(tm,hm,pl);
 
         if(result instanceof Result.Success)
         {

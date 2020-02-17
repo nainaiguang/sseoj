@@ -52,6 +52,9 @@ public enum  Code {
     MISS_QUESTION_TYPE(330,"miss question type"),
     MISS_QUESTION_TITLE(331,"miss question title"),
     MISS_QUESTION_DESCRIPTION(332,"miss question description"),
+
+    MISS_PAGE_NUMBER(333,"miss page number"),
+    MISS_PAGE_LIMIT(334,"miss page limit"),
    //未知错误
    UNKNOWN_WRONG(999,"unknown wrong");
 

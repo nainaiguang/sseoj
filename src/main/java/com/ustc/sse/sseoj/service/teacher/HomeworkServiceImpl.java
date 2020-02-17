@@ -7,6 +7,7 @@ import com.ustc.sse.sseoj.dao.singleModel.teacher.course_homeworkModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.teacher.homeworkModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.teacher.teacher_homeworkModelMapper;
 import com.ustc.sse.sseoj.dao.teacher.homework.HomeworkDao;
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
@@ -202,10 +203,14 @@ public class HomeworkServiceImpl implements HomeworkService {
     //某老师的所有作业，包括名字模糊查询 空即查询所有
     //优先查询某门课下
     @Override
-    public Result search_homework(TeacherModel tm,CourseModel cm, homeworkModel hm) {
+    public Result search_homework(TeacherModel tm,CourseModel cm, homeworkModel hm, pageLimit pl) {
         if(cm.getCourseID()==null&&tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_PARAMETE);
+        }
+        if(pl.getPage_limit()==0)
+        {
+            return new Result.Fail(Code.MISS_PAGE_LIMIT);
         }
         if(cm.getCourseID()!=null)
         {
@@ -214,7 +219,7 @@ public class HomeworkServiceImpl implements HomeworkService {
                 hm.setName("");
             }
             try{
-                ArrayList<homeworkModel> arrayres=homeworkDao.search_homework_for_name_fully_in_course(tm,cm,hm);
+                ArrayList<homeworkModel> arrayres=homeworkDao.search_homework_for_name_fully_in_course(tm,cm,hm,pl);
                 return new Result.Success(arrayres);
             }
             catch (Exception e)
@@ -230,7 +235,7 @@ public class HomeworkServiceImpl implements HomeworkService {
                 hm.setName("");
             }
             try{
-                ArrayList<homeworkModel> arrayres=homeworkDao.search_homework_for_name_fully_in_teacher(tm,hm);
+                ArrayList<homeworkModel> arrayres=homeworkDao.search_homework_for_name_fully_in_teacher(tm,hm,pl);
                 return new Result.Success(arrayres);
             }
             catch (Exception e)
@@ -263,7 +268,7 @@ public class HomeworkServiceImpl implements HomeworkService {
 
     //显示目前属于该教师，但没有在该课程下的所有作业
     @Override
-    public Result search_homework_without_using(TeacherModel tm, CourseModel cm,homeworkModel hm) {
+    public Result search_homework_without_using(TeacherModel tm, CourseModel cm,homeworkModel hm,pageLimit pl) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -277,7 +282,7 @@ public class HomeworkServiceImpl implements HomeworkService {
             hm.setName("");
         }
         try{
-            ArrayList<homeworkModel> arrayRes=homeworkDao.search_homework_without_using(tm,cm,hm);
+            ArrayList<homeworkModel> arrayRes=homeworkDao.search_homework_without_using(tm,cm,hm,pl);
             return new Result.Success(arrayRes);
         }
         catch (Exception e)

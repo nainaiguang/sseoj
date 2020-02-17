@@ -52,7 +52,7 @@ public class UserController {
 
     @RequestMapping("/tempCourse")
     public String tempCourse() {
-        return "tempCourse";};
+        return "loginResourse/index";};
 
     /**
      * 功能描述: 首页

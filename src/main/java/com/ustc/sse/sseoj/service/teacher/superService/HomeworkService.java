@@ -1,6 +1,7 @@
 package com.ustc.sse.sseoj.service.teacher.superService;
 
 import com.ustc.sse.sseoj.Data.Result;
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
@@ -35,11 +36,11 @@ public interface HomeworkService {
     public Result update_homework(homeworkModel hm);
 
     //显示某老师的作业课程，包括模糊查询
-    public Result search_homework(TeacherModel tm, CourseModel cm,homeworkModel hm);
+    public Result search_homework(TeacherModel tm, CourseModel cm,homeworkModel hm, pageLimit pl);
 
     //显示这个作业哪几门在用
     public Result people_use_homework(homeworkModel hm);
 
     //显示目前没有在改课程下应用的该教师的作业
-    public Result search_homework_without_using(TeacherModel tm,CourseModel cm,homeworkModel hm);
+    public Result search_homework_without_using(TeacherModel tm,CourseModel cm,homeworkModel hm,pageLimit pl);
 }

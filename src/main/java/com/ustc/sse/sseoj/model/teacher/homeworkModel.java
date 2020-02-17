@@ -1,6 +1,8 @@
 package com.ustc.sse.sseoj.model.teacher;
 
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +11,7 @@ import java.util.Date;
 
 @ToString
 public class homeworkModel {
+
     private String homeworkid;
 
     private String name;
