@@ -18,19 +18,19 @@ public class pageLimit {
 
     @Setter
     @Getter
-    int page_number=0;
+    int page=0;
 
     @Setter
     @Getter
-    int page_limit=0;
+    int limit=0;
 
     public int getLimit_head() {
-        this.limit_head=page_number*page_limit;
+        this.limit_head=page*limit - limit + 1;
         return limit_head;
     }
 
     public int getLimit_tail() {
-        this.limit_tail=page_number*page_limit+page_limit;
+        this.limit_tail=page*limit;
         return limit_tail;
     }
 }

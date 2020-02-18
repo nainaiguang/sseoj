@@ -87,7 +87,9 @@
                     // where: queryParam(),
                     where: {
                         'courseID': $('#courseID').val(),
-                        'name': $('#name').val()
+                        'name': $('#name').val(),
+                        page: this.page,
+                        limit: this.limit
                     },
                     cols : [ [ // 标题栏
                         {
@@ -179,7 +181,7 @@
                 var homeworkid = data.homeworkid;
                 layer.open({
                     type: 2,
-                    content: '/teacher/toEditCourseHomework?homeworkid='+homeworkid,
+                    content: '/teacherHomework/toEditCourseHomework?homeworkid='+homeworkid,
                     maxmin: true,
                     title: '编辑作业',
                     area : ['900px', '600px']
@@ -206,7 +208,7 @@
     function addNew(){
         layer.open({
             type: 2,
-            content: '/teacher/toAddCourseHomework?courseID='+$("#courseID").val(),
+            content: '/teacherHomework/toAddCourseHomework?courseID='+$("#courseID").val(),
             maxmin: true,
             title: '新建作业',
             area : ['900px', '600px']
@@ -217,7 +219,7 @@
     function add(){
         var index = layer.open({
             type: 2,
-            content: '/teacher/toSelectCourseHomework?courseID='+$("#courseID").val(),
+            content: '/teacherHomework/toSelectCourseHomework?courseID='+$("#courseID").val(),
             maxmin: false,
             title: '添加作业'
         });

@@ -78,7 +78,7 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
         {
             return new Result.Fail(Code.MISS_TNO);
         }
-        if(pl.getPage_limit()==0)
+        if(pl.getLimit()==0)
         {
             return new Result.Fail(Code.MISS_PAGE_LIMIT);
         }
@@ -176,7 +176,7 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
         {
             return new Result.Fail(Code.MISS_TNO);
         }
-        if(pl.getPage_limit()==0)
+        if(pl.getLimit()==0)
         {
             return new Result.Fail(Code.MISS_PAGE_LIMIT);
         }

@@ -1,6 +1,6 @@
 <!--
  @author  Qianbw
- @create 2020-02-15 14:41
+ @create 2020-02-16 21:30
 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
@@ -29,22 +29,13 @@
     </div>
 </div>
 
-<!-- 按钮栏 -->
-<div class="" id="toolbar" style="padding:0px 10px">
-    <a><button type="button" onclick="addNew()" title="新建题目"id="addNew"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i>新建题目</button></a>
-    <a><button type="button" onclick="add()" title="添加题目"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#x1005;</i>添加题目</button></a>
-</div>
-
 <!-- 表格栏 -->
 <div style="padding:0px 10px">
     <table id="table" lay-filter="demo"></table>
 </div>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="addCase">添加案例</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="showDetail">查看</a>
-    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">移除</a>
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="add">添加题目</a>
 </script>
 
 <!-- js引入 -->
@@ -74,7 +65,7 @@
         // 执行渲染
         table.render({
             elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
-            url : '/teacher/course/question//getAllQuestionFromHomework' ,
+            url : '/teacher/course/question/getQuestionExceptUsing' ,
             id : 'questionid', // 设定容器唯一ID
             page : true, // 是否开启分页
             loading : true, // 是否显示加载条
@@ -145,47 +136,30 @@
     function optionTool() {
         table.on('tool(demo)', function(obj){
             var data = obj.data;
-            if(obj.event === 'edit'){//编辑题目
-                var index = layer.open({
-                    type: 2,
-                    content: '/teacherQuestion/toEditQuestion?questionid='+data.questionid,
-                    maxmin: false,
-                    title: '编辑题目'
-                });
-                layer.full(index);
-            } else if (obj.event === 'addCase'){//添加案例
-                var index = layer.open({
-                    type: 2,
-                    content: '/teacherQuestion/toAddCase?questionid='+data.questionid,
-                    maxmin: false,
-                    title: data.title + '-->添加案例'
-                });
-                layer.full(index);
-            } else if (obj.event === 'del'){//移除题目
-                layer.confirm("确定移除此题目吗？", function(){
-                    var index = layer.load();//load动画
-                    $.ajax({
-                        url : "/teacher/course/question/deleteHomeworkQuestionRelationship?questionid="+data.questionid+"&homeworkid="+$('#homeworkid').val(),
-                        dataType: 'json',
-                        method : 'post',
-                        contentType : 'application/json; charset=UTF-8',
-                        data : {},
-                        traditional: true,  //阻止深度序列化，向后台传送数组
-                        success : function(data){
-                            if (data.success) {
-                                layer.close(index);
-                                query();
-                                layer.msg('移除成功', {icon: 1});
-                            } else {
-                                layer.close(index);
-                                layer.msg("移除失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
-                            }
-                        },
-                        error: function(){
+            if(obj.event === 'add'){//添加题目
+                var index = layer.load();//load动画
+                obj.data.homeworkid = $('#homeworkid').val();
+                console.log(obj.data);
+                $.ajax({
+                    url: "/teacher/course/question/addHomeworkQuestionRelationship",
+                    dataType: 'json',
+                    method: 'post',
+                    data:obj.data,
+                    success: function (data) {
+                        if (data.success) {
                             layer.close(index);
-                            layer.msg("移除失败！", {icon: 2});
+                            query();
+                            parent.query();
+                            layer.msg('添加成功', {icon: 1});
+                        } else {
+                            layer.close(index);
+                            layer.msg("添加失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
                         }
-                    });
+                    },
+                    error: function () {
+                        layer.close(index);
+                        layer.msg("添加失败！", {icon: 2});
+                    }
                 });
             }
         });
@@ -202,64 +176,6 @@
         $('#title').val('');
         query();
     }
-
-
-    // 新增题目
-    function addNew(){
-        var index = layer.open({
-            type: 2,
-            content: '/teacherQuestion/toAddQuestion?homeworkid='+$('#homeworkid').val(),
-            maxmin: false,
-            title: '新增题目'
-        });
-        layer.full(index);
-    }
-
-    // 添加题目
-    function add(){
-        var index = layer.open({
-            type: 2,
-            content: '/teacherQuestion/toSelectHomeworkQuestion?homeworkid='+$("#homeworkid").val(),
-            maxmin: false,
-            title: '添加作业'
-        });
-        layer.full(index);
-    }
-
-    // 批量删除选中行
-    function del() {
-        var data = getSelections().data;
-        if(data.length == 0){
-            layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
-        } else {
-            layer.confirm("确定删除作业吗？", function () {
-                var index = layer.load();//load动画
-                $.ajax({
-                    url: "/teacher/course/homework/deleteHomework",
-                    dataType: 'json',
-                    method: 'post',
-                    contentType : 'application/json; charset=UTF-8',
-                    data:JSON.stringify(data),
-                    traditional: true,  //阻止深度序列化，向后台传送数组
-                    success: function (data) {
-                        if (data.success) {
-                            layer.close(index);
-                            query();
-                            layer.msg('删除成功', {icon: 1});
-                        } else {
-                            layer.close(index);
-                            layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
-                        }
-                    },
-                    error: function () {
-                        layer.close(index);
-                        layer.msg("删除失败！", {icon: 2});
-                    }
-                });
-            });
-        }
-    }
-
 
     var setting = {
         check:{

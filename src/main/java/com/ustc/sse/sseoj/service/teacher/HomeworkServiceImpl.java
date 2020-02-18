@@ -208,7 +208,7 @@ public class HomeworkServiceImpl implements HomeworkService {
         {
             return new Result.Fail(Code.MISS_PARAMETE);
         }
-        if(pl.getPage_limit()==0)
+        if(pl.getLimit()==0)
         {
             return new Result.Fail(Code.MISS_PAGE_LIMIT);
         }

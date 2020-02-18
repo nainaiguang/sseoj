@@ -88,7 +88,9 @@
             // where: queryParam(),
             where: {
                 'tno': $('#tno').val(),
-                'name': $('#name').val()
+                'name': $('#name').val(),
+                page : this.page,
+                limit : this.limit
             },
             cols : [ [ // 标题栏
                 {
@@ -141,7 +143,7 @@
                 var courseID = data.courseID;
                 var index = layer.open({
                     type: 2,
-                    content: '/teacher/toCourseHomework?courseID='+courseID,
+                    content: '/teacherHomework/toCourseHomework?courseID='+courseID,
                     maxmin: false,
                     title: obj.data.name + '-->作业管理'
                 });
@@ -151,7 +153,7 @@
                 var courseID = data.courseID;
                 layer.open({
                     type: 2,
-                    content: '/teacher/toEditCourse?courseID='+courseID,
+                    content: '/teacherCourse/toEditCourse?courseID='+courseID,
                     maxmin: true,
                     title: '编辑课程',
                     area : ['600px', '400px']
@@ -183,7 +185,7 @@
     function add(){
         layer.open({
             type: 2,
-            content: '/teacher/toAddCourse',
+            content: '/teacherCourse/toAddCourse',
             maxmin: true,
             title: '添加课程',
             area : ['600px', '400px']
@@ -201,7 +203,7 @@
             var courseID = data[0].courseID;
             layer.open({
                 type: 2,
-                content: '/teacher/toEditCourse?courseID='+courseID,
+                content: '/teacherCourse/toEditCourse?courseID='+courseID,
                 maxmin: true,
                 title: '编辑角色',
                 area : ['600px', '400px']

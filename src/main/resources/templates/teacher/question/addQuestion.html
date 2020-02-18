@@ -1,0 +1,171 @@
+<!--
+ @author  Qianbw
+ @create 2020-02-15 18:59
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>新增题目</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+</head>
+<body>
+<div style="display: flex; justify-content: center; margin-top: 30px;">
+    <form name="addCourseForm" class="layui-form" action="" method="post">
+        <input th:value="${homeworkid}" type="hidden" name="homeworkid" id="homeworkid"/>
+        <div class="layui-form-item" style="margin-bottom:30px;">
+            <label class="layui-form-label">题目名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" required  lay-verify="title" placeholder="请输入题目名称" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">题目类型</label>
+            <div class="layui-input-inline">
+                <select name="questiontype" lay-verify="questiontype">
+                    <option value=""></option>
+                    <option value="choose">choose</option>
+                    <option value="blank">blank</option>
+                    <option value="programming">programming</option>
+                </select>
+            </div>
+            <label class="layui-form-label">题目描述</label>
+            <div class="layui-input-inline" style="width: 500px;">
+                <textarea name="description" lay-verify="description" placeholder="请输入题目描述" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom:30px;">
+            <label class="layui-form-label">input解释</label>
+            <div class="layui-input-inline">
+                <input type="text" name="inputExplain" placeholder="请输入input解释" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">output解释</label>
+            <div class="layui-input-inline">
+                <input type="text" name="outputExplain" placeholder="请输入output解释" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">题目注释</label>
+            <div class="layui-input-inline" style="width: 500px;">
+                <textarea name="annotation" placeholder="请输入题目注释" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom:30px;">
+            <label class="layui-form-label">题目序号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="questionNumber" lay-verify="questionNumber" placeholder="请输入题目序号" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">时间限制</label>
+            <div class="layui-input-inline">
+                <input type="text" name="timelimit" placeholder="请输入时间限制" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">内存限制</label>
+            <div class="layui-input-inline">
+                <input type="text" name="memorylimit" placeholder="请输入内存限制" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">图片演示</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="pictureUrl" autocomplete="off" class="layui-input">
+                <button type="button" class="layui-btn layui-btn-primary" id="upimg">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+            </div>
+
+        </div>
+        <div class="layui-form-item" style="display: flex; justify-content: center; margin-top:200px;" >
+            <div class="layui-input-block">
+                <button style="width:170px;" class="layui-btn" lay-submit type="button"  lay-filter="form">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- js引入 -->
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript">
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    var upload;
+    layui.use(['upload', 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+            upload = layui.upload;
+            Valid();
+            eventinit();
+
+        });
+
+    function Valid(){
+        form.verify({
+            title: function(value) {
+                if(value.length < 1) {
+                    return '请填写题目名称';
+                }
+            },
+            questiontype:function(value) {
+                if(value.length < 1) {
+                    return '请填写题目类型';
+                }
+            },
+            description:function(value) {
+                if(value.length < 1) {
+                    return '请填写题目描述';
+                }
+            },
+            questionNumber:function(value) {
+                if(value.length < 1) {
+                    return '请填写题目序号';
+                }
+            }
+        });
+    }
+
+    function eventinit(){
+        form.on('submit(form)', function(data){
+            var index = layer.load();//load动画
+            console.log(data.field);
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/teacher/course/question//addQuestion',
+                data: data.field,
+                success: function(data){
+                    if(data.success){
+                        layer.close(index);
+                        layer.msg('新增成功',{icon: 1});
+                        setTimeout(function(){
+                            parent.layer.closeAll();
+                        }, 500);
+                        parent.query();
+                    } else {
+                        layer.close(index);
+                        layer.msg("新增失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                    }
+                },
+                error: function(){
+                    layer.close(index);
+                    layer.msg("新增失败！", {icon: 2});
+                }
+            });
+        });
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#upimg' //绑定元素
+            ,url: '/upload/' //上传接口
+            ,done: function(res){
+                //上传完毕回调
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
