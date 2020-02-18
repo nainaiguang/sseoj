@@ -8,6 +8,7 @@ import com.ustc.sse.sseoj.dao.singleModel.teacher.homework_link_bankModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.teacher.bank_teacherModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.warehouse.*;
 import com.ustc.sse.sseoj.dao.teacher.homework.QuestionDao;
+import com.ustc.sse.sseoj.model.functionClass.count;
 import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.bank_teacherModelKey;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
@@ -47,7 +48,7 @@ public class QuestionServiceImpl implements QuestionService {
     QuestionDao qdao;
 
     //添加问题（包括作业与问题的关系），但添加教师关系
-    //TODO 添加图片还没写  不加入作业中的添加作业
+    //TODO 添加图片还没写
     @Override
     public Result add_question(TeacherModel tm,homeworkModel hm, questionModel qm) {
         if(tm.getTno()==null)
@@ -129,7 +130,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     }
 
-    //获取该教师的，某作业的所有题目 //todo 改
+    //获取该教师的，某作业的所有题目
     @Override
     public Result get_all_question_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm,pageLimit pl) {
         if(tm.getTno()==null)
@@ -159,7 +160,33 @@ public class QuestionServiceImpl implements QuestionService {
 
     }
 
-    //搜索题目,该老师的（包括模糊搜索，根据题目名） //todo 改
+    //获取该教师的，某作业的所有题目数量
+    @Override
+    public Result get_all_question_count_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm) {
+        if(tm.getTno()==null)
+        {
+            return new Result.Fail(Code.MISS_TNO);
+        }
+        if(hm.getHomeworkid()==null)
+        {
+            return new Result.Fail(Code.MISS_HOMEWORKID);
+        }
+        if(qm.getTitle()==null)
+        {
+            qm.setTitle("");
+        }
+        try{
+            count reslist= qdao.get_all_question_count_from_course_on_teacher(tm,hm,qm);
+            return new Result.Success(reslist);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+
+    }
+
+    //搜索题目,该老师的（包括模糊搜索，根据题目名）
     @Override
     public Result search_question(TeacherModel tm, questionModel qm, pageLimit pl) {
         if(tm.getTno()==null)
@@ -177,6 +204,29 @@ public class QuestionServiceImpl implements QuestionService {
 
         try{
             ArrayList<questionModel> reslist= qdao.get_all_question_from_teacher(tm,qm,pl);
+            return new Result.Success(reslist);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
+
+    //搜索题目,该老师的（包括模糊搜索，根据题目名）
+    @Override
+    public Result search_question_count(TeacherModel tm, questionModel qm) {
+        if(tm.getTno()==null)
+        {
+            return new Result.Fail(Code.MISS_TNO);
+        }
+
+        if(qm.getTitle()==null)
+        {
+            qm.setTitle("");
+        }
+
+        try{
+            count reslist= qdao.get_all_question_count_from_teacher(tm,qm);
             return new Result.Success(reslist);
         }
         catch (Exception e)
@@ -328,7 +378,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 
 
-    //搜索该老师的，该作业外的其他题目 //todo 改
+    //搜索该老师的，该作业外的其他题目
     @Override
     public Result get_question_except_using(TeacherModel tm, homeworkModel hm,pageLimit pl) {
         if(tm.getTno()==null)
@@ -345,6 +395,28 @@ public class QuestionServiceImpl implements QuestionService {
         }
         try{
             ArrayList<questionModel> reslist=qdao.get_question_except_using(tm,hm,pl);
+            return new Result.Success(reslist);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
+
+    //搜索该老师的，该作业外的其他题目数量
+    @Override
+    public Result get_question_count_except_using(TeacherModel tm, homeworkModel hm) {
+        if(tm.getTno()==null)
+        {
+            return new Result.Fail(Code.MISS_TNO);
+        }
+        if(hm.getHomeworkid()==null)
+        {
+            return new Result.Fail(Code.MISS_HOMEWORKID);
+        }
+
+        try{
+            count reslist=qdao.get_question_count_except_using(tm,hm);
             return new Result.Success(reslist);
         }
         catch (Exception e)

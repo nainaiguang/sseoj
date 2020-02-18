@@ -3,6 +3,7 @@ package com.ustc.sse.sseoj.controller.teacher;
 import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.Mes;
 import com.ustc.sse.sseoj.Data.Result;
+import com.ustc.sse.sseoj.model.functionClass.count;
 import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey;
@@ -217,10 +218,12 @@ public class TeacherHomeworkController {
             tm.setTno(user.getNo());
 
         Result res=homeworkService.search_homework(tm,cm,hm,pl);
-        if(res instanceof Result.Success)
+        Result res1=homeworkService.search_homework_count(tm,cm,hm);
+        if(res instanceof Result.Success && res1 instanceof Result.Success)
         {
             ArrayList<homeworkModel> ar=(ArrayList<homeworkModel>) ((Result.Success) res).getData();
-            return new Mes(true,Code.SUCCESS,ar.size(),ar);
+            count count1= (count) ((Result.Success) res1).getData();
+            return new Mes(true,Code.SUCCESS,count1.getCount1(),ar);
         }
         else if(res instanceof Result.Fail)
         {
@@ -269,10 +272,12 @@ public class TeacherHomeworkController {
         tm.setTno(user.getNo());
 
         Result res=homeworkService.search_homework_without_using(tm,cm,hm,pl);
-        if(res instanceof Result.Success)
+        Result res1=homeworkService.search_count_homework_without_using(tm,cm,hm);
+        if(res instanceof Result.Success && res1 instanceof Result.Success)
         {
             ArrayList<homeworkModel> ar=(ArrayList<homeworkModel>) ((Result.Success) res).getData();
-            return new Mes(true,Code.SUCCESS,ar.size(),ar);
+            count count1= (count) ((Result.Success) res1).getData();
+            return new Mes(true,Code.SUCCESS,count1.getCount1(),ar);
         }
         else if(res instanceof Result.Fail)
         {
