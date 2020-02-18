@@ -4,6 +4,7 @@ import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.IDType;
 import com.ustc.sse.sseoj.Data.Mes;
 import com.ustc.sse.sseoj.Data.Result;
+import com.ustc.sse.sseoj.model.functionClass.count;
 import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.Curricula_variableModel;
@@ -118,12 +119,16 @@ public class TeacherCourseController<T> {
         curricula_variableModel.setTno(user.getNo());//通过session获取no
 
         Result result=teacherCourseService.teacher_show_somebody_all_course(curricula_variableModel,pl);
-        if(result instanceof Result.Success)
+        Result result1=teacherCourseService.teacher_count_somebody_all_course(curricula_variableModel);
+        if(result instanceof Result.Success && result1 instanceof Result.Success)
         {
             ArrayList<CourseModel> arrayList= (ArrayList<CourseModel>) ((Result.Success) result).getData();
-            Mes mes=new Mes(true,Code.SUCCESS,arrayList.size(),arrayList);
+
+            count count1= (count) ((Result.Success) result1).getData();
+            Mes mes=new Mes(true,Code.SUCCESS,count1.getCount1(),arrayList);
             System.out.println(mes.toString());
             return mes;
+
         }
         else if(result instanceof Result.Fail)
         {
@@ -238,10 +243,12 @@ public class TeacherCourseController<T> {
         curricula_variableModel.setTno(user.getNo());//通过session获取no
 
         Result result=teacherCourseService.teacher_search_course_fully(courseModel,curricula_variableModel,pl);
-        if(result instanceof Result.Success)
+        Result result1=teacherCourseService.teacher_search_count_course_fully(courseModel,curricula_variableModel);//获取总条数
+        if(result instanceof Result.Success && result1 instanceof Result.Success)
         {
             ArrayList<CourseModel> arrayList= (ArrayList<CourseModel>) ((Result.Success) result).getData();
-            Mes mes=new Mes(true,Code.SUCCESS,arrayList.size(),arrayList);
+            count count1= (count) ((Result.Success) result1).getData();
+            Mes mes=new Mes(true,Code.SUCCESS,count1.getCount1(),arrayList);
             System.out.println(mes.toString());
             return mes;
         }

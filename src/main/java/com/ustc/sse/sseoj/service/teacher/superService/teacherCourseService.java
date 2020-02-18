@@ -20,6 +20,9 @@ public interface teacherCourseService {
     //显示该老师的所有课程
     public Result teacher_show_somebody_all_course(Curricula_variableModel curricula_variableModel, pageLimit pl);
 
+    //老师所有课程的条数
+    public Result teacher_count_somebody_all_course(Curricula_variableModel curricula_variableModel);
+
     //更改课程名
     public Result teacher_update_course(CourseModel courseModel);
 
@@ -32,7 +35,10 @@ public interface teacherCourseService {
     //查找某个老师自己的课程 模糊查询 通过课程名
     public Result teacher_search_course_fully(CourseModel courseModel, Curricula_variableModel curricula_variableModel, pageLimit pl);
 
-    //查找某个课程 通过courseID
+    //查找某个老师自己的课程数 模糊查询 通过课程名
+    public Result teacher_search_count_course_fully(CourseModel courseModel, Curricula_variableModel curricula_variableModel);
+
+        //查找某个课程 通过courseID
     public Result teacher_search_course_by_courseID(CourseModel courseModel);
 
 

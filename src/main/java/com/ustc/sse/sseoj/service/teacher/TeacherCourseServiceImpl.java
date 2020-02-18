@@ -4,6 +4,7 @@ import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.Result;
 import com.ustc.sse.sseoj.Data.IDType;
 import com.ustc.sse.sseoj.dao.teacher.course.courseDAO;
+import com.ustc.sse.sseoj.model.functionClass.count;
 import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.Curricula_variableModel;
@@ -84,6 +85,24 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
         }
         try {
             ArrayList<CourseModel> arrayList = courseado.select_course_from_tno(curricula_variableModel,pl);
+            return new Result.Success(arrayList);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
+
+    @Override //todo add
+    public Result teacher_count_somebody_all_course(Curricula_variableModel curricula_variableModel) {
+
+        if(curricula_variableModel.getTno()==null)
+        {
+            return new Result.Fail(Code.MISS_TNO);
+        }
+
+        try {
+            count arrayList = courseado.select_count_course_from_tno(curricula_variableModel);
             return new Result.Success(arrayList);
         }
         catch (Exception e)
@@ -182,6 +201,27 @@ public class TeacherCourseServiceImpl implements teacherCourseService {
         }
         try {
             ArrayList<CourseModel> arrayList = courseado.select_course_from_tno_fuzzyCourseName(courseModel, curricula_variableModel,pl);
+            return new Result.Success(arrayList);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
+
+    @Override
+    public Result teacher_search_count_course_fully(CourseModel courseModel, Curricula_variableModel curricula_variableModel) {
+        if(courseModel.getName()==null)
+        {
+            return new Result.Fail(Code.MISS_COIRSE_NAME);
+        }
+        if(curricula_variableModel.getTno()==null)
+        {
+            return new Result.Fail(Code.MISS_TNO);
+        }
+
+        try {
+            count arrayList = courseado.select_count_course_from_tno_fuzzyCourseName(courseModel, curricula_variableModel);
             return new Result.Success(arrayList);
         }
         catch (Exception e)

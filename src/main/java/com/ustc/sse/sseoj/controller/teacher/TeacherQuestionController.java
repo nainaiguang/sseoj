@@ -2,6 +2,7 @@ package com.ustc.sse.sseoj.controller.teacher;
 
 
 import com.ustc.sse.sseoj.Data.*;
+import com.ustc.sse.sseoj.model.functionClass.count;
 import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
@@ -91,10 +92,12 @@ public class TeacherQuestionController {
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
         Result result=qsimpl.get_all_question_from_homework(tm,hm,qm,pl);
-        if(result instanceof Result.Success)
+        Result result1=qsimpl.get_all_question_count_from_homework(tm,hm,qm);
+        if(result instanceof Result.Success && result1 instanceof Result.Success)
         {
             ArrayList<questionModel> arrayList=((ArrayList<questionModel>)((Result.Success) result).getData());
-            return new Mes(true,Code.SUCCESS,arrayList.size(),arrayList);
+            count count1= (count) ((Result.Success) result1).getData();
+            return new Mes(true,Code.SUCCESS,count1.getCount1(),arrayList);
         }
         else if(result instanceof Result.Fail)
         {
@@ -119,11 +122,13 @@ public class TeacherQuestionController {
         tm.setTno(user.getNo());
 
         Result result=qsimpl.search_question(tm,qm,pl);
+        Result result1=qsimpl.search_question_count(tm,qm);
 
-        if(result instanceof Result.Success)
+        if(result instanceof Result.Success && result1 instanceof Result.Success)
         {
             ArrayList<questionModel> reslist=((ArrayList<questionModel>)((Result.Success) result).getData());
-            return new Mes(true,Code.SUCCESS,reslist.size(),reslist);
+            count count1= (count) ((Result.Success) result1).getData();
+            return new Mes(true,Code.SUCCESS,count1.getCount1(),reslist);
         }
         else if(result instanceof Result.Fail)
         {
@@ -270,11 +275,13 @@ public class TeacherQuestionController {
         tm.setTno(user.getNo());
 
         Result result= qsimpl.get_question_except_using(tm,hm,pl);
+        Result result1=qsimpl.get_question_count_except_using(tm,hm);
 
-        if(result instanceof Result.Success)
+        if(result instanceof Result.Success && result1 instanceof Result.Success)
         {
             ArrayList<questionModel> arrayRes=(ArrayList<questionModel>)((Result.Success) result).getData();
-            return new Mes(true,Code.SUCCESS,arrayRes.size(),arrayRes);
+            count count1= (count) ((Result.Success) result1).getData();
+            return new Mes(true,Code.SUCCESS,count1.getCount1(),arrayRes);
         }
         else if(result instanceof Result.Fail)
         {

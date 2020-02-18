@@ -1,5 +1,6 @@
 package com.ustc.sse.sseoj.dao.teacher.course;
 
+import com.ustc.sse.sseoj.model.functionClass.count;
 import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.Curricula_variableModel;
@@ -51,13 +52,20 @@ public interface courseDAO {
     public Curricula_variableModel select_curricula_variable_from_courseID(Curricula_variableModel curricula_variableModel);
 
 
-    //查询某个老师自己的所有课程
-    @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{cv.tno} and course.courseID=curricula_variable.courseID LIMIT #{pl.limit_head},#{pl.limit_tail}")
+    //查询某个老师自己的所有课程 todo add
+    @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{cv.tno} and course.courseID=curricula_variable.courseID LIMIT #{pl.limit_head},#{pl.limit}")
     public ArrayList<CourseModel> select_course_from_tno(@Param("cv")Curricula_variableModel curricula_variableModel, @Param("pl")pageLimit pl);
 
-    //查找某个老师自己的课程 模糊查询 通过课程名
-    @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{curricula_variableModel.tno} and course.courseID=curricula_variable.courseID and course.name like '%${courseModel.name}%' LIMIT #{pl.limit_head},#{pl.limit_tail}")
+    @Select("select count(1) count1 from course INNER JOIN curricula_variable where tno=#{cv.tno} and course.courseID=curricula_variable.courseID")
+    public count select_count_course_from_tno(@Param("cv")Curricula_variableModel curricula_variableModel);// todo 加
+
+
+    //查找某个老师自己的课程 模糊查询 通过课程名 todo add
+    @Select("select course.courseID,name,course.presentation from course INNER JOIN curricula_variable where tno=#{curricula_variableModel.tno} and course.courseID=curricula_variable.courseID and course.name like '%${courseModel.name}%' LIMIT #{pl.limit_head},#{pl.limit}")
     public ArrayList<CourseModel> select_course_from_tno_fuzzyCourseName(@Param("courseModel") CourseModel courseModel, @Param("curricula_variableModel") Curricula_variableModel curricula_variableModel, @Param("pl")pageLimit pl);
+
+    @Select("select count(1) count1 from course INNER JOIN curricula_variable where tno=#{curricula_variableModel.tno} and course.courseID=curricula_variable.courseID and course.name like '%${courseModel.name}%'")
+    public count select_count_course_from_tno_fuzzyCourseName(@Param("courseModel") CourseModel courseModel, @Param("curricula_variableModel") Curricula_variableModel curricula_variableModel);
 
 
     // 这样教师就可以重复利用某课程，通过更改作业的开放时间来设定
@@ -76,9 +84,7 @@ public interface courseDAO {
     @Delete("delete from course where courseID=#{courseID}")
     public boolean delete_course_from_courseID(CourseModel courseModel);
 
-    //TODO 删除作业与课程关系
 
-    //todo 查看目前哪些课程有几个老师在使用，具体是谁之类的 看看map怎么返回
     //新年快乐
 
 

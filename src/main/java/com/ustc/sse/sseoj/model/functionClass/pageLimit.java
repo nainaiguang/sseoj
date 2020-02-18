@@ -13,9 +13,6 @@ public class pageLimit {
 
     int limit_head=0;
 
-
-    int limit_tail=0;
-
     @Setter
     @Getter
     int page=0;
@@ -25,12 +22,8 @@ public class pageLimit {
     int limit=0;
 
     public int getLimit_head() {
-        this.limit_head=page*limit - limit + 1;
+        this.limit_head=(page-1)*limit;
         return limit_head;
     }
 
-    public int getLimit_tail() {
-        this.limit_tail=page*limit;
-        return limit_tail;
-    }
 }
