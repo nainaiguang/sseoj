@@ -152,13 +152,12 @@
             var data = obj.data;
             if(obj.event === 'edit'){//编辑作业
                 var homeworkid = data.homeworkid;
-                layer.open({
+                var index = layer.open({
                     type: 2,
                     content: '/teacherHomework/toEditCourseHomework?homeworkid='+homeworkid,
-                    maxmin: true,
-                    title: '编辑作业',
-                    area : ['900px', '600px']
+                    title: '编辑作业'
                 });
+                layer.full(index);
                 // layer.alert('编辑行：<br>'+ JSON.stringify(data))
             } else if (obj.event === 'question'){//题库管理
                 var index = layer.open({
@@ -199,13 +198,12 @@
 
     // 新增
     function add(){
-        layer.open({
+        var index = layer.open({
             type: 2,
             content: '/teacherHomework/toAddCourseHomework',
-            maxmin: true,
-            title: '添加作业',
-            area : ['900px', '600px']
+            title: '添加作业'
         });
+        layer.full(index);
     }
 
     // 批量删除选中行

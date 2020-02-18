@@ -8,9 +8,14 @@
     <meta charset="utf-8" />
     <title>编辑作业</title>
     <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <style>
+        .layui-input-block {
+            margin-right:30px;
+        }
+    </style>
 </head>
 <body>
-<div style="display: flex; justify-content: center; margin-top: 30px;">
+<div style=" margin-top: 30px;">
     <form name="addCourseForm" class="layui-form" action="" method="post">
         <!--<input th:value="${courseID}" type="hidden" name="courseID" id="courseID"/>-->
         <!--<input type="hidden" name="courseID" id="courseID" value="123123"/>-->
@@ -18,19 +23,19 @@
         <input th:value="${homeworkModel.homeworkid}" type="hidden" name="homeworkid" id="homeworkid"/>
         <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">作业名</label>
-            <div class="layui-input-inline">
+            <div class="layui-input-block">
                 <input type="text" th:value="${homeworkModel.name}" name="name" required  lay-verify="name" placeholder="请输入作业名" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">开始时间</label>
-            <div class="layui-input-inline">
+            <div class="layui-input-block">
                 <input type="text" th:value="${#dates.format(homeworkModel.begintime, 'yyyy-MM-dd HH:mm:ss')}"  name="begintime" class="layui-input" id="begintime" placeholder="请输入开始时间">
             </div>
         </div>
         <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">结束时间</label>
-            <div class="layui-input-inline">
+            <div class="layui-input-block">
                 <input type="text" th:value="${#dates.format(homeworkModel.endtime, 'yyyy-MM-dd HH:mm:ss')}"  name="endtime" class="layui-input" id="endtime" placeholder="请输入结束时间">
             </div>
         </div>

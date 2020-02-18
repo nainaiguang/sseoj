@@ -1,9 +1,8 @@
 package com.ustc.sse.sseoj.controller.redirects.teacher;
 
-import com.ustc.sse.sseoj.Data.Code;
-import com.ustc.sse.sseoj.Data.Mes;
 import com.ustc.sse.sseoj.Data.Result;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
+import com.ustc.sse.sseoj.model.warehouse.answerModel;
 import com.ustc.sse.sseoj.model.warehouse.questionModel;
 import com.ustc.sse.sseoj.service.teacher.QuestionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
 
-/**
+ /**
  * @author Qianbw
  * @create 2020-02-15 14:38
  * @desc 教师管理题库页面跳转的控制层
@@ -82,15 +81,46 @@ public class Teacher2QuestionController {
     }
 
     /**
-     * 功能描述: 进入添加Case/Answer页面
+     * 功能描述: 进入Case/Answer页面
      * @Param: [model, qm]
      * @Return: java.lang.String
      * @Author: Qianbw
      * @Date: 2020/2/16 21:51
      */
-    @RequestMapping("/toAddCase")
+    @RequestMapping("/toCaseAnswer")
     public String toAddCase(Model model, questionModel qm){
         model.addAttribute("questionid", qm.getQuestionid());
-        return "teacher/question/addCase";
+        return "teacher/question/caseAnswer";
+    }
+
+    /**
+     * 功能描述: 进入新增Case/Answer页面
+     * @Param: [model, qm]
+     * @Return: java.lang.String
+     * @Author: Qianbw
+     * @Date: 2020/2/18 14:07
+     */
+    @RequestMapping("/toAddCaseAnswer")
+    public String toAddCaseAnswer(Model model, questionModel qm){
+        model.addAttribute("questionid", qm.getQuestionid());
+        return "teacher/question/addCaseAnswer";
+    }
+
+    /**
+     * 功能描述: 进入编辑Case/Answer页面
+     * @Param: [model, am]
+     * @Return: java.lang.String
+     * @Author: Qianbw
+     * @Date: 2020/2/18 14:07
+     */
+    @RequestMapping("/toEditCaseAnswer")
+    public String toEditCaseAnswer(Model model, answerModel am){
+        Result result=qsimpl.get_answer_detail(am);
+        if(result instanceof Result.Success)
+        {
+            am = (answerModel) ((Result.Success) result).getData();
+        }
+        model.addAttribute("answerModel", am);
+        return "teacher/question/editCaseAnswer";
     }
 }

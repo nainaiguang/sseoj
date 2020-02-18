@@ -1,12 +1,12 @@
 <!--
  @author  Qianbw
- @create 2020-01-30 12:01
+ @create 2020-02-18 14:10
 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>添加课程</title>
+    <title>编辑</title>
     <link rel="stylesheet" href="/static/layui/css/layui.css">
     <style>
         .layui-input-block {
@@ -16,17 +16,27 @@
 </head>
 <body>
 <div style=" margin-top: 30px;">
-    <form name="addCourseForm" class="layui-form" action="" method="post">
+    <form name="" class="layui-form" action="" method="post">
+        <input type="hidden" th:value="${answerModel.answerid}" name="answerid"/>
         <div class="layui-form-item" style="margin-bottom:30px;">
-            <label class="layui-form-label">课程名</label>
+            <label class="layui-form-label">Input</label>
             <div class="layui-input-block">
-                <input type="text" name="name" required  lay-verify="name" placeholder="请输入课程名" autocomplete="off" class="layui-input">
+                <input th:value="${answerModel.input}" type="text" name="input" required  lay-verify="input" placeholder="请输入Input" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-form-text" style="margin-bottom:30px;">
-            <label class="layui-form-label">课程描述</label>
+            <label class="layui-form-label">Output</label>
             <div class="layui-input-block">
-                <textarea name="presentation" placeholder="请输入课程描述" class="layui-textarea"></textarea>
+                <input th:value="${answerModel.output}" type="text" name="output" required  lay-verify="output" placeholder="请输入Output" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text" style="margin-bottom:30px;">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-block">
+                <select name="answerType" lay-verify="answerType">
+                    <option th:selected="${answerModel.answerType eq 'cases'}" value="cases">cases</option>
+                    <option th:selected="${answerModel.answerType eq 'answers'}" value="answers">answers</option>
+                </select>
             </div>
         </div>
         <div class="layui-form-item" >
@@ -59,9 +69,19 @@
 
     function Valid(){
         form.verify({
-            name: function(value) {
+            input: function(value) {
                 if(value.length < 1) {
-                    return '请填写课程名';
+                    return '请输入Input';
+                }
+            },
+            output: function(value) {
+                if(value.length < 1) {
+                    return '请输入Output';
+                }
+            },
+            answerType: function(value) {
+                if(value.length < 1) {
+                    return '请输入类型';
                 }
             }
         });
@@ -73,24 +93,25 @@
             $.ajax({
                 type: 'post',
                 dataType: 'json',
-                url: '/teacher/course/addCourse',
+                url: '/teacher/course/question/updateAnswerOrCase',
                 data: data.field,
                 success: function(data){
                     if(data.success){
                         layer.close(index);
-                        layer.msg('添加成功',{icon: 1});
+                        layer.msg('修改成功',{icon: 1});
                         setTimeout(function(){
                             parent.layer.closeAll();
                         }, 500);
-                        parent.query();
+                        parent.queryCase();
+                        parent.queryAnswer();
                     } else {
                         layer.close(index);
-                        layer.msg("添加失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                        layer.msg("修改失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
                     }
                 },
                 error: function(){
                     layer.close(index);
-                    layer.msg("添加失败！", {icon: 2});
+                    layer.msg("修改失败！", {icon: 2});
                 }
             });
         });

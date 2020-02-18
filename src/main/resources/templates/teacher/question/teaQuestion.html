@@ -41,7 +41,7 @@
 </div>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="addCase">添加案例</a>
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="toCaseAnswer">CaseAnswer</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="showDetail">查看</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">移除</a>
@@ -111,6 +111,7 @@
                     field : 'questionNumber',
                     title : '题目序号',
                     align : 'center',
+                    sort : true,
                     minWidth: '150'
                 }, {
                     field : 'description',
@@ -153,10 +154,10 @@
                     title: '编辑题目'
                 });
                 layer.full(index);
-            } else if (obj.event === 'addCase'){//添加案例
+            } else if (obj.event === 'toCaseAnswer'){//添加案例
                 var index = layer.open({
                     type: 2,
-                    content: '/teacherQuestion/toAddCase?questionid='+data.questionid,
+                    content: '/teacherQuestion/toCaseAnswer?questionid='+data.questionid,
                     maxmin: false,
                     title: data.title + '-->添加案例'
                 });
