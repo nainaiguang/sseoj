@@ -88,7 +88,7 @@ public class QuestionServiceImpl implements QuestionService {
                 return new Result.Error(e);
             }
         }
-        if(hm.getHomeworkid()!=null)
+        if(hm.getHomeworkid()!=null&&hm.getHomeworkid() !="")
         {
             homework_link_bankModel temphlbm=new homework_link_bankModel();
             temphlbm.setHomeworkid(hm.getHomeworkid());

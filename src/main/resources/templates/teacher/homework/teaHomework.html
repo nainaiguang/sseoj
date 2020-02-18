@@ -42,6 +42,7 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="question">题库管理</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 </script>
 
 <!-- js引入 -->
@@ -91,11 +92,6 @@
             },
             cols : [ [ // 标题栏
                 {
-                    field : 'homeworkid',
-                    checkbox : true,
-                    LAY_CHECKED : false,
-                    width: '50'
-                },{
                     field : 'homeworkid',
                     title : '作业ID',
                     sort : false,
@@ -167,6 +163,73 @@
                     title: obj.data.name + '-->题库管理'
                 });
                 layer.full(index);
+            } else if (obj.event === 'del'){//删除作业
+                var data = obj.data;
+                var datas = [];
+                datas.push(data);
+                $.ajax({
+                    url : "/teacher/course/homework/searchHomeworkUsing?homeworkid="+obj.data.homeworkid,
+                    dataType: 'json',
+                    method : 'post',
+                    contentType : 'application/json; charset=UTF-8',
+                    data : {},
+                    traditional: true,  //阻止深度序列化，向后台传送数组
+                    success : function(data){
+                        var temp = "";
+                        if (data.count > 0){
+                            temp = "当前作业有"+ data.count +"条课程在使用：\n<table class=\"layui-table\">\n" +
+                                "  <colgroup>\n" +
+                                "    <col width=\"150\">\n" +
+                                "    <col width=\"150\">\n" +
+                                "  </colgroup>\n" +
+                                "  <thead>\n" +
+                                "    <tr>\n" +
+                                "      <th>课程ID</th>\n" +
+                                "      <th>课程名称</th>\n" +
+                                "    </tr> \n" +
+                                "  </thead><tbody>";
+                            for(i = 0; i < data.count; i++){
+                                temp = temp + "<tr>\n" +
+                                    "      <td>"+ data.data[i].courseID +"</td>\n" +
+                                    "      <td>"+ data.data[i].name +"</td>\n" +
+                                    "    </tr>"
+                            }
+                            temp = temp + "</tbody>\n" +
+                                "</table>\n确定删除吗？";
+                        } else {
+                            temp = temp + "当前作业没有课程在使用，确定删除吗？";
+                        }
+                        layer.confirm(temp, function(){
+                            var index = layer.load();//load动画
+                            $.ajax({
+                                url : "/teacher/course/homework/deleteHomework",
+                                dataType: 'json',
+                                method : 'post',
+                                contentType : 'application/json; charset=UTF-8',
+                                data : JSON.stringify(datas),
+                                traditional: true,  //阻止深度序列化，向后台传送数组
+                                success : function(data){
+                                    if (data.success) {
+                                        layer.close(index);
+                                        query();
+                                        layer.msg('删除成功', {icon: 1});
+                                    } else {
+                                        layer.close(index);
+                                        layer.msg("删除失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                                    }
+                                },
+                                error: function(){
+                                    layer.close(index);
+                                    layer.msg("删除失败！", {icon: 2});
+                                }
+                            });
+                        });
+                    },
+                    error: function(){
+                        layer.close(index);
+                        layer.msg("删除失败！", {icon: 2});
+                    }
+                });
             }
         });
     }

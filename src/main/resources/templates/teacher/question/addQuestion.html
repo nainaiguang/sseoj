@@ -47,17 +47,13 @@
             </div>
         </div>
         <div class="layui-form-item" style="margin-bottom:30px;">
-            <label class="layui-form-label">题目序号</label>
-            <div class="layui-input-inline">
-                <input type="text" name="questionNumber" lay-verify="questionNumber" placeholder="请输入题目序号" autocomplete="off" class="layui-input">
-            </div>
             <label class="layui-form-label">时间限制</label>
             <div class="layui-input-inline">
-                <input type="text" name="timelimit" placeholder="请输入时间限制" autocomplete="off" class="layui-input">
+                <input type="text" name="timelimit"  lay-verify="timelimit"  placeholder="请输入时间限制" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">内存限制</label>
             <div class="layui-input-inline">
-                <input type="text" name="memorylimit" placeholder="请输入内存限制" autocomplete="off" class="layui-input">
+                <input type="text" name="memorylimit"  lay-verify="memorylimit"  placeholder="请输入内存限制" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">图片演示</label>
             <div class="layui-input-inline">
@@ -120,6 +116,16 @@
                 if(value.length < 1) {
                     return '请填写题目序号';
                 }
+            },
+            timelimit:function(value) {
+                if(isIntNum(value)) {
+                    return '请填写数字';
+                }
+            },
+            memorylimit:function(value) {
+                if(isIntNum(value)) {
+                    return '请填写数字';
+                }
             }
         });
     }
@@ -164,6 +170,16 @@
                 //请求异常回调
             }
         });
+    }
+    // 判断正负正数就返回true
+    function isIntNum(val){
+        var regPos = / ^\d+$/; // 非负整数
+        var regNeg = /^\-[1-9][0-9]*$/; // 负整数
+        if(regPos.test(val) || regNeg.test(val)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 </script>

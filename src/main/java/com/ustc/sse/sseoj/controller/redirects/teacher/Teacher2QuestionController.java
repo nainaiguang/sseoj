@@ -25,15 +25,27 @@ public class Teacher2QuestionController {
     QuestionServiceImpl qsimpl;
 
     /**
-     * 功能描述: 进入题库管理页面
+     * 功能描述: 进入作业下的题库管理页面
      * @Return: java.lang.String
      * @Author: Qianbw
      * @Date: 2020/2/15 14:42
      */
     @RequestMapping("/toQuestion")
-    public String toQuestion0(Model model, homeworkModel hm) {
+    public String toQuestion(Model model, homeworkModel hm) {
         model.addAttribute("homeworkid", hm.getHomeworkid());
         return "teacher/question/teaQuestion";
+    }
+
+    /**
+     * 功能描述: 进入题库管理页面
+     * @Param: [model]
+     * @Return: java.lang.String
+     * @Author: Qianbw
+     * @Date: 2020/2/18 15:40
+     */
+    @RequestMapping("/toQuestionManage")
+    public String toQuestionManage(Model model) {
+        return "teacher/question/questionManage";
     }
 
     /**
