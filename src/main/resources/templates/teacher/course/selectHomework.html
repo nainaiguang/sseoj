@@ -40,7 +40,7 @@
 </div>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="add">添加作业</a>
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="add">添加作业</a>
 </script>
 
 <!-- js引入 -->
@@ -85,7 +85,9 @@
             // where: queryParam(),
             where: {
                 'courseID': $('#courseID').val(),
-                'name': $('#name').val()
+                'name': $('#name').val(),
+                page: this.page,
+                limit: this.limit
             },
             cols : [ [ // 标题栏
                 {
@@ -160,9 +162,9 @@
             if(obj.event === 'add'){//该课程的作业管理
                 var index = layer.load();//load动画
                 obj.data.courseID = $('#courseID').val();
-                obj.data.createtime = null;
-                obj.data.begintime = null;
-                obj.data.endtime = null;
+                obj.data.createtime = obj.data.createtimeStr;
+                obj.data.begintime = obj.data.begintimeStr;
+                obj.data.endtime = obj.data.endtimeStr;
                 console.log(obj.data);
                 $.ajax({
                     url: "/teacher/course/homework/addHomework",
@@ -173,6 +175,7 @@
                         if (data.success) {
                             layer.close(index);
                             query();
+                            parent.query();
                             layer.msg('添加成功', {icon: 1});
                         } else {
                             layer.close(index);

@@ -1,5 +1,8 @@
 package com.ustc.sse.sseoj.model.warehouse;
 
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -12,6 +15,10 @@ public class questionModel {
     private String questionid;
 
     private String questiontype;
+
+    @Getter
+    @Setter
+    private int questionNumber;
 
     private String title;
 
@@ -108,4 +115,5 @@ public class questionModel {
     public void setMemorylimit(Integer memorylimit) {
         this.memorylimit = memorylimit;
     }
+
 }

@@ -3,6 +3,8 @@ package com.ustc.sse.sseoj.controller.teacher;
 import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.Mes;
 import com.ustc.sse.sseoj.Data.Result;
+import com.ustc.sse.sseoj.model.functionClass.count;
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
@@ -208,18 +210,20 @@ public class TeacherHomeworkController {
     //courseID|""  name!""
     @RequestMapping(value = "/searchHomework", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes search_homework(CourseModel cm,homeworkModel hm, HttpServletRequest request)
+    public Mes search_homework(CourseModel cm, homeworkModel hm, pageLimit pl,HttpServletRequest request)
     {
         TeacherModel tm=new TeacherModel();
 
             UsersModel user= (UsersModel) request.getSession().getAttribute("user");
             tm.setTno(user.getNo());
 
-        Result res=homeworkService.search_homework(tm,cm,hm);
-        if(res instanceof Result.Success)
+        Result res=homeworkService.search_homework(tm,cm,hm,pl);
+        Result res1=homeworkService.search_homework_count(tm,cm,hm);
+        if(res instanceof Result.Success && res1 instanceof Result.Success)
         {
             ArrayList<homeworkModel> ar=(ArrayList<homeworkModel>) ((Result.Success) res).getData();
-            return new Mes(true,Code.SUCCESS,ar.size(),ar);
+            count count1= (count) ((Result.Success) res1).getData();
+            return new Mes(true,Code.SUCCESS,count1.getCount1(),ar);
         }
         else if(res instanceof Result.Fail)
         {
@@ -260,18 +264,20 @@ public class TeacherHomeworkController {
     //显示目前属于该教师，但没有在该课程下的所有作业
     @RequestMapping(value = "/searchHomeworkWithoutUsing", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes search_homework_without_using(CourseModel cm,homeworkModel hm ,HttpServletRequest request)
+    public Mes search_homework_without_using(CourseModel cm,homeworkModel hm ,pageLimit pl,HttpServletRequest request)
     {
         TeacherModel tm=new TeacherModel();
 
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
 
-        Result res=homeworkService.search_homework_without_using(tm,cm,hm);
-        if(res instanceof Result.Success)
+        Result res=homeworkService.search_homework_without_using(tm,cm,hm,pl);
+        Result res1=homeworkService.search_count_homework_without_using(tm,cm,hm);
+        if(res instanceof Result.Success && res1 instanceof Result.Success)
         {
             ArrayList<homeworkModel> ar=(ArrayList<homeworkModel>) ((Result.Success) res).getData();
-            return new Mes(true,Code.SUCCESS,ar.size(),ar);
+            count count1= (count) ((Result.Success) res1).getData();
+            return new Mes(true,Code.SUCCESS,count1.getCount1(),ar);
         }
         else if(res instanceof Result.Fail)
         {

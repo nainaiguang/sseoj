@@ -1,13 +1,5 @@
 package com.ustc.sse.sseoj.model.teacher;
 
-import lombok.ToString;
-
-/**
- * @author 邱乃光
- * @version 1.0
- * @date 2020/2/4 14:52
- */
-@ToString
 public class homework_link_bankModelKey {
     private String homeworkid;
 

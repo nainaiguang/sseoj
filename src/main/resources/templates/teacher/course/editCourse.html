@@ -8,19 +8,24 @@
     <meta charset="utf-8" />
     <title>修改课程</title>
     <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <style>
+        .layui-input-block {
+            margin-right:30px;
+        }
+    </style>
 </head>
 <body>
-<div style="display: flex; justify-content: center; margin-top: 30px;">
+<div style=" margin-top: 30px;">
     <form name="addCourseForm" class="layui-form" action="" method="post">
         <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">课程名</label>
-            <div class="layui-input-inline">
+            <div class="layui-input-block">
                 <input th:value="${courseModel.name}" type="text" name="name" required  lay-verify="name" placeholder="请输入课程名" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">课程编码</label>
-            <div class="layui-input-inline">
+            <div class="layui-input-block">
                 <input th:value="${courseModel.courseID}" type="text" name="CourseID" disabled placeholder="请输入课程编码" autocomplete="off" class="layui-input">
             </div>
         </div>

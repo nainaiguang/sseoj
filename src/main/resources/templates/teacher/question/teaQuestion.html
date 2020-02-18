@@ -1,12 +1,12 @@
 <!--
  @author  Qianbw
- @create 2020-02-06 13:54
+ @create 2020-02-15 14:41
 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>作业管理</title>
+    <title>题库管理</title>
     <link rel="stylesheet" href="/static/layui/css/layui.css">
 </head>
 <body>
@@ -15,10 +15,10 @@
     <div class="layui-row" style="margin-top: 20px;">
         <form action="" id="queryForm" class="layui-form">
             <div class="layui-form-item">
-                <input th:value="${courseID}" type="hidden" name="courseID" id="courseID"/>
-                <label class="layui-form-label">作业名</label>
+                <input th:value="${homeworkid}" type="hidden" name="homeworkid" id="homeworkid"/>
+                <label class="layui-form-label">题目名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="name" id="name" placeholder="请输入作业名" autocomplete="off" class="layui-input" />
+                    <input type="text" name="title" id="title" placeholder="请输入题目名称" autocomplete="off" class="layui-input" />
                 </div>
                 <div class="layui-input-inline" style="float: right;">
                     <button id="searchBtn" class="layui-btn layui-btn-normal" type="button" onclick="queryCourse()"><i class="layui-icon">&#xe615;</i>查询</button>
@@ -31,8 +31,8 @@
 
 <!-- 按钮栏 -->
 <div class="" id="toolbar" style="padding:0px 10px">
-    <a><button type="button" onclick="addNew()" title="新建作业"id="addNew"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i>新建作业</button></a>
-    <a><button type="button" onclick="add()" title="添加作业"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#x1005;</i>添加作业</button></a>
+    <a><button type="button" onclick="addNew()" title="新建题目"id="addNew"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i>新建题目</button></a>
+    <a><button type="button" onclick="add()" title="添加题目"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#x1005;</i>添加题目</button></a>
 </div>
 
 <!-- 表格栏 -->
@@ -41,8 +41,10 @@
 </div>
 
 <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="toCaseAnswer">CaseAnswer</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">移除</a>
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="showDetail">查看</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">移除</a>
 </script>
 
 <!-- js引入 -->
@@ -72,8 +74,8 @@
         // 执行渲染
         table.render({
             elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
-            url : '/teacher/course/homework/searchHomework' ,
-            id : 'homeworkid', // 设定容器唯一ID
+            url : '/teacher/course/question/getAllQuestionFromHomework' ,
+            id : 'questionid', // 设定容器唯一ID
             page : true, // 是否开启分页
             loading : true, // 是否显示加载条
             height : 550, // 容器高度,
@@ -84,45 +86,41 @@
             //,method: 'post' //如果无需自定义HTTP类型，可不加该参数
             //,request: {} //如果无需自定义请求参数，可不加该参数
             //,response: {} //如果无需自定义数据响应名称，可不加该参数
-            // where: queryParam(),
             where: {
-                'courseID': $('#courseID').val(),
-                'name': $('#name').val(),
+                'title': $('#title').val(),
+                'homeworkid': $('#homeworkid').val(),
                 page: this.page,
-                limit: this.limit
+                limit: this.limit,
+                // sort: this.sort,
             },
             cols : [ [ // 标题栏
                 {
-                    field : 'homeworkid',
-                    title : '作业ID',
+                    field : 'questionid',
+                    title : '题目ID',
                     sort : false,
                     align : 'center',
                     width: '150'
                 } // rowspan即纵向跨越的单元格数
                 , {
-                    field : 'name',
-                    title : '作业名',
+                    field : 'title',
+                    title : '题目名称',
                     align : 'center',
-                    sort: true,
+                    sort : true,
                     width: '150'
                 }, {
-                    field : 'describes',
-                    title : '作业描述',
+                    field : 'questionNumber',
+                    title : '题目序号',
+                    align : 'center',
+                    sort : true,
+                    minWidth: '150'
+                }, {
+                    field : 'description',
+                    title : '题目描述',
                     align : 'center',
                     minWidth: '300'
                 }, {
-                    field : 'createtimeStr',
-                    title : '创建日期',
-                    align : 'center',
-                    width: '200'
-                }, {
-                    field : 'begintimeStr',
-                    title : '开始时间',
-                    align : 'center',
-                    width: '200'
-                }, {
-                    field : 'endtimeStr',
-                    title : '结束时间',
+                    field : 'questiontype',
+                    title : '题目类型',
                     align : 'center',
                     width: '200'
                 }, {
@@ -148,18 +146,31 @@
     function optionTool() {
         table.on('tool(demo)', function(obj){
             var data = obj.data;
-            data.courseid = $('#courseID').val();
-            var datas = [];
-            datas.push(data);
-            if(obj.event === 'del'){// 移除此作业
-                layer.confirm("确定移除此作业吗？", function(){
+            if(obj.event === 'edit'){//编辑题目
+                var index = layer.open({
+                    type: 2,
+                    content: '/teacherQuestion/toEditQuestion?questionid='+data.questionid,
+                    maxmin: false,
+                    title: '编辑题目'
+                });
+                layer.full(index);
+            } else if (obj.event === 'toCaseAnswer'){//添加案例
+                var index = layer.open({
+                    type: 2,
+                    content: '/teacherQuestion/toCaseAnswer?questionid='+data.questionid,
+                    maxmin: false,
+                    title: data.title + '-->添加案例'
+                });
+                layer.full(index);
+            } else if (obj.event === 'del'){//移除题目
+                layer.confirm("确定移除此题目吗？", function(){
                     var index = layer.load();//load动画
                     $.ajax({
-                        url : "/teacher/course/homework/deleteHomeworkLinkCourse",
+                        url : "/teacher/course/question/deleteHomeworkQuestionRelationship?questionid="+data.questionid+"&homeworkid="+$('#homeworkid').val(),
                         dataType: 'json',
                         method : 'post',
                         contentType : 'application/json; charset=UTF-8',
-                        data : JSON.stringify(datas),
+                        data : {},
                         traditional: true,  //阻止深度序列化，向后台传送数组
                         success : function(data){
                             if (data.success) {
@@ -177,15 +188,6 @@
                         }
                     });
                 });
-            } else if(obj.event === 'edit'){//编辑作业
-                var homeworkid = data.homeworkid;
-                var index =layer.open({
-                    type: 2,
-                    content: '/teacherHomework/toEditCourseHomework?homeworkid='+homeworkid,
-                    title: '编辑作业'
-                });
-                layer.full(index);
-                // layer.alert('编辑行：<br>'+ JSON.stringify(data))
             }
         });
     }
@@ -198,66 +200,32 @@
 
     // 重置查询
     function queryReset() {
-        $('#name').val('');
+        $('#title').val('');
         query();
     }
 
 
-    // 新建作业
+    // 新增题目
     function addNew(){
-        var index =layer.open({
+        var index = layer.open({
             type: 2,
-            content: '/teacherHomework/toAddCourseHomework?courseID='+$("#courseID").val(),
-            title: '新建作业'
+            content: '/teacherQuestion/toAddQuestion?homeworkid='+$('#homeworkid').val(),
+            maxmin: false,
+            title: '新增题目'
         });
         layer.full(index);
     }
 
-    // 添加作业
+    // 添加题目
     function add(){
         var index = layer.open({
             type: 2,
-            content: '/teacherHomework/toSelectCourseHomework?courseID='+$("#courseID").val(),
+            content: '/teacherQuestion/toSelectHomeworkQuestion?homeworkid='+$("#homeworkid").val(),
+            maxmin: false,
             title: '添加作业'
         });
         layer.full(index);
     }
 
-
-    var setting = {
-        check:{
-            enable: true,
-            nocheckInherit: false
-        },
-        view:{
-            selectedMulti: false
-        },
-        edit: {
-            enable: true,
-            showRenameBtn:false,
-            showRemoveBtn:false,
-        },
-        data: {
-            simpleData: {
-                enable: true,
-            }
-        },
-        callback: {
-
-        }
-    };
-
-
-    function warnTip(content) {
-        layer.open({
-            title:'提示',
-            content:content,
-            btn:['确定'],
-            icon:2,
-            yes:function(index){
-                layer.close(index);
-            }
-        });
-    };
 
 </script>

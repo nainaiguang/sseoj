@@ -88,7 +88,9 @@
             // where: queryParam(),
             where: {
                 'tno': $('#tno').val(),
-                'name': $('#name').val()
+                'name': $('#name').val(),
+                page : this.page,
+                limit : this.limit
             },
             cols : [ [ // 标题栏
                 {
@@ -139,21 +141,21 @@
             var data = obj.data;
             if(obj.event === 'homework'){//该课程的作业管理
                 var courseID = data.courseID;
-                layer.open({
+                var index = layer.open({
                     type: 2,
-                    content: '/teacher/toCourseHomework?courseID='+courseID,
-                    maxmin: true,
-                    title: '作业管理',
-                    area : ['1200px', '700px']
+                    content: '/teacherHomework/toCourseHomework?courseID='+courseID,
+                    maxmin: false,
+                    title: obj.data.name + '-->作业管理'
                 });
+                layer.full(index);
                 // layer.msg('ID：'+ data.id + ' 的查看操作');
             } else if(obj.event === 'edit'){//该课程编辑
                 var courseID = data.courseID;
                 layer.open({
                     type: 2,
-                    content: '/teacher/toEditCourse?courseID='+courseID,
+                    content: '/teacherCourse/toEditCourse?courseID='+courseID,
                     maxmin: true,
-                    title: '编辑角色',
+                    title: '编辑课程',
                     area : ['600px', '400px']
                 });
                 // layer.alert('编辑行：<br>'+ JSON.stringify(data))
@@ -183,7 +185,7 @@
     function add(){
         layer.open({
             type: 2,
-            content: '/teacher/toAddCourse',
+            content: '/teacherCourse/toAddCourse',
             maxmin: true,
             title: '添加课程',
             area : ['600px', '400px']
@@ -201,9 +203,9 @@
             var courseID = data[0].courseID;
             layer.open({
                 type: 2,
-                content: '/teacher/toEditCourse?courseID='+courseID,
+                content: '/teacherCourse/toEditCourse?courseID='+courseID,
                 maxmin: true,
-                title: '编辑角色',
+                title: '编辑课程',
                 area : ['600px', '400px']
             });
         }

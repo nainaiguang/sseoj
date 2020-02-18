@@ -14,3 +14,7 @@
 检查当前session是否有用户登录，若无，则拦截跳转到登录页面或者首页。
 
 Date类型前端传来的是String 格式为yyyy-MM-dd HH:mm:ss，后台的Date属性需要加注释@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
+addHomeworkQuestionRelationship需要加入questionnumber
+
+addQuestion需要加入questionnumber

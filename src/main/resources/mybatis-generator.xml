@@ -57,7 +57,7 @@
 <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
 <!--               selectByExampleQueryId="false">-->
 <!--        </table>-->
-        <table tableName="student_homework" domainObjectName="student_homeworkModel"
+        <table tableName="homework_link_bank" domainObjectName="homework_link_bankModel"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

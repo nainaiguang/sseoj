@@ -1,0 +1,305 @@
+<!--
+ @author  Qianbw
+ @create 2020-02-16 21:53
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加Case</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+</head>
+<body>
+<div style="margin: 10px 10px 0 10px;">
+    <!-- 按钮栏 -->
+    <div class="" id="toolbar" style="padding:0px 10px">
+        <a><button type="button" onclick="add()" title="新增"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i>新增</button></a>
+    </div>
+    <input type="hidden" th:value="${questionid}" id="questionid" />
+    <div class="layui-field-box">
+        <div class="layui-row">
+            <div class="layui-tab layui-tab-brief" lay-filter="DemoTest">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">Case</li>
+                    <li>Answer</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <table id="caseTable" lay-filter="caseTool"></table>
+                    </div>
+                    <div class="layui-tab-item">
+                        <table id="answerTable" lay-filter="answerTool"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="CaseBar">
+    <a class="layui-btn layui-btn-xs" lay-event="editCase">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delCase">删除</a>
+</script>
+
+<script type="text/html" id="AnswerBar">
+    <a class="layui-btn layui-btn-xs" lay-event="editAnswer">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delAnswer">删除</a>
+</script>
+
+<!-- js引入 -->
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script>
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    var element;
+    layui.use(['element', 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+            element = layui.element;
+
+            queryCase();
+            tabChange();//监听tab切换
+            caseTool();//监听工具条
+            answerTool();//监听工具条
+
+        });
+
+    function queryCase() {
+        // 执行渲染
+        table.render({
+            elem : '#caseTable', // 指定原始表格元素选择器（推荐id选择器）
+            url : '/teacher/course/question/getAllCase' ,
+            id : 'answerid', // 设定容器唯一ID
+            loading : true, // 是否显示加载条
+            height : 550, // 容器高度,
+            method: 'post',
+            //,where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
+            //,method: 'post' //如果无需自定义HTTP类型，可不加该参数
+            //,request: {} //如果无需自定义请求参数，可不加该参数
+            //,response: {} //如果无需自定义数据响应名称，可不加该参数
+            where: {
+                questionid:$("#questionid").val()
+//              page: this.page,
+//              limit: this.limit,
+                // sort: this.sort,
+            },
+            cols : [ [ // 标题栏
+                {
+                    field : 'answerid',
+                    title : 'answerID',
+                    sort : true,
+                    align : 'center',
+                    width: '150'
+                } // rowspan即纵向跨越的单元格数
+                , {
+                    field : 'input',
+                    title : 'Input',
+                    align : 'center',
+                    width: '200'
+                }, {
+                    field : 'output',
+                    title : 'Output',
+                    align : 'center',
+                    minWidth: '200'
+                }, {
+                    fixed : 'right',
+                    title :'操作',
+                    toolbar : '#CaseBar',
+                    align : 'center',
+                    width : '100'
+                }
+                // colspan即横跨的单元格数，这种情况下不用设置field和width
+            ]], // 设置表头
+            done : function(res, curr, count) {
+                console.log(res);
+                // 得到当前页码
+                console.log(curr);
+                // 得到数据总量
+                console.log(count);
+            }
+        });
+
+    };
+
+    function queryAnswer() {
+        // 执行渲染
+        table.render({
+            elem : '#answerTable', // 指定原始表格元素选择器（推荐id选择器）
+            url : '/teacher/course/question/getAllAnswer' ,
+            id : 'answerid', // 设定容器唯一ID
+            loading : true, // 是否显示加载条
+            height : 550, // 容器高度,
+            method: 'post',
+            //,where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
+            //,method: 'post' //如果无需自定义HTTP类型，可不加该参数
+            //,request: {} //如果无需自定义请求参数，可不加该参数
+            //,response: {} //如果无需自定义数据响应名称，可不加该参数
+            where: {
+                questionid:$("#questionid").val()
+//              page: this.page,
+//              limit: this.limit,
+                // sort: this.sort,
+            },
+            cols : [ [ // 标题栏
+                {
+                    field : 'answerid',
+                    title : 'answerID',
+                    sort : true,
+                    align : 'center',
+                    width: '150'
+                } // rowspan即纵向跨越的单元格数
+                , {
+                    field : 'input',
+                    title : 'Input',
+                    align : 'center',
+                    width: '200'
+                }, {
+                    field : 'output',
+                    title : 'Output',
+                    align : 'center',
+                    minWidth: '200'
+                }, {
+                    fixed : 'right',
+                    title :'操作',
+                    toolbar : '#AnswerBar',
+                    align : 'center',
+                    width : '100'
+                }
+                // colspan即横跨的单元格数，这种情况下不用设置field和width
+            ]], // 设置表头
+            done : function(res, curr, count) {
+                console.log(res);
+                // 得到当前页码
+                console.log(curr);
+                // 得到数据总量
+                console.log(count);
+            }
+        });
+
+    };
+
+    function caseTool() {
+        table.on('tool(caseTool)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'editCase'){//编辑
+                var index = layer.open({
+                    type: 2,
+                    content: '/teacherQuestion/toEditCaseAnswer?answerid='+data.answerid,
+                    maxmin: true,
+                    title: '编辑',
+                    area : ['600px', '400px']
+                });
+                // layer.full(index);
+            } else if (obj.event === 'delCase'){//删除
+                layer.confirm("确定删除吗？", function(){
+                    var index = layer.load();//load动画
+                    $.ajax({
+                        url : "/teacher/course/question/deleteAnswerOrCase?answerid="+data.answerid,
+                        dataType: 'json',
+                        method : 'post',
+                        contentType : 'application/json; charset=UTF-8',
+                        data : {},
+                        traditional: true,  //阻止深度序列化，向后台传送数组
+                        success : function(data){
+                            if (data.success) {
+                                layer.close(index);
+                                queryCase();
+                                layer.msg('删除成功', {icon: 1});
+                            } else {
+                                layer.close(index);
+                                layer.msg("删除失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                            }
+                        },
+                        error: function(){
+                            layer.close(index);
+                            layer.msg("删除失败！", {icon: 2});
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    function answerTool() {
+        table.on('tool(answerTool)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'editAnswer'){//编辑
+                var index = layer.open({
+                    type: 2,
+                    content: '/teacherQuestion/toEditCaseAnswer?answerid='+data.answerid,
+                    maxmin: true,
+                    title: '编辑',
+                    area : ['600px', '400px']
+                });
+                // layer.full(index);
+            } else if (obj.event === 'delAnswer'){//题库管理
+                layer.confirm("确定删除吗？", function(){
+                    var index = layer.load();//load动画
+                    $.ajax({
+                        url : "/teacher/course/question/deleteAnswerOrCase?answerid="+data.answerid,
+                        dataType: 'json',
+                        method : 'post',
+                        contentType : 'application/json; charset=UTF-8',
+                        data : {},
+                        traditional: true,  //阻止深度序列化，向后台传送数组
+                        success : function(data){
+                            if (data.success) {
+                                layer.close(index);
+                                queryAnswer();
+                                layer.msg('删除成功', {icon: 1});
+                            } else {
+                                layer.close(index);
+                                layer.msg("删除失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                            }
+                        },
+                        error: function(){
+                            layer.close(index);
+                            layer.msg("删除失败！", {icon: 2});
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    //监听tab切换
+    function tabChange() {
+        element.on('tab(DemoTest)', function(data){
+            // console.log(this); //当前Tab标题所在的原始DOM元素
+            // console.log(data.index); //得到当前Tab的所在下标
+            // console.log(data.elem); //得到当前的Tab大容器
+            if (data.index == 0){
+                queryCase();
+            }  else if (data.index == 1){
+                queryAnswer();
+            }
+        });
+    }
+
+    // 新增
+    function add(){
+        var index = layer.open({
+            type: 2,
+            content: '/teacherQuestion/toAddCaseAnswer?questionid='+$("#questionid").val(),
+            maxmin: false,
+            title: '新增',
+            area : ['600px', '400px']
+        });
+        // layer.full(index);
+    }
+
+
+</script>
+</body>
+</html>

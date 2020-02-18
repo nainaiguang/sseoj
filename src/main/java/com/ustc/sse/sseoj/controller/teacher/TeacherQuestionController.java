@@ -2,8 +2,10 @@ package com.ustc.sse.sseoj.controller.teacher;
 
 
 import com.ustc.sse.sseoj.Data.*;
+import com.ustc.sse.sseoj.model.functionClass.count;
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
-import com.ustc.sse.sseoj.model.teacher.homework_link_bankModelKey;
+import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
 import com.ustc.sse.sseoj.model.user.TeacherModel;
 import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import com.ustc.sse.sseoj.model.warehouse.answerModel;
@@ -11,6 +13,7 @@ import com.ustc.sse.sseoj.model.warehouse.questionModel;
 import com.ustc.sse.sseoj.service.teacher.QuestionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -61,7 +64,7 @@ public class TeacherQuestionController {
     //添加问题与作业关系
     @RequestMapping(value = "/addHomeworkQuestionRelationship", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes add_relationship_homework_question(homework_link_bankModelKey hlbm){
+    public Mes add_relationship_homework_question(homework_link_bankModel hlbm){
         Result result=qsimpl.add_relationship_homework_question(hlbm);
         if(result instanceof Result.Success)
         {
@@ -84,15 +87,17 @@ public class TeacherQuestionController {
     //获取该教师的，某作业的所有题目（包括模糊）
     @RequestMapping(value = "/getAllQuestionFromHomework", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public  Mes get_all_question_from_homework(homeworkModel hm,questionModel qm,HttpServletRequest request){
+    public  Mes get_all_question_from_homework(homeworkModel hm,questionModel qm,pageLimit pl ,HttpServletRequest request){
         TeacherModel tm=new TeacherModel();
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
-        Result result=qsimpl.get_all_question_from_homework(tm,hm,qm);
-        if(result instanceof Result.Success)
+        Result result=qsimpl.get_all_question_from_homework(tm,hm,qm,pl);
+        Result result1=qsimpl.get_all_question_count_from_homework(tm,hm,qm);
+        if(result instanceof Result.Success && result1 instanceof Result.Success)
         {
             ArrayList<questionModel> arrayList=((ArrayList<questionModel>)((Result.Success) result).getData());
-            return new Mes(true,Code.SUCCESS,arrayList.size(),arrayList);
+            count count1= (count) ((Result.Success) result1).getData();
+            return new Mes(true,Code.SUCCESS,count1.getCount1(),arrayList);
         }
         else if(result instanceof Result.Fail)
         {
@@ -111,17 +116,19 @@ public class TeacherQuestionController {
     //搜索题目,该老师的（包括模糊搜索，根据题目名）
     @RequestMapping(value = "/searchQuestion", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes search_question(questionModel qm,HttpServletRequest request){
+    public Mes search_question(questionModel qm, pageLimit pl ,HttpServletRequest request){
         TeacherModel tm=new TeacherModel();
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
 
-        Result result=qsimpl.search_question(tm,qm);
+        Result result=qsimpl.search_question(tm,qm,pl);
+        Result result1=qsimpl.search_question_count(tm,qm);
 
-        if(result instanceof Result.Success)
+        if(result instanceof Result.Success && result1 instanceof Result.Success)
         {
             ArrayList<questionModel> reslist=((ArrayList<questionModel>)((Result.Success) result).getData());
-            return new Mes(true,Code.SUCCESS,reslist.size(),reslist);
+            count count1= (count) ((Result.Success) result1).getData();
+            return new Mes(true,Code.SUCCESS,count1.getCount1(),reslist);
         }
         else if(result instanceof Result.Fail)
         {
@@ -164,7 +171,7 @@ public class TeacherQuestionController {
     //删除问题与作业关系
     @RequestMapping(value = "/deleteHomeworkQuestionRelationship", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes delete_relationship_homework_question(homework_link_bankModelKey hlbm){
+    public Mes delete_relationship_homework_question(homework_link_bankModel hlbm){
         Result result=qsimpl.delete_relationship_homework_question(hlbm);
         if(result instanceof Result.Success)
         {
@@ -262,17 +269,19 @@ public class TeacherQuestionController {
     //搜索该老师的，该作业外的其他题目,包括模糊
     @RequestMapping(value = "/getQuestionExceptUsing", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes get_question_except_using(homeworkModel hm,HttpServletRequest request){
+    public Mes get_question_except_using(homeworkModel hm,pageLimit pl ,HttpServletRequest request){
         TeacherModel tm=new TeacherModel();
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
 
-        Result result= qsimpl.get_question_except_using(tm,hm);
+        Result result= qsimpl.get_question_except_using(tm,hm,pl);
+        Result result1=qsimpl.get_question_count_except_using(tm,hm);
 
-        if(result instanceof Result.Success)
+        if(result instanceof Result.Success && result1 instanceof Result.Success)
         {
             ArrayList<questionModel> arrayRes=(ArrayList<questionModel>)((Result.Success) result).getData();
-            return new Mes(true,Code.SUCCESS,arrayRes.size(),arrayRes);
+            count count1= (count) ((Result.Success) result1).getData();
+            return new Mes(true,Code.SUCCESS,count1.getCount1(),arrayRes);
         }
         else if(result instanceof Result.Fail)
         {
@@ -288,7 +297,53 @@ public class TeacherQuestionController {
         }
     }
 
+    //刷新某次作业的所有题号
+    @RequestMapping(value = "/ReflashQuestionNumber", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes reflash_questionNumber(homework_link_bankModel hlbm)
+    {
+        Result result=qsimpl.reflash_questionNumber(hlbm);
+        if(result instanceof Result.Success)
+        {
+            return new Mes(true,Code.SUCCESS,1,true);
+        }
+        else if(result instanceof Result.Fail)
+        {
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+        else
+        {
+            Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+    }
 
+    //批量更改问题的题号
+    @RequestMapping(value = "/updateQuestionNumberBatch", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes updateQuestionNumberBatch(@RequestBody ArrayList<homework_link_bankModel> arrayList)
+    {
+        Result result=qsimpl.updateQuestionNumberBatch(arrayList);
+        if(result instanceof Result.Success)
+        {
+            return new Mes(true,Code.SUCCESS,1,true);
+        }
+        else if(result instanceof Result.Fail)
+        {
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+        else
+        {
+            Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+    }
 
     //得到某个答案详细信息
     @RequestMapping(value = "/getAnswerDetail", method = RequestMethod.POST, produces = "application/json; charset=utf-8")

@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- @author 邱乃光 -->
 <mapper namespace="com.ustc.sse.sseoj.dao.singleModel.teacher.homework_link_bankModelMapper">
-  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.teacher.homework_link_bankModelKey">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.teacher.homework_link_bankModel">
     <id column="homeworkID" jdbcType="VARCHAR" property="homeworkid" />
     <id column="questionID" jdbcType="VARCHAR" property="questionid" />
+    <result column="questionNumber" jdbcType="INTEGER" property="questionnumber" />
   </resultMap>
+  <sql id="Base_Column_List">
+    homeworkID, questionID, questionNumber
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.teacher.homework_link_bankModelKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from homework_link_bank
+    where homeworkID = #{homeworkid,jdbcType=VARCHAR}
+      and questionID = #{questionid,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.teacher.homework_link_bankModelKey">
     delete from homework_link_bank
     where homeworkID = #{homeworkid,jdbcType=VARCHAR}
       and questionID = #{questionid,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.teacher.homework_link_bankModelKey">
-    insert into homework_link_bank (homeworkID, questionID)
-    values (#{homeworkid,jdbcType=VARCHAR}, #{questionid,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.teacher.homework_link_bankModel">
+    insert into homework_link_bank (homeworkID, questionID, questionNumber
+      )
+    values (#{homeworkid,jdbcType=VARCHAR}, #{questionid,jdbcType=VARCHAR}, #{questionnumber,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.teacher.homework_link_bankModelKey">
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.teacher.homework_link_bankModel">
     insert into homework_link_bank
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="homeworkid != null">
@@ -23,6 +35,9 @@
       </if>
       <if test="questionid != null">
         questionID,
+      </if>
+      <if test="questionnumber != null">
+        questionNumber,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -32,6 +47,25 @@
       <if test="questionid != null">
         #{questionid,jdbcType=VARCHAR},
       </if>
+      <if test="questionnumber != null">
+        #{questionnumber,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.teacher.homework_link_bankModel">
+    update homework_link_bank
+    <set>
+      <if test="questionnumber != null">
+        questionNumber = #{questionnumber,jdbcType=INTEGER},
+      </if>
+    </set>
+    where homeworkID = #{homeworkid,jdbcType=VARCHAR}
+      and questionID = #{questionid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.teacher.homework_link_bankModel">
+    update homework_link_bank
+    set questionNumber = #{questionnumber,jdbcType=INTEGER}
+    where homeworkID = #{homeworkid,jdbcType=VARCHAR}
+      and questionID = #{questionid,jdbcType=VARCHAR}
+  </update>
 </mapper>

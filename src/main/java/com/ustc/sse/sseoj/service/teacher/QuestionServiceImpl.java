@@ -4,12 +4,15 @@ import com.ustc.sse.sseoj.Data.AnswerType;
 import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.IDType;
 import com.ustc.sse.sseoj.Data.Result;
-import com.ustc.sse.sseoj.dao.singleModel.teacher.bank_teacherModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.teacher.homework_link_bankModelMapper;
+import com.ustc.sse.sseoj.dao.singleModel.teacher.bank_teacherModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.warehouse.*;
 import com.ustc.sse.sseoj.dao.teacher.homework.QuestionDao;
+import com.ustc.sse.sseoj.model.functionClass.count;
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.bank_teacherModelKey;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
+import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModelKey;
 import com.ustc.sse.sseoj.model.user.TeacherModel;
 import com.ustc.sse.sseoj.model.warehouse.answerModel;
@@ -32,6 +35,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     homework_link_bankModelMapper hlbmp;
+
     @Autowired
     questionModelMapper qmmp;
     @Autowired
@@ -51,10 +55,8 @@ public class QuestionServiceImpl implements QuestionService {
         {
             return new Result.Fail(Code.MISS_TNO);
         }
-        if(hm.getHomeworkid()==null)
-        {
-            return new Result.Fail(Code.MISS_HOMEWORKID);
-        }
+
+
         if(qm.getQuestionid()==null)
         {
             if(qm.getQuestiontype()==null)
@@ -86,19 +88,24 @@ public class QuestionServiceImpl implements QuestionService {
                 return new Result.Error(e);
             }
         }
+        if(hm.getHomeworkid()!=null&&hm.getHomeworkid() !="")
+        {
+            homework_link_bankModel temphlbm=new homework_link_bankModel();
+            temphlbm.setHomeworkid(hm.getHomeworkid());
+            temphlbm.setQuestionid(qm.getQuestionid());
+            temphlbm.setQuestionnumber(new Integer(qm.getQuestionNumber()));
+            Result res= add_relationship_homework_question(temphlbm);
+            return  res;
+        }
 
-        homework_link_bankModelKey temphlbm=new homework_link_bankModelKey();
-        temphlbm.setHomeworkid(hm.getHomeworkid());
-        temphlbm.setQuestionid(qm.getQuestionid());
-        Result res= add_relationship_homework_question(temphlbm);
 
-        return res;
+        return new Result.Success(true);
 
     }
 
     //添加问题与作业关系
     @Override
-    public Result add_relationship_homework_question(homework_link_bankModelKey hlbm) {
+    public Result add_relationship_homework_question(homework_link_bankModel hlbm) {
         if(hlbm.getHomeworkid()==null)
         {
             return new Result.Fail(Code.MISS_HOMEWORKID);
@@ -107,9 +114,13 @@ public class QuestionServiceImpl implements QuestionService {
         {
             return new Result.Fail(Code.MISS_QUESTIONID);
         }
+        if(hlbm.getQuestionnumber()==0)
+        {
+            return new Result.Fail(Code.Miss_QUESTIONNUMBER);
+        }
 
         try{
-            hlbmp.insert(hlbm);
+            hlbmp.insertSelective(hlbm);
             return new Result.Success(true);
         }
         catch (Exception e)
@@ -121,7 +132,37 @@ public class QuestionServiceImpl implements QuestionService {
 
     //获取该教师的，某作业的所有题目
     @Override
-    public Result get_all_question_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm) {
+    public Result get_all_question_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm,pageLimit pl) {
+        if(tm.getTno()==null)
+        {
+            return new Result.Fail(Code.MISS_TNO);
+        }
+        if(hm.getHomeworkid()==null)
+        {
+            return new Result.Fail(Code.MISS_HOMEWORKID);
+        }
+        if(pl.getLimit()==0)
+        {
+            return new Result.Fail(Code.MISS_PAGE_LIMIT);
+        }
+        if(qm.getTitle()==null)
+        {
+            qm.setTitle("");
+        }
+        try{
+            ArrayList<questionModel> reslist= qdao.get_all_question_from_course_on_teacher(tm,hm,qm,pl);
+            return new Result.Success(reslist);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+
+    }
+
+    //获取该教师的，某作业的所有题目数量
+    @Override
+    public Result get_all_question_count_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -135,7 +176,7 @@ public class QuestionServiceImpl implements QuestionService {
             qm.setTitle("");
         }
         try{
-            ArrayList<questionModel> reslist= qdao.get_all_question_from_course_on_teacher(tm,hm,qm);
+            count reslist= qdao.get_all_question_count_from_course_on_teacher(tm,hm,qm);
             return new Result.Success(reslist);
         }
         catch (Exception e)
@@ -147,10 +188,14 @@ public class QuestionServiceImpl implements QuestionService {
 
     //搜索题目,该老师的（包括模糊搜索，根据题目名）
     @Override
-    public Result search_question(TeacherModel tm, questionModel qm) {
+    public Result search_question(TeacherModel tm, questionModel qm, pageLimit pl) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
+        }
+        if(pl.getLimit()==0)
+        {
+            return new Result.Fail(Code.MISS_PAGE_LIMIT);
         }
         if(qm.getTitle()==null)
         {
@@ -158,7 +203,30 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         try{
-            ArrayList<questionModel> reslist= qdao.get_all_question_from_teacher(tm,qm);
+            ArrayList<questionModel> reslist= qdao.get_all_question_from_teacher(tm,qm,pl);
+            return new Result.Success(reslist);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
+
+    //搜索题目,该老师的（包括模糊搜索，根据题目名）
+    @Override
+    public Result search_question_count(TeacherModel tm, questionModel qm) {
+        if(tm.getTno()==null)
+        {
+            return new Result.Fail(Code.MISS_TNO);
+        }
+
+        if(qm.getTitle()==null)
+        {
+            qm.setTitle("");
+        }
+
+        try{
+            count reslist= qdao.get_all_question_count_from_teacher(tm,qm);
             return new Result.Success(reslist);
         }
         catch (Exception e)
@@ -168,8 +236,47 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 
+    @Override
+    public Result reflash_questionNumber(homework_link_bankModel hlbm){
+        if(hlbm.getHomeworkid()==null)
+        {
+            return new Result.Fail(Code.MISS_HOMEWORKID);
+        }
+        try{
+            ArrayList<homework_link_bankModel> arrayList=qdao.get_homework_bank_order_questionNumber(hlbm);
+            for(int i=0;i<arrayList.size();i++){
+                arrayList.get(i).setQuestionnumber(i+1);
+                hlbmp.updateByPrimaryKey(arrayList.get(i));
+            }
+            return new Result.Success(true);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
 
+    }
 
+    //批量更改该作业的题号
+    @Override
+    public Result updateQuestionNumberBatch(ArrayList<homework_link_bankModel> arrayList)
+    {
+
+        try{
+            for(int i=0;i<arrayList.size();i++){
+                if(arrayList.get(i).getHomeworkid()==null)
+                {
+                    return new Result.Fail(Code.MISS_HOMEWORKID);
+                }
+                hlbmp.updateByPrimaryKey(arrayList.get(i));
+            }
+            return new Result.Success(true);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
 
 
     //更新问题
@@ -271,9 +378,9 @@ public class QuestionServiceImpl implements QuestionService {
 
 
 
-    //搜索该老师的，该作业外的其他题目 todo 测
+    //搜索该老师的，该作业外的其他题目
     @Override
-    public Result get_question_except_using(TeacherModel tm, homeworkModel hm) {
+    public Result get_question_except_using(TeacherModel tm, homeworkModel hm,pageLimit pl) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -282,8 +389,34 @@ public class QuestionServiceImpl implements QuestionService {
         {
             return new Result.Fail(Code.MISS_HOMEWORKID);
         }
+        if(pl.getLimit()==0)
+        {
+            return new Result.Fail(Code.MISS_PAGE_LIMIT);
+        }
         try{
-            ArrayList<questionModel> reslist=qdao.get_question_except_using(tm,hm);
+            ArrayList<questionModel> reslist=qdao.get_question_except_using(tm,hm,pl);
+            return new Result.Success(reslist);
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
+
+    //搜索该老师的，该作业外的其他题目数量
+    @Override
+    public Result get_question_count_except_using(TeacherModel tm, homeworkModel hm) {
+        if(tm.getTno()==null)
+        {
+            return new Result.Fail(Code.MISS_TNO);
+        }
+        if(hm.getHomeworkid()==null)
+        {
+            return new Result.Fail(Code.MISS_HOMEWORKID);
+        }
+
+        try{
+            count reslist=qdao.get_question_count_except_using(tm,hm);
             return new Result.Success(reslist);
         }
         catch (Exception e)
@@ -354,7 +487,7 @@ public class QuestionServiceImpl implements QuestionService {
         {
             return new Result.Fail(Code.MISS_QUESTIONID);
         }
-        if(!(am.getAnswerType().equals(AnswerType.answers.toString())||am.getAnswerType().equals(AnswerType.cases.toString())))//todo 测
+        if(!(am.getAnswerType().equals(AnswerType.answers.toString())||am.getAnswerType().equals(AnswerType.cases.toString())))
         {
             return new Result.Fail(Code.WRONG_ANSWERTYPE);
         }
@@ -384,7 +517,6 @@ public class QuestionServiceImpl implements QuestionService {
         try{
             int res= ammp.updateByPrimaryKeySelective(am);
             return new Result.Success(res);
-
         }
         catch (Exception e)
         {

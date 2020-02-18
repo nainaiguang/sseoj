@@ -4,6 +4,8 @@ import com.ustc.sse.sseoj.Data.Code;
 import com.ustc.sse.sseoj.Data.IDType;
 import com.ustc.sse.sseoj.Data.Mes;
 import com.ustc.sse.sseoj.Data.Result;
+import com.ustc.sse.sseoj.model.functionClass.count;
+import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.Curricula_variableModel;
 import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
@@ -57,16 +59,16 @@ public class TeacherCourseController<T> {
 
     @RequestMapping(value = "/searchCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes teacher_search_course(CourseModel courseModel, HttpServletRequest request) {
+    public Mes teacher_search_course(pageLimit pl,CourseModel courseModel, HttpServletRequest request) {//改
 
 
         if(courseModel.getName()==null)
         {
-            return teacher_show_somebody_all_course(request);
+            return teacher_show_somebody_all_course(pl,request);
         }
         else
         {
-            return teacher_search_course_fully(courseModel,request);
+            return teacher_search_course_fully(courseModel,pl,request);
         }
     }
 
@@ -109,20 +111,24 @@ public class TeacherCourseController<T> {
     //根据教师号获取某老师的所有课程
     @RequestMapping(value = "/showAllCourse", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes teacher_show_somebody_all_course( HttpServletRequest request) {
+    public Mes teacher_show_somebody_all_course(pageLimit pl,HttpServletRequest request) {
 
         Curricula_variableModel curricula_variableModel=new Curricula_variableModel();
 
         UsersModel user = (UsersModel ) request.getSession().getAttribute("user");
         curricula_variableModel.setTno(user.getNo());//通过session获取no
 
-        Result result=teacherCourseService.teacher_show_somebody_all_course(curricula_variableModel);
-        if(result instanceof Result.Success)
+        Result result=teacherCourseService.teacher_show_somebody_all_course(curricula_variableModel,pl);
+        Result result1=teacherCourseService.teacher_count_somebody_all_course(curricula_variableModel);
+        if(result instanceof Result.Success && result1 instanceof Result.Success)
         {
             ArrayList<CourseModel> arrayList= (ArrayList<CourseModel>) ((Result.Success) result).getData();
-            Mes mes=new Mes(true,Code.SUCCESS,arrayList.size(),arrayList);
+
+            count count1= (count) ((Result.Success) result1).getData();
+            Mes mes=new Mes(true,Code.SUCCESS,count1.getCount1(),arrayList);
             System.out.println(mes.toString());
             return mes;
+
         }
         else if(result instanceof Result.Fail)
         {
@@ -229,18 +235,20 @@ public class TeacherCourseController<T> {
     //根据课程名动态搜索课程课程
     @RequestMapping(value = "/searchCourseFully", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes teacher_search_course_fully(CourseModel courseModel, HttpServletRequest request) {
+    public Mes teacher_search_course_fully(CourseModel courseModel,pageLimit pl, HttpServletRequest request) {
 
         Curricula_variableModel curricula_variableModel=new Curricula_variableModel();
 
         UsersModel user = (UsersModel ) request.getSession().getAttribute("user");
         curricula_variableModel.setTno(user.getNo());//通过session获取no
 
-        Result result=teacherCourseService.teacher_search_course_fully(courseModel,curricula_variableModel);
-        if(result instanceof Result.Success)
+        Result result=teacherCourseService.teacher_search_course_fully(courseModel,curricula_variableModel,pl);
+        Result result1=teacherCourseService.teacher_search_count_course_fully(courseModel,curricula_variableModel);//获取总条数
+        if(result instanceof Result.Success && result1 instanceof Result.Success)
         {
             ArrayList<CourseModel> arrayList= (ArrayList<CourseModel>) ((Result.Success) result).getData();
-            Mes mes=new Mes(true,Code.SUCCESS,arrayList.size(),arrayList);
+            count count1= (count) ((Result.Success) result1).getData();
+            Mes mes=new Mes(true,Code.SUCCESS,count1.getCount1(),arrayList);
             System.out.println(mes.toString());
             return mes;
         }
