@@ -8,7 +8,7 @@ import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.model.user.teacherModel;
 import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import com.ustc.sse.sseoj.service.teacher.HomeworkServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author 邱乃光
@@ -68,7 +67,7 @@ public class TeacherHomeworkController {
     {
         cm.setName(null);//用不上起矛盾
 
-        TeacherModel tm=new TeacherModel();
+        teacherModel tm=new teacherModel();
 
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
@@ -212,7 +211,7 @@ public class TeacherHomeworkController {
     @ResponseBody//返回json格式
     public Mes search_homework(CourseModel cm, homeworkModel hm, pageLimit pl,HttpServletRequest request)
     {
-        TeacherModel tm=new TeacherModel();
+        teacherModel tm=new teacherModel();
 
             UsersModel user= (UsersModel) request.getSession().getAttribute("user");
             tm.setTno(user.getNo());
@@ -266,7 +265,7 @@ public class TeacherHomeworkController {
     @ResponseBody//返回json格式
     public Mes search_homework_without_using(CourseModel cm,homeworkModel hm ,pageLimit pl,HttpServletRequest request)
     {
-        TeacherModel tm=new TeacherModel();
+        teacherModel tm=new teacherModel();
 
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());

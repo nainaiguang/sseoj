@@ -1,12 +1,10 @@
 package com.ustc.sse.sseoj.dao.teacher.homework;
 
-import com.ustc.sse.sseoj.Data.Result;
 import com.ustc.sse.sseoj.model.functionClass.count;
 import com.ustc.sse.sseoj.model.functionClass.pageLimit;
-import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.model.user.teacherModel;
 import com.ustc.sse.sseoj.model.warehouse.answerModel;
 import com.ustc.sse.sseoj.model.warehouse.questionModel;
 import org.apache.ibatis.annotations.Mapper;
@@ -32,7 +30,7 @@ public interface QuestionDao {
             "WHERE\n" +
             "\tbank_teacher.tno = #{tm.tno}\n" +
             "\tAND question.title LIKE '%${qm.title}%' LIMIT #{pl.limit_head},#{pl.limit} ")
-    public ArrayList<questionModel> get_all_question_from_teacher(@Param("tm") TeacherModel tm,@Param("qm") questionModel qm,@Param("pl") pageLimit pl);
+    public ArrayList<questionModel> get_all_question_from_teacher(@Param("tm") teacherModel tm, @Param("qm") questionModel qm, @Param("pl") pageLimit pl);
 
     //得到教师的所有问题数量
     @Select("SELECT\n" +
@@ -43,7 +41,7 @@ public interface QuestionDao {
             "WHERE\n" +
             "\tbank_teacher.tno = #{tm.tno}\n" +
             "\tAND question.title LIKE '%${qm.title}%' ")
-    public count get_all_question_count_from_teacher(@Param("tm") TeacherModel tm, @Param("qm") questionModel qm);
+    public count get_all_question_count_from_teacher(@Param("tm") teacherModel tm, @Param("qm") questionModel qm);
 
 
     //得到教师某作业下的所有问题 todo add
@@ -58,7 +56,7 @@ public interface QuestionDao {
             "AND bank_teacher.tno = #{tm.tno}"+
             "\tAND question.title LIKE '%${qm.title}%'\n" +
             "\tORDER BY homework_link_bank.questionNumber  LIMIT #{pl.limit_head},#{pl.limit} ")
-    public ArrayList<questionModel> get_all_question_from_course_on_teacher(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm,@Param("qm") questionModel qm,@Param("pl")pageLimit pl);
+    public ArrayList<questionModel> get_all_question_from_course_on_teacher(@Param("tm") teacherModel tm, @Param("hm") homeworkModel hm, @Param("qm") questionModel qm, @Param("pl")pageLimit pl);
 
     //得到教师某作业下的所有问题数量
     @Select("SELECT\n" +
@@ -72,7 +70,7 @@ public interface QuestionDao {
             "AND bank_teacher.tno = #{tm.tno}"+
             "\tAND question.title LIKE '%${qm.title}%'\n" +
             "\tORDER BY homework_link_bank.questionNumber ")
-    public count get_all_question_count_from_course_on_teacher(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm,@Param("qm") questionModel qm);
+    public count get_all_question_count_from_course_on_teacher(@Param("tm") teacherModel tm, @Param("hm") homeworkModel hm, @Param("qm") questionModel qm);
 
 
     //查询该问题有几个作业在使用
@@ -123,7 +121,7 @@ public interface QuestionDao {
             "\thomework_link_bank\n" +
             "WHERE\n" +
             "\thomework_link_bank.homeworkID = #{hm.homeworkid} ) LIMIT #{pl.limit_head},#{pl.limit} ")
-    public ArrayList<questionModel> get_question_except_using(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm,@Param("pl")pageLimit pl);
+    public ArrayList<questionModel> get_question_except_using(@Param("tm") teacherModel tm, @Param("hm") homeworkModel hm, @Param("pl")pageLimit pl);
 
     //搜索该老师的，该作业外的其他题目数量
     @Select("SELECT\n" +
@@ -139,7 +137,7 @@ public interface QuestionDao {
             "\thomework_link_bank\n" +
             "WHERE\n" +
             "\thomework_link_bank.homeworkID = #{hm.homeworkid} ) ")
-    public count get_question_count_except_using(@Param("tm") TeacherModel tm, @Param("hm") homeworkModel hm);
+    public count get_question_count_except_using(@Param("tm") teacherModel tm, @Param("hm") homeworkModel hm);
 
 
     // 得到所有问题ip即题号

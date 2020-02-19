@@ -5,7 +5,7 @@ import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModelKey;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.model.user.teacherModel;
 import com.ustc.sse.sseoj.model.warehouse.answerModel;
 import com.ustc.sse.sseoj.model.warehouse.questionModel;
 
@@ -22,22 +22,22 @@ public interface QuestionService {
 
 
     //添加问题（包括作业与问题的关系），但添加教师关系
-    public Result add_question(TeacherModel tm,homeworkModel hm, questionModel qm);
+    public Result add_question(teacherModel tm, homeworkModel hm, questionModel qm);
 
     //添加问题与课程关系
     public Result add_relationship_homework_question(homework_link_bankModel hlbm);
 
     //获取该教师的，某作业的所有题目（包括模糊）
-    public  Result get_all_question_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm,pageLimit pl);
+    public  Result get_all_question_from_homework(teacherModel tm, homeworkModel hm, questionModel qm, pageLimit pl);
 
     //获取该教师的，某作业的所有题目数量（包括模糊）
-    public Result get_all_question_count_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm);
+    public Result get_all_question_count_from_homework(teacherModel tm, homeworkModel hm, questionModel qm);
 
     //搜索题目,该老师的（包括模糊搜索，根据题目名）
-    public Result search_question(TeacherModel tm, questionModel qm,pageLimit pl);
+    public Result search_question(teacherModel tm, questionModel qm, pageLimit pl);
 
     //搜索题目,该老师的（包括模糊搜索，根据题目名）
-    public Result search_question_count(TeacherModel tm, questionModel qm);
+    public Result search_question_count(teacherModel tm, questionModel qm);
 
     //更新问题
     public Result update_question(questionModel qm);
@@ -49,7 +49,7 @@ public interface QuestionService {
     public Result delete_question(questionModel qm);
 
     //搜索该题目几个作业在使用
-    public Result get_homework_use_question(questionModel qm,TeacherModel tm);
+    public Result get_homework_use_question(questionModel qm, teacherModel tm);
 
     //得到某个题目详细信息
     public Result get_question_detail(questionModel qm);
@@ -61,10 +61,10 @@ public interface QuestionService {
     public Result updateQuestionNumberBatch(ArrayList<homework_link_bankModel> arrayList);
 
     //搜索该老师的，该作业外的其他题目,包括模糊
-    public Result get_question_except_using(TeacherModel tm, homeworkModel hm, pageLimit pl);
+    public Result get_question_except_using(teacherModel tm, homeworkModel hm, pageLimit pl);
 
     //搜索该老师的，该作业外的其他题目数量,包括模糊
-    public Result get_question_count_except_using(TeacherModel tm, homeworkModel hm);
+    public Result get_question_count_except_using(teacherModel tm, homeworkModel hm);
 
     //得到某个答案详细信息
     public Result get_answer_detail(answerModel am);

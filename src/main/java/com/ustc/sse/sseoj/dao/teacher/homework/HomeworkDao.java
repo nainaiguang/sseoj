@@ -4,7 +4,7 @@ import com.ustc.sse.sseoj.model.functionClass.count;
 import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.model.user.teacherModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -32,7 +32,7 @@ public interface HomeworkDao {
             "\tcourse_homework.courseID = #{cm.courseID}\n" +
             "AND teacher_homework.tno = #{tm.tno} \n" +
             "AND homework.name LIKE '%${hm.name}%' LIMIT #{pl.limit_head},#{pl.limit} ")
-    public ArrayList<homeworkModel> search_homework_for_name_fully_in_course(@Param("tm") TeacherModel tm,@Param("cm") CourseModel cm,@Param("hm") homeworkModel hm, @Param("pl") pageLimit pl);
+    public ArrayList<homeworkModel> search_homework_for_name_fully_in_course(@Param("tm") teacherModel tm, @Param("cm") CourseModel cm, @Param("hm") homeworkModel hm, @Param("pl") pageLimit pl);
 
     //某门课下的所有作业，包括名字模糊查询 空即查询所有
     @Select("SELECT\n" +
@@ -45,7 +45,7 @@ public interface HomeworkDao {
             "\tcourse_homework.courseID = #{cm.courseID}\n" +
             "AND teacher_homework.tno = #{tm.tno} \n" +
             "AND homework.name LIKE '%${hm.name}%' ")
-    public count search_count_homework_for_name_fully_in_course(@Param("tm") TeacherModel tm, @Param("cm") CourseModel cm, @Param("hm") homeworkModel hm);
+    public count search_count_homework_for_name_fully_in_course(@Param("tm") teacherModel tm, @Param("cm") CourseModel cm, @Param("hm") homeworkModel hm);
 
 
     //某老师的所有作业，包括名字模糊查询 空即查询所有 todo add
@@ -55,7 +55,7 @@ public interface HomeworkDao {
             "\tteacher_homework\n" +
             "INNER JOIN homework ON teacher_homework.homeworkID = homework.homeworkID\n" +
             "WHERE teacher_homework.tno=#{tm.tno} AND homework.name LIKE '%${hm.name}%' LIMIT #{pl.limit_head},#{pl.limit} ")
-    public ArrayList<homeworkModel> search_homework_for_name_fully_in_teacher(@Param("tm") TeacherModel tm,@Param("hm") homeworkModel hm, @Param("pl")pageLimit pl);
+    public ArrayList<homeworkModel> search_homework_for_name_fully_in_teacher(@Param("tm") teacherModel tm, @Param("hm") homeworkModel hm, @Param("pl")pageLimit pl);
 
     //某老师的所有作业数量，包括名字模糊查询 空即查询所有
     @Select("SELECT\n" +
@@ -64,7 +64,7 @@ public interface HomeworkDao {
             "\tteacher_homework\n" +
             "INNER JOIN homework ON teacher_homework.homeworkID = homework.homeworkID\n" +
             "WHERE teacher_homework.tno=#{tm.tno} AND homework.name LIKE '%${hm.name}%' ")
-    public count search_count_homework_for_name_fully_in_teacher(@Param("tm") TeacherModel tm,@Param("hm") homeworkModel hm);
+    public count search_count_homework_for_name_fully_in_teacher(@Param("tm") teacherModel tm, @Param("hm") homeworkModel hm);
 
 
 
@@ -96,7 +96,7 @@ public interface HomeworkDao {
             "\tWHERE\n" +
             "\t\tcourseID = #{cm.courseID}\n" +
             ") LIMIT #{pl.limit_head},#{pl.limit}")
-    public ArrayList<homeworkModel> search_homework_without_using(@Param("tm") TeacherModel tm,@Param("cm") CourseModel cm,@Param("hm") homeworkModel hm, @Param("pl")pageLimit pl);
+    public ArrayList<homeworkModel> search_homework_without_using(@Param("tm") teacherModel tm, @Param("cm") CourseModel cm, @Param("hm") homeworkModel hm, @Param("pl")pageLimit pl);
 
     //查询目前不属于这个课程但属于这个老师的作业数量
     @Select("SELECT\n" +
@@ -115,6 +115,6 @@ public interface HomeworkDao {
             "\tWHERE\n" +
             "\t\tcourseID = #{cm.courseID}\n" +
             ")")
-    public count search_count_homework_without_using(@Param("tm") TeacherModel tm,@Param("cm") CourseModel cm,@Param("hm") homeworkModel hm);
+    public count search_count_homework_without_using(@Param("tm") teacherModel tm, @Param("cm") CourseModel cm, @Param("hm") homeworkModel hm);
 
 }

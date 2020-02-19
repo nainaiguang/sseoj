@@ -11,6 +11,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class StudentModel extends UsersModel {
-    String sno,spassword,sname;
+public class teacherModel extends UsersModel {
+    String tno,tpassword,tname,role;
 }
