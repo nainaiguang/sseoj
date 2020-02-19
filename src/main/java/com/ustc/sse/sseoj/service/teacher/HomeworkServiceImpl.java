@@ -13,7 +13,7 @@ import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
 import com.ustc.sse.sseoj.model.teacher.teacher_homeworkModelKey;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.model.user.teacherModel;
 import com.ustc.sse.sseoj.service.teacher.superService.HomeworkService;
 import com.ustc.sse.sseoj.util.CreatId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class HomeworkServiceImpl implements HomeworkService {
     // 且课程id不存在，则添加作业，连接教师与作业
     //如果课程id存在，则则添加作业，连接教师与作业
     @Override
-    public Result teacher_add_homework(TeacherModel tm, homeworkModel hm, CourseModel cm) {
+    public Result teacher_add_homework(teacherModel tm, homeworkModel hm, CourseModel cm) {
         if(hm.getHomeworkid()!=null&&cm.getCourseID()==null)
         {
             return new Result.Fail(Code.WRONG_PARAMETER);
@@ -204,7 +204,7 @@ public class HomeworkServiceImpl implements HomeworkService {
     //某老师的所有作业，包括名字模糊查询 空即查询所有
     //优先查询某门课下
     @Override
-    public Result search_homework(TeacherModel tm,CourseModel cm, homeworkModel hm, pageLimit pl) {
+    public Result search_homework(teacherModel tm, CourseModel cm, homeworkModel hm, pageLimit pl) {
         if(cm.getCourseID()==null&&tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_PARAMETE);
@@ -253,7 +253,7 @@ public class HomeworkServiceImpl implements HomeworkService {
     //优先查询某门课下
     //的数量
     @Override
-    public Result search_homework_count(TeacherModel tm,CourseModel cm, homeworkModel hm) {
+    public Result search_homework_count(teacherModel tm, CourseModel cm, homeworkModel hm) {
         if(cm.getCourseID()==null&&tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_PARAMETE);
@@ -314,7 +314,7 @@ public class HomeworkServiceImpl implements HomeworkService {
 
     //显示目前属于该教师，但没有在该课程下的所有作业
     @Override
-    public Result search_homework_without_using(TeacherModel tm, CourseModel cm,homeworkModel hm,pageLimit pl) {
+    public Result search_homework_without_using(teacherModel tm, CourseModel cm, homeworkModel hm, pageLimit pl) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -344,7 +344,7 @@ public class HomeworkServiceImpl implements HomeworkService {
 
     //显示目前属于该教师，但没有在该课程下的所有作业数量
     @Override
-    public Result search_count_homework_without_using(TeacherModel tm, CourseModel cm,homeworkModel hm) {
+    public Result search_count_homework_without_using(teacherModel tm, CourseModel cm, homeworkModel hm) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);

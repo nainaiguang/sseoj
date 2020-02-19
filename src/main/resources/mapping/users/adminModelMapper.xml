@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.users.adminModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.user.adminModel">
+    <id column="no" jdbcType="VARCHAR" property="no" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="role" jdbcType="CHAR" property="role" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    no, password, name, role
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where no = #{no,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from admin
+    where no = #{no,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.user.adminModel">
+    insert into admin (no, password, name, 
+      role)
+    values (#{no,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{role,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.user.adminModel">
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="no != null">
+        no,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="role != null">
+        role,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="no != null">
+        #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null">
+        #{role,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.user.adminModel">
+    update admin
+    <set>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null">
+        role = #{role,jdbcType=CHAR},
+      </if>
+    </set>
+    where no = #{no,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.user.adminModel">
+    update admin
+    set password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      role = #{role,jdbcType=CHAR}
+    where no = #{no,jdbcType=VARCHAR}
+  </update>
+</mapper>

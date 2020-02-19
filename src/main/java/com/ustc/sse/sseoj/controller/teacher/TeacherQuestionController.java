@@ -6,7 +6,7 @@ import com.ustc.sse.sseoj.model.functionClass.count;
 import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.model.user.teacherModel;
 import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import com.ustc.sse.sseoj.model.warehouse.answerModel;
 import com.ustc.sse.sseoj.model.warehouse.questionModel;
@@ -36,7 +36,7 @@ public class TeacherQuestionController {
     @RequestMapping(value = "/addQuestion", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
     public Mes add_question(homeworkModel hm, questionModel qm, HttpServletRequest request){
-        TeacherModel tm=new TeacherModel();
+        teacherModel tm=new teacherModel();
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
 
@@ -88,7 +88,7 @@ public class TeacherQuestionController {
     @RequestMapping(value = "/getAllQuestionFromHomework", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
     public  Mes get_all_question_from_homework(homeworkModel hm,questionModel qm,pageLimit pl ,HttpServletRequest request){
-        TeacherModel tm=new TeacherModel();
+        teacherModel tm=new teacherModel();
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
         Result result=qsimpl.get_all_question_from_homework(tm,hm,qm,pl);
@@ -117,7 +117,7 @@ public class TeacherQuestionController {
     @RequestMapping(value = "/searchQuestion", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
     public Mes search_question(questionModel qm, pageLimit pl ,HttpServletRequest request){
-        TeacherModel tm=new TeacherModel();
+        teacherModel tm=new teacherModel();
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
 
@@ -218,7 +218,7 @@ public class TeacherQuestionController {
     @RequestMapping(value = "/getHomeworkUseQuestion", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
     public Mes get_homework_use_question(questionModel qm,HttpServletRequest request){
-        TeacherModel tm=new TeacherModel();
+        teacherModel tm=new teacherModel();
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
         Result result= qsimpl.get_homework_use_question(qm,tm);
@@ -270,7 +270,7 @@ public class TeacherQuestionController {
     @RequestMapping(value = "/getQuestionExceptUsing", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
     public Mes get_question_except_using(homeworkModel hm,pageLimit pl ,HttpServletRequest request){
-        TeacherModel tm=new TeacherModel();
+        teacherModel tm=new teacherModel();
         UsersModel user= (UsersModel) request.getSession().getAttribute("user");
         tm.setTno(user.getNo());
 

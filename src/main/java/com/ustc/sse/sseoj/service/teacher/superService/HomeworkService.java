@@ -5,7 +5,7 @@ import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.course_homeworkModelKey;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.model.user.teacherModel;
 
 import java.util.ArrayList;
 
@@ -24,7 +24,7 @@ public interface HomeworkService {
     //其中 如果作业本身不存在，则创建作业，否则不创建
     // 且课程id不存在，则添加作业，连接教师与作业
     //如果课程id存在，则则添加作业，连接教师与作业
-    public Result teacher_add_homework(TeacherModel tm, homeworkModel hm, CourseModel cm);
+    public Result teacher_add_homework(teacherModel tm, homeworkModel hm, CourseModel cm);
 
     //教师删除作业，直接删除，包括关系,包括批量
     public Result delete_homework(ArrayList<homeworkModel> arrayList);
@@ -36,17 +36,17 @@ public interface HomeworkService {
     public Result update_homework(homeworkModel hm);
 
     //显示某老师的作业课程，包括模糊查询
-    public Result search_homework(TeacherModel tm, CourseModel cm,homeworkModel hm, pageLimit pl);
+    public Result search_homework(teacherModel tm, CourseModel cm, homeworkModel hm, pageLimit pl);
 
     //显示某老师的作业课程，包括模糊查询数量
-    public Result search_homework_count(TeacherModel tm,CourseModel cm, homeworkModel hm);
+    public Result search_homework_count(teacherModel tm, CourseModel cm, homeworkModel hm);
 
     //显示这个作业哪几门在用
     public Result people_use_homework(homeworkModel hm);
 
     //显示目前没有在改课程下应用的该教师的作业
-    public Result search_homework_without_using(TeacherModel tm,CourseModel cm,homeworkModel hm,pageLimit pl);
+    public Result search_homework_without_using(teacherModel tm, CourseModel cm, homeworkModel hm, pageLimit pl);
 
     //显示目前没有在改课程下应用的该教师的作业数量
-    public Result search_count_homework_without_using(TeacherModel tm, CourseModel cm,homeworkModel hm);
+    public Result search_count_homework_without_using(teacherModel tm, CourseModel cm, homeworkModel hm);
 }

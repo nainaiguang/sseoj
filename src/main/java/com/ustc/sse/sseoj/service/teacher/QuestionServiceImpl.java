@@ -14,7 +14,7 @@ import com.ustc.sse.sseoj.model.teacher.bank_teacherModelKey;
 import com.ustc.sse.sseoj.model.teacher.homeworkModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModel;
 import com.ustc.sse.sseoj.model.teacher.homework_link_bankModelKey;
-import com.ustc.sse.sseoj.model.user.TeacherModel;
+import com.ustc.sse.sseoj.model.user.teacherModel;
 import com.ustc.sse.sseoj.model.warehouse.answerModel;
 import com.ustc.sse.sseoj.model.warehouse.questionModel;
 import com.ustc.sse.sseoj.model.warehouse.question_answerModelKey;
@@ -50,7 +50,7 @@ public class QuestionServiceImpl implements QuestionService {
     //添加问题（包括作业与问题的关系），但添加教师关系
     //TODO 添加图片还没写
     @Override
-    public Result add_question(TeacherModel tm,homeworkModel hm, questionModel qm) {
+    public Result add_question(teacherModel tm, homeworkModel hm, questionModel qm) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -132,7 +132,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     //获取该教师的，某作业的所有题目
     @Override
-    public Result get_all_question_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm,pageLimit pl) {
+    public Result get_all_question_from_homework(teacherModel tm, homeworkModel hm, questionModel qm, pageLimit pl) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -162,7 +162,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     //获取该教师的，某作业的所有题目数量
     @Override
-    public Result get_all_question_count_from_homework(TeacherModel tm,homeworkModel hm,questionModel qm) {
+    public Result get_all_question_count_from_homework(teacherModel tm, homeworkModel hm, questionModel qm) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -188,7 +188,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     //搜索题目,该老师的（包括模糊搜索，根据题目名）
     @Override
-    public Result search_question(TeacherModel tm, questionModel qm, pageLimit pl) {
+    public Result search_question(teacherModel tm, questionModel qm, pageLimit pl) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -214,7 +214,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     //搜索题目,该老师的（包括模糊搜索，根据题目名）
     @Override
-    public Result search_question_count(TeacherModel tm, questionModel qm) {
+    public Result search_question_count(teacherModel tm, questionModel qm) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -338,7 +338,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     //搜索该题目几个作业在使用
     @Override
-    public Result get_homework_use_question(questionModel qm,TeacherModel tm) {
+    public Result get_homework_use_question(questionModel qm, teacherModel tm) {
         if(qm.getQuestionid()==null)
         {
             return new Result.Fail(Code.MISS_QUESTIONID);
@@ -380,7 +380,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     //搜索该老师的，该作业外的其他题目
     @Override
-    public Result get_question_except_using(TeacherModel tm, homeworkModel hm,pageLimit pl) {
+    public Result get_question_except_using(teacherModel tm, homeworkModel hm, pageLimit pl) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
@@ -405,7 +405,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     //搜索该老师的，该作业外的其他题目数量
     @Override
-    public Result get_question_count_except_using(TeacherModel tm, homeworkModel hm) {
+    public Result get_question_count_except_using(teacherModel tm, homeworkModel hm) {
         if(tm.getTno()==null)
         {
             return new Result.Fail(Code.MISS_TNO);
