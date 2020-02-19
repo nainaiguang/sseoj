@@ -42,4 +42,77 @@
 监管学生模块：
     待定
 
+管理员模块：
+    账号功能:
+        读取前端上传的excel表格,然后为学生或教师进行批量注册，其中包括 eg：teacher和teacherinfo表的数据,支持数据库表格运行空的字段不填
+            (不会做文件上传先留着，用arraylist来放数据，后续把excel表读入arraylist即可)
+            调用单个insert的语句，对student/teacher  与 student_info/teacher_info表进行插入
+    学生功能：
+        获取目前的所有学生(可以根据院系，年级来筛选,名字)
+            select所有学生，或者加院系条件，或者加年级条件，或者加名字条件，或加账号条件，名字要用like模糊查询，参考mapper.xml中的if语句动态生成,
+            只要写一个select,不要写8个  返回Arraylist<studentModel> 不要查密码字段 记得加limit
+            输入: pageLimit student_info中的sdept或sgrade,student中的no,name（这两个字段要支持模糊查询） 输出：Arraylist<studentModel>
+            辅助方法 计算这次不加limit的总数据条数：输入   输出count
+                     因为如果前端有表格来显示的话，需要提供总条数，才能获取当前的总页数之类的
+                     Mes中的count填的不是arraylist长度，而是这个count
+
+        获取目前的学生中的所有院系
+            在student_info中查询dept,并group by即可，得到Arraylist<student_infoModel>中的sdept
+            输入：pageLimit    输出Arraylist<student_infoModel>，其中student_infoModel的sdept有值
+            辅助方法：计算这次不加limit的总数据条数：输入   输出count
+
+        获取目前的学生中所有年级
+            在student_info中对grade进行group by分组即可得到Arraylist<student_infoModel>中的sgrade
+            输入：pageLimit    输出Arraylist<student_infoModel>，其中student_infoModel的sgrade有值
+            辅助方法：计算这次不加limit的总数据条数：输入   输出count
+
+        获取某学生的详细信息
+            根据学生的学号，查找学生的studentModel与student_infoModel信息
+            输入 studentModel中的no  输出 stuentModel与student_infoModel联合
+
+        获取改学生的所有基本信息 其中包括密码等 如果密码字段为空，则填入默认密码（账号的小写）
+            根据学号更改学生的 student表中可以更改的信息,与student_info中的信息
+            输入 studentModel中的no 输出 true
+
+        获取该学生的所有选课信息
+            根据studentModel中的no 联合select_course与course 查询course信息，包括限制长度
+            输入：studentModel中的no  pageLimit  输出arraylist<course>
+            辅助方法：计算这次不加limit的总数据条数：输入   输出count
+
+        可以删除学生的选课信息，支持批量
+            根据select_courseModelKey中的两项 删除表select_course中的行
+            输入：ArrayList<select_courseModelKey> 输出：true
+
+        可以删除学生账号，支持批量
+            根据studentModel中的no 删除student表中的字段，与student_info中的信息
+            输入：ArrayList<studentModel> 输出true
+
+    教师功能:
+
+        查看所有的教师(可以根据院系来筛选)
+             select所有教师，或者加院系条件，或者加名字添加，或者账号条件 可以多加，参考mapper.xml中的if语句动态生成,
+             只要写一个select,不要写4个  返回Arraylist<teacherModel> 不要查密码字段 记得加limit
+             输入: pageLimit teacherModel中的name，no（支持模糊查询） teacherModel中的tdept 输出：Arraylist<studentModel>
+             辅助方法 计算这次不加limit的总数据条数：输入   输出count
+
+
+        获取目前教师中的所有的院系
+            在teacher_info中查询dept,并group by即可，得到Arraylist<teacher_info>中的sdept
+            输入：pageLimit    输出Arraylist<teacher_info>，其中teacher_infoModel的sdept有值
+             辅助方法：计算这次不加limit的总数据条数：输入   输出count
+
+        获取教师的基本信息
+            根据教师的的教师，查找学生的teacherModel与teacher_infoModel信息
+            输入 teacherModel中的no  输出 teacherModel与teacher_infoModel联合
+
+
+        获取某教师的所有课程
+            已经写好了，详情查看teacherCourseServiceImpl,包括count,与限制，不会写Limit的先查看这个方法
+
+        进入某课程后，可以某学生进行添加选课，支持批量
+            输入ArrayList<select_course> 输出true
+
+        可以删除某教师账号，支持批量
+            输入ArrayList<teacherModel>  输出true
+
 
