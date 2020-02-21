@@ -23,19 +23,19 @@
   <insert id="insert" parameterType="com.ustc.sse.sseoj.model.user.teacherModel">
     insert into teacher (no, password, name, 
       role)
-    values (#{no,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+    values (#{tno,jdbcType=VARCHAR}, #{tpassword,jdbcType=VARCHAR}, #{tname,jdbcType=VARCHAR},
       #{role,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.user.teacherModel">
     insert into teacher
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="no != null">
+      <if test="tno != null">
         no,
       </if>
-      <if test="password != null">
+      <if test="tpassword != null">
         password,
       </if>
-      <if test="name != null">
+      <if test="tname != null">
         name,
       </if>
       <if test="role != null">
@@ -43,14 +43,14 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="no != null">
-        #{no,jdbcType=VARCHAR},
+      <if test="tno != null">
+        #{tno,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
+      <if test="tpassword != null">
+        #{tpassword,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="tname != null">
+        #{tname,jdbcType=VARCHAR},
       </if>
       <if test="role != null">
         #{role,jdbcType=CHAR},
@@ -60,23 +60,23 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.user.teacherModel">
     update teacher
     <set>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
+      <if test="tpassword != null">
+        password = #{tpassword,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+      <if test="tname != null">
+        name = #{tname,jdbcType=VARCHAR},
       </if>
       <if test="role != null">
         role = #{role,jdbcType=CHAR},
       </if>
     </set>
-    where no = #{no,jdbcType=VARCHAR}
+    where no = #{tno,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.user.teacherModel">
     update teacher
-    set password = #{password,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
+    set password = #{tpassword,jdbcType=VARCHAR},
+      name = #{tname,jdbcType=VARCHAR},
       role = #{role,jdbcType=CHAR}
-    where no = #{no,jdbcType=VARCHAR}
+    where no = #{tno,jdbcType=VARCHAR}
   </update>
 </mapper>
