@@ -1,6 +1,7 @@
 <!--
  @author  Qianbw
  @create 2020-02-15 14:41
+ 作业管理下的题库管理
 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
@@ -71,6 +72,15 @@
         });
 
     function query() {
+
+        $.ajax({
+            url : "/teacher/course/question/ReflashQuestionNumber?homeworkid="+$('#homeworkid').val(),
+            dataType: 'json',
+            method : 'post',
+            contentType : 'application/json; charset=UTF-8',
+            data : {}
+        });
+
         // 执行渲染
         table.render({
             elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
