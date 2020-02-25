@@ -25,7 +25,7 @@ public interface QuestionService {
     public Result add_question(teacherModel tm, homeworkModel hm, questionModel qm);
 
     //添加问题与课程关系
-    public Result add_relationship_homework_question(homework_link_bankModel hlbm);
+    public Result add_relationship_homework_question(homework_link_bankModel hlbm,teacherModel tm);
 
     //获取该教师的，某作业的所有题目（包括模糊）
     public  Result get_all_question_from_homework(teacherModel tm, homeworkModel hm, questionModel qm, pageLimit pl);

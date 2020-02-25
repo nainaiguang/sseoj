@@ -64,8 +64,13 @@ public class TeacherQuestionController {
     //添加问题与作业关系
     @RequestMapping(value = "/addHomeworkQuestionRelationship", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes add_relationship_homework_question(homework_link_bankModel hlbm){
-        Result result=qsimpl.add_relationship_homework_question(hlbm);
+    public Mes add_relationship_homework_question(homework_link_bankModel hlbm, HttpServletRequest request){
+        //todo look record
+        teacherModel tm=new teacherModel();
+        UsersModel user= (UsersModel) request.getSession().getAttribute("user");
+        tm.setTno(user.getNo());
+
+        Result result=qsimpl.add_relationship_homework_question(hlbm,tm);
         if(result instanceof Result.Success)
         {
             return new Mes(true,Code.SUCCESS,1,true);
