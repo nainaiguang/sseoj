@@ -1,0 +1,143 @@
+<!--
+ @author  Qianbw
+ @create 2020-02-18 14:10
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>编辑</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <style>
+        .layui-input-block {
+            margin-right:30px;
+        }
+    </style>
+</head>
+<body>
+<div style=" margin-top: 30px;">
+    <form name="" class="layui-form" action="" method="post">
+        <input type="hidden" th:value="${answerModel.answerid}" name="answerid"/>
+        <input type="hidden" value="cases" id="answerType" name="answerType" />
+        <div class="layui-form-item" style="margin-bottom:30px;">
+            <label class="layui-form-label">Input</label>
+            <div class="layui-input-block">
+                <input th:value="${answerModel.input}" type="hidden" id="InputText" name="Input" required  lay-verify="Input" placeholder="请输入Input" autocomplete="off" class="layui-input">
+                <div id="Input">
+                    <p>请输入Input</p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text" style="margin-bottom:30px;">
+            <label class="layui-form-label">Output</label>
+            <div class="layui-input-block">
+                <input th:value="${answerModel.output}" type="hidden" id="OutputText" name="Output" required  lay-verify="Output" placeholder="请输入Output" autocomplete="off" class="layui-input">
+                <div id="Output">
+                    <p>请输入Output</p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <div class="layui-input-block">
+                <button style="width:170px;" class="layui-btn" lay-submit type="button"  lay-filter="form">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- js引入 -->
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript" src="/static/wangeditor/wangEditor.js"></script>
+<script type="text/javascript">
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+            Valid();
+            eventinit();
+            Text();
+        });
+
+    function Valid(){
+        form.verify({
+            input: function(value) {
+                if(value.length < 1) {
+                    return '请输入Input';
+                }
+            },
+            output: function(value) {
+                if(value.length < 1) {
+                    return '请输入Output';
+                }
+            },
+            answerType: function(value) {
+                if(value.length < 1) {
+                    return '请输入类型';
+                }
+            }
+        });
+    }
+
+    function eventinit(){
+        form.on('submit(form)', function(data){
+            var index = layer.load();//load动画
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/teacher/course/question/updateAnswerOrCase',
+                data: data.field,
+                success: function(data){
+                    if(data.success){
+                        layer.close(index);
+                        layer.msg('修改成功',{icon: 1});
+                        setTimeout(function(){
+                            parent.layer.closeAll();
+                        }, 500);
+                        parent.queryCase();
+                    } else {
+                        layer.close(index);
+                        layer.msg("修改失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                    }
+                },
+                error: function(){
+                    layer.close(index);
+                    layer.msg("修改失败！", {icon: 2});
+                }
+            });
+        });
+    }
+
+    // 富文本编辑器
+    function Text() {
+        var E = window.wangEditor;
+
+        var editor1 = new E('#Input');
+        var $text1 = $('#InputText');
+        editor1.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $text1.val(html);
+        }
+        editor1.create();
+        editor1.txt.html($text1.val());
+
+        var editor2 = new E('#Output');
+        var $text2 = $('#OutputText');
+        editor2.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $text2.val(html);
+        }
+        editor2.create();
+        editor2.txt.html($text2.val());
+    }
+</script>
+</body>
+</html>

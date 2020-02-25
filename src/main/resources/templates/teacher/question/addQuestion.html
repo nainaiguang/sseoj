@@ -10,16 +10,18 @@
     <link rel="stylesheet" href="/static/layui/css/layui.css">
 </head>
 <body>
-<div style="display: flex; justify-content: center; margin-top: 30px;">
+<div style="margin-top: 30px;padding-right: 20px">
     <form name="addCourseForm" class="layui-form" action="" method="post">
         <input th:value="${homeworkid}" type="hidden" name="homeworkid" id="homeworkid"/>
         <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">题目名称</label>
-            <div class="layui-input-inline">
+            <div class="layui-input-block">
                 <input type="text" name="title" required  lay-verify="title" placeholder="请输入题目名称" autocomplete="off" class="layui-input">
             </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">题目类型</label>
-            <div class="layui-input-inline">
+            <div class="layui-input-block">
                 <select name="questiontype" lay-verify="questiontype">
                     <option value=""></option>
                     <option value="choose">choose</option>
@@ -27,44 +29,65 @@
                     <option value="programming">programming</option>
                 </select>
             </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom:30px;">
+            <label class="layui-form-label">时间限制</label>
+            <div class="layui-input-block">
+                <input type="text" name="timelimit"  lay-verify="timelimit"  placeholder="请输入时间限制 单位ms" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom:30px;">
+            <label class="layui-form-label">内存限制</label>
+            <div class="layui-input-block">
+                <input type="text" name="memorylimit"  lay-verify="memorylimit"  placeholder="请输入内存限制 单位k" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">题目描述</label>
-            <div class="layui-input-inline" style="width: 500px;">
-                <textarea name="description" lay-verify="description" placeholder="请输入题目描述" class="layui-textarea"></textarea>
+            <div class="layui-input-block">
+                <input type="hidden" id="descriptionText" name="description" required  lay-verify="description"  placeholder="请输入题目描述" class="layui-input"/>
+                <div id="description">
+                    <p>请输入题目描述</p>
+                </div>
             </div>
         </div>
         <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">input解释</label>
-            <div class="layui-input-inline">
-                <input type="text" name="inputExplain" placeholder="请输入input解释" autocomplete="off" class="layui-input">
+            <div class="layui-input-block">
+                <input type="hidden" id="inputExplainText" name="inputExplain" placeholder="请输入input解释" autocomplete="off" class="layui-input">
+                <div id="inputExplain">
+                    <p>请输入input解释</p>
+                </div>
             </div>
+        <div class="layui-form-item" style="margin-bottom:30px;">
+        </div>
             <label class="layui-form-label">output解释</label>
-            <div class="layui-input-inline">
-                <input type="text" name="outputExplain" placeholder="请输入output解释" autocomplete="off" class="layui-input">
-            </div>
-            <label class="layui-form-label">题目注释</label>
-            <div class="layui-input-inline" style="width: 500px;">
-                <textarea name="annotation" placeholder="请输入题目注释" class="layui-textarea"></textarea>
+            <div class="layui-input-block">
+                <input type="hidden" id="outputExplainText" name="outputExplain" placeholder="请输入output解释" autocomplete="off" class="layui-input">
+                <div id="outputExplain">
+                    <p>请输入output解释</p>
+                </div>
             </div>
         </div>
         <div class="layui-form-item" style="margin-bottom:30px;">
-            <label class="layui-form-label">时间限制</label>
-            <div class="layui-input-inline">
-                <input type="text" name="timelimit"  lay-verify="timelimit"  placeholder="请输入时间限制" autocomplete="off" class="layui-input">
+            <label class="layui-form-label">题目注释</label>
+            <div class="layui-input-block">
+                <input type="hidden" id="annotationText" name="annotation" placeholder="请输入题目注释" class="layui-textarea" />
+                <div id="annotation">
+                    <p>请输入题目注释</p>
+                </div>
             </div>
-            <label class="layui-form-label">内存限制</label>
-            <div class="layui-input-inline">
-                <input type="text" name="memorylimit"  lay-verify="memorylimit"  placeholder="请输入内存限制" autocomplete="off" class="layui-input">
-            </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">图片演示</label>
-            <div class="layui-input-inline">
+            <div class="layui-input-block">
                 <input type="hidden" name="pictureUrl" autocomplete="off" class="layui-input">
                 <button type="button" class="layui-btn layui-btn-primary" id="upimg">
                     <i class="layui-icon">&#xe67c;</i>上传图片
                 </button>
             </div>
-
         </div>
-        <div class="layui-form-item" style="display: flex; justify-content: center; margin-top:200px;" >
+        <div class="layui-form-item" >
             <div class="layui-input-block">
                 <button style="width:170px;" class="layui-btn" lay-submit type="button"  lay-filter="form">提交</button>
             </div>
@@ -73,6 +96,7 @@
 </div>
 <!-- js引入 -->
 <script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript" src="/static/wangeditor/wangEditor.js"></script>
 <script type="text/javascript">
     var $;
     var laydate;
@@ -92,6 +116,7 @@
             upload = layui.upload;
             Valid();
             eventinit();
+            Text();
 
         });
 
@@ -180,6 +205,43 @@
         }else{
             return false;
         }
+    }
+
+    // 富文本编辑器
+    function Text() {
+        var E = window.wangEditor;
+
+        var editor1 = new E('#description');
+        var $text1 = $('#descriptionText');
+        editor1.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $text1.val(html);
+        }
+        editor1.create();
+
+        var editor2 = new E('#annotation');
+        var $text2 = $('#annotationText');
+        editor2.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $text2.val(html);
+        }
+        editor2.create();
+
+        var editor3 = new E('#inputExplain');
+        var $text3 = $('#inputExplainText');
+        editor3.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $text3.val(html);
+        }
+        editor3.create();
+
+        var editor4 = new E('#outputExplain');
+        var $text4 = $('#outputExplainText');
+        editor4.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $text4.val(html);
+        }
+        editor4.create();
     }
 
 </script>
