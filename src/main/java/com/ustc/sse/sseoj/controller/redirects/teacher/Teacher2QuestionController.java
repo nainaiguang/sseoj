@@ -80,6 +80,34 @@ public class Teacher2QuestionController {
     }
 
     /**
+     * 功能描述: 进入题目查看页面
+     * @Param: [model, questionModel]
+     * @Return: java.lang.String
+     * @Author: Wn
+     * @Date: 2020/2/15 20:26
+     */
+    @RequestMapping("/toShowQuestion")
+    public String toShowQuestion(Model model, questionModel qm){
+        Result result=qsimpl.get_question_detail(qm);
+        if(result instanceof Result.Success)
+        {
+            qm = (questionModel) ((Result.Success) result).getData();
+        }
+        model.addAttribute("questionModel", qm);
+//        question_answerModelKey qam=new question_answerModelKey();
+//       answerModel am=new answerModel();
+//        Result result_a=qsimpl1.get_all_case(qm);
+//
+//        if(result_a instanceof Result.Success)
+//        {
+//            am = (answerModel) ((Result.Success) result).getData();
+//
+//        }
+//        model.addAttribute("answerModel", am);
+
+        return "teacher/question/showQuestion";
+    }
+    /**
      * 功能描述: 进入题目添加页面
      * @Param: [model, hm]
      * @Return: java.lang.String
