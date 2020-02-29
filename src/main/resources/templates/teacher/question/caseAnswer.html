@@ -13,7 +13,8 @@
 <div style="margin: 10px 10px 0 10px;">
     <!-- 按钮栏 -->
     <div class="" id="toolbar" style="padding:0px 10px">
-        <a><button type="button" onclick="add()" title="新增"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i>新增</button></a>
+        <a><button type="button" onclick="addCase()" title="新增Case"id="addCase"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i>Case</button></a>
+        <a><button type="button" onclick="addAnswer()" title="新增Answer"id="addAnswer"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i>Answer</button></a>
     </div>
     <input type="hidden" th:value="${questionid}" id="questionid" />
     <div class="layui-field-box">
@@ -106,12 +107,12 @@
                     field : 'input',
                     title : 'Input',
                     align : 'center',
-                    width: '200'
+                    width: '250'
                 }, {
                     field : 'output',
                     title : 'Output',
                     align : 'center',
-                    minWidth: '200'
+                    minWidth: '250'
                 }, {
                     fixed : 'right',
                     title :'操作',
@@ -163,12 +164,12 @@
                     field : 'input',
                     title : 'Input',
                     align : 'center',
-                    width: '200'
+                    width: '250'
                 }, {
                     field : 'output',
                     title : 'Output',
                     align : 'center',
-                    minWidth: '200'
+                    minWidth: '250'
                 }, {
                     fixed : 'right',
                     title :'操作',
@@ -193,14 +194,21 @@
         table.on('tool(caseTool)', function(obj){
             var data = obj.data;
             if(obj.event === 'editCase'){//编辑
-                var index = layer.open({
-                    type: 2,
-                    content: '/teacherQuestion/toEditCaseAnswer?answerid='+data.answerid,
-                    maxmin: true,
-                    title: '编辑',
-                    area : ['600px', '400px']
-                });
-                // layer.full(index);
+                if (data.answerType === 'cases'){
+                    var index = layer.open({
+                        type: 2,
+                        content: '/teacherQuestion/toEditCase?answerid='+data.answerid,
+                        title: '编辑'
+                    });
+                    layer.full(index);
+                } else {
+                    var index = layer.open({
+                        type: 2,
+                        content: '/teacherQuestion/toEditAnswer?answerid='+data.answerid,
+                        title: '编辑'
+                    });
+                    layer.full(index);
+                }
             } else if (obj.event === 'delCase'){//删除
                 layer.confirm("确定删除吗？", function(){
                     var index = layer.load();//load动画
@@ -235,14 +243,21 @@
         table.on('tool(answerTool)', function(obj){
             var data = obj.data;
             if(obj.event === 'editAnswer'){//编辑
-                var index = layer.open({
-                    type: 2,
-                    content: '/teacherQuestion/toEditCaseAnswer?answerid='+data.answerid,
-                    maxmin: true,
-                    title: '编辑',
-                    area : ['600px', '400px']
-                });
-                // layer.full(index);
+                if (data.answerType === 'cases'){
+                    var index = layer.open({
+                        type: 2,
+                        content: '/teacherQuestion/toEditCase?answerid='+data.answerid,
+                        title: '编辑'
+                    });
+                    layer.full(index);
+                } else {
+                    var index = layer.open({
+                        type: 2,
+                        content: '/teacherQuestion/toEditAnswer?answerid='+data.answerid,
+                        title: '编辑'
+                    });
+                    layer.full(index);
+                }
             } else if (obj.event === 'delAnswer'){//题库管理
                 layer.confirm("确定删除吗？", function(){
                     var index = layer.load();//load动画
@@ -287,16 +302,26 @@
         });
     }
 
-    // 新增
-    function add(){
+    // 新增Case
+    function addCase(){
         var index = layer.open({
             type: 2,
-            content: '/teacherQuestion/toAddCaseAnswer?questionid='+$("#questionid").val(),
+            content: '/teacherQuestion/toAddCase?questionid='+$("#questionid").val(),
             maxmin: false,
-            title: '新增',
-            area : ['600px', '400px']
+            title: '新增Case'
         });
-        // layer.full(index);
+        layer.full(index);
+    }
+
+    // 新增Answer
+    function addAnswer(){
+        var index = layer.open({
+            type: 2,
+            content: '/teacherQuestion/toAddAnswer?questionid='+$("#questionid").val(),
+            maxmin: false,
+            title: '新增Answer'
+        });
+        layer.full(index);
     }
 
 

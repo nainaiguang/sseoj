@@ -7,52 +7,62 @@
 <head>
     <meta charset="UTF-8">
     <title>注册</title>
-    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <style type="text/css">
+        body {background-image: url(../static/images/body_bg_page.jpg);
+            background-repeat: repeat-x;
+            background-position: center 0;
+            background-color: #d7d7e3;
+        }
+        .loginByuser{
+            opacity: .8;
+            float: right;
+            margin-right: 10px;
+            font-size: 14px;
+            color: #029789!important;
+            line-height: 38px;
+        }
+        .layui-input {
+            border-radius:25px;
+        }
+    </style>
 </head>
 <body>
-<div class="layui-container" style="padding-top: 200px;">
+<div class="layui-container" style="margin: 10% auto">
     <div class="layui-row layui-col-space10">
-        <div style="background-color: #e2e2e2;" class="layui-col-md4 layui-col-md-offset4">
-            <h1 style="text-align: center;">USTC SSEOJ</h1>
-            <form class="layui-form" action="/users/adminRegister" method="post">
+        <div style="" class="layui-col-md4 layui-col-md-offset4">
+            <h1 style="text-align: center; margin-bottom: 15px;">USTC SSEOJ</h1>
+            <form class="layui-form" action="" method="post">
                 <!--记得根据不同的option访问不同的登陆或注册地址-->
                 <div class="layui-form-item">
-                    <label class="layui-form-label">学号：</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="no" autocomplete="off" required lay-verify="required"  placeholder="请输入学号" class="layui-input">
-                    </div>
+                    <input type="text" name="no" autocomplete="off" required lay-verify="no"  placeholder="请输入学号" class="layui-input">
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">姓名：</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="name" autocomplete="off" required lay-verify="required"  placeholder="请输入姓名" class="layui-input">
-                    </div>
+                    <input type="text" name="name" autocomplete="off" required lay-verify="name"  placeholder="请输入姓名" class="layui-input">
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">密码：</label>
-                    <div class="layui-input-inline">
-                        <input type="password" name="password" required lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input">
-                    </div>
+                    <input type="password" name="password" id="password" required lay-verify="password" autocomplete="off" placeholder="请输入密码" class="layui-input">
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">用户类型：</label>
-                    <div class="layui-input-block">
-                        <input type="radio" name="role" value="student" title="学生" checked>
-                        <input type="radio" name="role" value="teacher" title="教师">
-                        <input type="radio" name="role" value="manager" title="管理员">
-                    </div>
+                    <input type="password" name="passwordConfim" id="passwordConfim" required lay-verify="passwordConfim" autocomplete="off" placeholder="请再次输入密码" class="layui-input">
                 </div>
                 <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">注册</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                    </div>
+                    <input type="radio" name="role" value="student" title="学生" checked>
+                    <input type="radio" name="role" value="teacher" title="教师">
+                    <input type="radio" name="role" value="manager" title="管理员">
                 </div>
+                <div class="layui-form-item">
+                    <button type="submit" class="layui-btn layui-btn-radius layui-btn-fluid" lay-submit="" lay-filter="formDemo">注册</button>
+                </div>
+                <div class="layui-form-item">
+                    <button type="reset" class="layui-btn layui-btn-radius layui-btn-primary layui-btn-fluid">重置</button>
+                </div>
+                <a href="/user/login" class="loginByuser">用已有帐号登入</a>
             </form>
         </div>
     </div>
 </div>
-<script src="/static/layui/layui.js"></script>
+<script src="../static/layui/layui.js"></script>
 <script>
     //JavaScript代码区域
     layui.use(['form', 'layedit', 'laydate', 'jquery'], function(){
@@ -93,6 +103,32 @@
                 }
             });
             return false;
+        });
+
+        // 表单验证
+        form.verify({
+            no: function(value) {
+                if(value.length < 1) {
+                    return '请填写学号';
+                }
+            },
+            name:function(value) {
+                if(value.length < 1) {
+                    return '请输入姓名';
+                }
+            },
+            password:function(value) {
+                if(value.length < 1) {
+                    return '请输入密码';
+                }
+            },
+            passwordConfim:function(value) {
+                if(value.length < 1) {
+                    return '请再次输入密码';
+                } else if ( $("#password").val() != $("#passwordConfim").val()) {
+                    return '输入密码不一致';
+                }
+            }
         });
     });
 </script>

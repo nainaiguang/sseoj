@@ -100,39 +100,70 @@ public class Teacher2QuestionController {
      * @Date: 2020/2/16 21:51
      */
     @RequestMapping("/toCaseAnswer")
-    public String toAddCase(Model model, questionModel qm){
+    public String toCaseAnswer(Model model, questionModel qm){
         model.addAttribute("questionid", qm.getQuestionid());
         return "teacher/question/caseAnswer";
     }
 
     /**
-     * 功能描述: 进入新增Case/Answer页面
+     * 功能描述: 进入新增Case页面
      * @Param: [model, qm]
      * @Return: java.lang.String
      * @Author: Qianbw
      * @Date: 2020/2/18 14:07
      */
-    @RequestMapping("/toAddCaseAnswer")
-    public String toAddCaseAnswer(Model model, questionModel qm){
+    @RequestMapping("/toAddCase")
+    public String toAddCase(Model model, questionModel qm){
         model.addAttribute("questionid", qm.getQuestionid());
-        return "teacher/question/addCaseAnswer";
+        return "teacher/question/addCase";
     }
 
     /**
-     * 功能描述: 进入编辑Case/Answer页面
+     * 功能描述: 进入新增Answer页面
+     * @Param: [model, qm]
+     * @Return: java.lang.String
+     * @Author: Qianbw
+     * @Date: 2020/2/25 20:10
+     */
+    @RequestMapping("/toAddAnswer")
+    public String toAddAnswer(Model model, questionModel qm){
+        model.addAttribute("questionid", qm.getQuestionid());
+        return "teacher/question/addAnswer";
+    }
+
+    /**
+     * 功能描述: 进入编辑Case页面
      * @Param: [model, am]
      * @Return: java.lang.String
      * @Author: Qianbw
      * @Date: 2020/2/18 14:07
      */
-    @RequestMapping("/toEditCaseAnswer")
-    public String toEditCaseAnswer(Model model, answerModel am){
+    @RequestMapping("/toEditCase")
+    public String toEditCase(Model model, answerModel am){
         Result result=qsimpl.get_answer_detail(am);
         if(result instanceof Result.Success)
         {
             am = (answerModel) ((Result.Success) result).getData();
         }
         model.addAttribute("answerModel", am);
-        return "teacher/question/editCaseAnswer";
+        return "teacher/question/editCase";
+    }
+
+    /**
+     * 功能描述: 进入编辑Answer页面
+     * @Param: [model, am]
+     * @Return: java.lang.String
+     * @Author: Qianbw
+     * @Date: 2020/2/25 20:22
+     */
+    @RequestMapping("/toEditAnswer")
+    public String toEditAnswer(Model model, answerModel am){
+        Result result=qsimpl.get_answer_detail(am);
+        if(result instanceof Result.Success)
+        {
+            am = (answerModel) ((Result.Success) result).getData();
+        }
+        model.addAttribute("answerModel", am);
+        return "teacher/question/editAnswer";
     }
 }

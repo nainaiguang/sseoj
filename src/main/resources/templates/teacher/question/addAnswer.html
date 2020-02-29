@@ -1,12 +1,12 @@
 <!--
  @author  Qianbw
- @create 2020-02-18 14:10
+ @create 2020-02-25 20:12
 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>编辑</title>
+    <title>新增</title>
     <link rel="stylesheet" href="/static/layui/css/layui.css">
     <style>
         .layui-input-block {
@@ -17,26 +17,18 @@
 <body>
 <div style=" margin-top: 30px;">
     <form name="" class="layui-form" action="" method="post">
-        <input type="hidden" th:value="${answerModel.answerid}" name="answerid"/>
+        <input type="hidden" th:value="${questionid}" id="questionid" name="questionid" />
+        <input type="hidden" value="answers" id="answerType" name="answerType" />
         <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">Input</label>
             <div class="layui-input-block">
-                <input th:value="${answerModel.input}" type="text" name="input" required  lay-verify="input" placeholder="请输入Input" autocomplete="off" class="layui-input">
+                <input type="text" name="Input" required  lay-verify="Input" placeholder="请输入Input" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-form-text" style="margin-bottom:30px;">
             <label class="layui-form-label">Output</label>
             <div class="layui-input-block">
-                <input th:value="${answerModel.output}" type="text" name="output" required  lay-verify="output" placeholder="请输入Output" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-form-text" style="margin-bottom:30px;">
-            <label class="layui-form-label">类型</label>
-            <div class="layui-input-block">
-                <select name="answerType" lay-verify="answerType">
-                    <option th:selected="${answerModel.answerType eq 'cases'}" value="cases">cases</option>
-                    <option th:selected="${answerModel.answerType eq 'answers'}" value="answers">answers</option>
-                </select>
+                <input type="text" name="Output" required  lay-verify="Output" placeholder="请输入Output" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item" >
@@ -69,12 +61,12 @@
 
     function Valid(){
         form.verify({
-            input: function(value) {
+            Input: function(value) {
                 if(value.length < 1) {
                     return '请输入Input';
                 }
             },
-            output: function(value) {
+            Output: function(value) {
                 if(value.length < 1) {
                     return '请输入Output';
                 }
@@ -93,25 +85,24 @@
             $.ajax({
                 type: 'post',
                 dataType: 'json',
-                url: '/teacher/course/question/updateAnswerOrCase',
+                url: '/teacher/course/question/addAnswerOrCase',
                 data: data.field,
                 success: function(data){
                     if(data.success){
                         layer.close(index);
-                        layer.msg('修改成功',{icon: 1});
+                        layer.msg('新增成功',{icon: 1});
                         setTimeout(function(){
                             parent.layer.closeAll();
                         }, 500);
-                        parent.queryCase();
                         parent.queryAnswer();
                     } else {
                         layer.close(index);
-                        layer.msg("修改失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                        layer.msg("新增失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
                     }
                 },
                 error: function(){
                     layer.close(index);
-                    layer.msg("修改失败！", {icon: 2});
+                    layer.msg("新增失败！", {icon: 2});
                 }
             });
         });
