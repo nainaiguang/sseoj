@@ -18,3 +18,5 @@ Date类型前端传来的是String 格式为yyyy-MM-dd HH:mm:ss，后台的Date�
 addHomeworkQuestionRelationship需要加入questionnumber
 
 addQuestion需要加入questionnumber
+
+题目序号刷新有问题

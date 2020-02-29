@@ -93,8 +93,10 @@ public class QuestionServiceImpl implements QuestionService {
             homework_link_bankModel temphlbm=new homework_link_bankModel();
             temphlbm.setHomeworkid(hm.getHomeworkid());
             temphlbm.setQuestionid(qm.getQuestionid());
+
             temphlbm.setQuestionnumber(new Integer(qm.getQuestionNumber()));
-            Result res= add_relationship_homework_question(temphlbm);
+
+            Result res= add_relationship_homework_question(temphlbm,tm);
             return  res;
         }
 
@@ -105,7 +107,12 @@ public class QuestionServiceImpl implements QuestionService {
 
     //添加问题与作业关系
     @Override
-    public Result add_relationship_homework_question(homework_link_bankModel hlbm) {
+    public Result add_relationship_homework_question(homework_link_bankModel hlbm,teacherModel tm) {
+        if(tm.getTno()==null)
+        {
+            return new Result.Fail(Code.MISS_TNO);
+        }
+
         if(hlbm.getHomeworkid()==null)
         {
             return new Result.Fail(Code.MISS_HOMEWORKID);
@@ -114,9 +121,22 @@ public class QuestionServiceImpl implements QuestionService {
         {
             return new Result.Fail(Code.MISS_QUESTIONID);
         }
+        if(hlbm.getQuestionnumber()==null)
+        {
+            hlbm.setQuestionnumber(0);
+        }
         if(hlbm.getQuestionnumber()==0)
         {
-            return new Result.Fail(Code.Miss_QUESTIONNUMBER);
+            homeworkModel hm=new homeworkModel();
+            hm.setHomeworkid(hlbm.getHomeworkid());
+
+            questionModel qm=new questionModel();
+
+
+            count reslist= qdao.get_all_question_count_from_course_on_teacher(tm,hm,qm);
+
+            hlbm.setQuestionnumber(reslist.getCount1()+1);
+
         }
 
         try{
