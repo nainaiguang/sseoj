@@ -149,7 +149,15 @@
                     title: '编辑题目'
                 });
                 layer.full(index);
-            } else if (obj.event === 'toCaseAnswer'){//添加案例
+            }  else if(obj.event === 'showDetail'){//查看题目
+                var index = layer.open({
+                    type: 2,
+                    content: '/teacherQuestion/toShowQuestion?questionid='+data.questionid,
+                    maxmin: false,
+                    title: '查看题目'
+                });
+                layer.full(index);
+            }else if (obj.event === 'toCaseAnswer'){//添加案例
                 var index = layer.open({
                     type: 2,
                     content: '/teacherQuestion/toCaseAnswer?questionid='+data.questionid,
