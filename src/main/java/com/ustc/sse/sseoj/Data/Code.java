@@ -20,6 +20,9 @@ public enum  Code {
     SUCCESS_DETETE_COURSE(11,"success delete course"),
     SUCCESS_DETETE_HOMEWORK(12,"success delete homework"),
     SUCCESS_DETETE_HOMEWORK_LINK(13,"success delete homework link"),
+ SUCCESS_DELETE_STUDENTINFO(14,"success delete studentInfo"),
+ SUCCESS_INSERT_COURSE(15,"success insert course"),
+ SUCCESS_DELETE_TEACHERINFO(16,"success delete teacherInfo"),
     //冲突信息
     ACCOUNT_ALREADY_EXISTS(100,"Account already exists"),
     COURSE_ALREADY_EXISTS(110,"course already exists"),
@@ -55,6 +58,14 @@ public enum  Code {
 
     MISS_PAGE_NUMBER(333,"miss page number"),
     MISS_PAGE_LIMIT(334,"miss page limit"),
+
+
+ MISS_STUDENTID(350,"miss studentID"),
+ MISS_USERSID(351,"miss usersID"),
+ MISS_STUDENT_GRADE(352,"miss studentGrade"),
+ MISS_STUDENT_DEPT(353,"miss studentDept"),
+
+
    //未知错误
    UNKNOWN_WRONG(999,"unknown wrong");
 
