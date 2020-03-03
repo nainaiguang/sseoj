@@ -8,6 +8,8 @@ import com.ustc.sse.sseoj.dao.singleModel.teacher.homework_link_bankModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.teacher.bank_teacherModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.warehouse.*;
 import com.ustc.sse.sseoj.dao.teacher.homework.QuestionDao;
+import com.ustc.sse.sseoj.judgeSystem.service.answerServiceImpl;
+import com.ustc.sse.sseoj.judgeSystem.service.problemServiceImpl;
 import com.ustc.sse.sseoj.model.functionClass.count;
 import com.ustc.sse.sseoj.model.functionClass.pageLimit;
 import com.ustc.sse.sseoj.model.teacher.bank_teacherModelKey;
@@ -47,8 +49,14 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     QuestionDao qdao;
 
+    @Autowired
+    problemServiceImpl psi;
+
+    @Autowired
+    answerServiceImpl asi;
+
     //添加问题（包括作业与问题的关系），但添加教师关系
-    //TODO 添加图片还没写
+    //TODO 添加图片还没写  加了
     @Override
     public Result add_question(teacherModel tm, homeworkModel hm, questionModel qm) {
         if(tm.getTno()==null)
@@ -74,7 +82,14 @@ public class QuestionServiceImpl implements QuestionService {
 
             qm.setQuestionid(CreatId.getSole_id(IDType.questionID));
             try{
-                qmmp.insert(qm);
+                qmmp.insert(qm);//向本地问题表加入问题
+
+                Result res1=psi.addProblemtojul(qm);//向中加入问题 todo 加
+                if(!(res1 instanceof Result.Success))
+                {
+                    qmmp.deleteByPrimaryKey(qm.getQuestionid());//远程添加失败，回退
+                    return new Result.Fail(Code.FTP_CREATE_PROBLEM_FAIL);
+                }
 
                 //增加教师与问题的关系
                 bank_teacherModelKey btm=new bank_teacherModelKey();
@@ -299,7 +314,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 
-    //更新问题
+    //更新问题 todo 加了
     @Override
     public Result update_question(questionModel qm) {
         if(qm.getQuestionid()==null)
@@ -307,8 +322,18 @@ public class QuestionServiceImpl implements QuestionService {
             return new Result.Fail(Code.MISS_QUESTIONID);
         }
         try{
-        int a= qmmp.updateByPrimaryKeySelective(qm);
-        return new Result.Success(a);
+            questionModel backup=qmmp.selectByPrimaryKey(qm.getQuestionid());//备份，用于回退
+
+            int a= qmmp.updateByPrimaryKeySelective(qm);
+
+            Result result1=psi.updataProblemFromJul(qm);
+            if(!(result1 instanceof Result.Success))//失败了，回退，保持数据一致
+            {
+                qmmp.updateByPrimaryKeySelective(backup);
+                return new Result.Fail(Code.FTP_UPDATE_PROBLEM_FAIL);
+            }
+
+            return new Result.Success(a);
         }
         catch (Exception e)
         {
@@ -338,7 +363,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
-    //删除问题
+    //删除问题 todo 加了
     @Override
     public Result delete_question(questionModel qm) {
         if(qm.getQuestionid()==null)
@@ -346,6 +371,11 @@ public class QuestionServiceImpl implements QuestionService {
             return new Result.Fail(Code.MISS_QUESTIONID);
         }
         try{
+            Result result1=psi.deleteProblemFromJul(qm);//需要先删除ftp
+            if(!(result1 instanceof Result.Success))
+            {
+                return new Result.Fail(Code.FTP_DELETE_PROBLEM_FAIL);
+            }
             int a=qmmp.deleteByPrimaryKey(qm.getQuestionid());
             return new Result.Success(a);
         }
@@ -512,7 +542,14 @@ public class QuestionServiceImpl implements QuestionService {
             return new Result.Fail(Code.WRONG_ANSWERTYPE);
         }
         am.setAnswerid(CreatId.getSole_id(IDType.answerID));
+
         try{
+
+            Result result1=asi.addOrUpdateAnswer(qm,am);
+            if(!(result1 instanceof Result.Success))
+            {
+                return new Result.Fail(Code.FTP_CREATE_ANSWER_FAIL);
+            }
             ammp.insertSelective(am);
             question_answerModelKey tempqam=new question_answerModelKey();
             tempqam.setAnswerid(am.getAnswerid());
@@ -529,12 +566,23 @@ public class QuestionServiceImpl implements QuestionService {
 
     //修改答案
     @Override
-    public Result update_answer_or_case(answerModel am) {
+    public Result update_answer_or_case(questionModel qm,answerModel am) {
         if(am.getAnswerid()==null)
         {
             return new Result.Fail(Code.MISS_ANSWERID);
         }
+        if(qm.getQuestionid()==null)
+        {
+            return new Result.Fail(Code.MISS_QUESTIONID);
+        }
         try{
+
+            Result result1=asi.addOrUpdateAnswer(qm,am);
+            if(!(result1 instanceof Result.Success))
+            {
+                return new Result.Fail(Code.FTP_UPDATE_ANSWER_FAIL);
+            }
+
             int res= ammp.updateByPrimaryKeySelective(am);
             return new Result.Success(res);
         }
@@ -546,15 +594,25 @@ public class QuestionServiceImpl implements QuestionService {
 
     //删除答案
     @Override
-    public Result delete_answer_or_case(answerModel am) {
+    public Result delete_answer_or_case(questionModel qm,answerModel am) {
         if(am.getAnswerid()==null)
         {
             return new Result.Fail(Code.MISS_ANSWERID);
         }
+        if(qm.getQuestionid()==null)
+        {
+            return new Result.Fail(Code.MISS_QUESTIONID);
+        }
         try{
+
+            Result result1=asi.deleteAnswer(qm,am);
+            if(!(result1 instanceof Result.Success))
+            {
+                return new Result.Fail(Code.FTP_DELETE_ANSWER_FAIL);
+            }
+
             int res= ammp.deleteByPrimaryKey(am.getAnswerid());
             return new Result.Success(res);
-
         }
         catch (Exception e)
         {

@@ -12,10 +12,11 @@
     <result column="langauge" jdbcType="CHAR" property="langauge" />
     <result column="answer_result" jdbcType="SMALLINT" property="answerResult" />
     <result column="sumit_time" jdbcType="TIMESTAMP" property="sumitTime" />
+    <result column="solution_id" jdbcType="INTEGER" property="solutionId" />
   </resultMap>
   <sql id="Base_Column_List">
     sno, courseID, homeworkID, questionID, answers, answer_file_location, langauge, answer_result, 
-    sumit_time
+    sumit_time, solution_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModelKey" resultMap="BaseResultMap">
     select 
@@ -36,12 +37,12 @@
   <insert id="insert" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
     insert into student_homework (sno, courseID, homeworkID, 
       questionID, answers, answer_file_location, 
-      langauge, answer_result, sumit_time
-      )
+      langauge, answer_result, sumit_time, 
+      solution_id)
     values (#{sno,jdbcType=VARCHAR}, #{courseid,jdbcType=VARCHAR}, #{homeworkid,jdbcType=VARCHAR}, 
       #{questionid,jdbcType=VARCHAR}, #{answers,jdbcType=VARCHAR}, #{answerFileLocation,jdbcType=VARCHAR}, 
-      #{langauge,jdbcType=CHAR}, #{answerResult,jdbcType=SMALLINT}, #{sumitTime,jdbcType=TIMESTAMP}
-      )
+      #{langauge,jdbcType=CHAR}, #{answerResult,jdbcType=SMALLINT}, #{sumitTime,jdbcType=TIMESTAMP}, 
+      #{solutionId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
     insert into student_homework
@@ -73,6 +74,9 @@
       <if test="sumitTime != null">
         sumit_time,
       </if>
+      <if test="solutionId != null">
+        solution_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="sno != null">
@@ -102,6 +106,9 @@
       <if test="sumitTime != null">
         #{sumitTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="solutionId != null">
+        #{solutionId,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
@@ -122,6 +129,9 @@
       <if test="sumitTime != null">
         sumit_time = #{sumitTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="solutionId != null">
+        solution_id = #{solutionId,jdbcType=INTEGER},
+      </if>
     </set>
     where sno = #{sno,jdbcType=VARCHAR}
       and courseID = #{courseid,jdbcType=VARCHAR}
@@ -134,7 +144,8 @@
       answer_file_location = #{answerFileLocation,jdbcType=VARCHAR},
       langauge = #{langauge,jdbcType=CHAR},
       answer_result = #{answerResult,jdbcType=SMALLINT},
-      sumit_time = #{sumitTime,jdbcType=TIMESTAMP}
+      sumit_time = #{sumitTime,jdbcType=TIMESTAMP},
+      solution_id = #{solutionId,jdbcType=INTEGER}
     where sno = #{sno,jdbcType=VARCHAR}
       and courseID = #{courseid,jdbcType=VARCHAR}
       and homeworkID = #{homeworkid,jdbcType=VARCHAR}

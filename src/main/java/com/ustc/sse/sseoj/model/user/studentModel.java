@@ -1,5 +1,9 @@
 package com.ustc.sse.sseoj.model.user;
-
+/**
+ * @author 邱乃光
+ * @version 1.0
+ * @date 2020/3/1 14:52
+ */
 public class studentModel {
     private String no;
 

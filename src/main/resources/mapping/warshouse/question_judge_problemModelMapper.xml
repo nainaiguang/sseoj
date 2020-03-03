@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 邱乃光 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.singleModel.warehouse.question_judge_problemModelMapper">
+  <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.warehouse.question_judge_problemModel">
+    <result column="questionID" jdbcType="VARCHAR" property="questionid" />
+    <result column="judge_problem_id" jdbcType="INTEGER" property="judgeProblemId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    questionID,judge_problem_id
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from question_judge_problem
+    where questionID = #{questionid,jdbcType=VARCHAR}
+  </select>
+
+
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.warehouse.question_judge_problemModel">
+    insert into question_judge_problem (questionID, judge_problem_id)
+    values (#{questionid,jdbcType=VARCHAR}, #{judgeProblemId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.warehouse.question_judge_problemModel">
+    insert into question_judge_problem
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        questionID,
+      </if>
+      <if test="judgeProblemId != null">
+        judge_problem_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        #{questionid,jdbcType=VARCHAR},
+      </if>
+      <if test="judgeProblemId != null">
+        #{judgeProblemId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

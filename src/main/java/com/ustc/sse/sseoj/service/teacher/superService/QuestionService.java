@@ -79,9 +79,9 @@ public interface QuestionService {
     public Result add_answer_or_case(questionModel qm,answerModel am);
 
     //修改答案
-    public  Result update_answer_or_case(answerModel am);
+    public  Result update_answer_or_case(questionModel qm,answerModel am);
 
     //删除答案
-    public Result  delete_answer_or_case(answerModel am);
+    public Result  delete_answer_or_case(questionModel qm,answerModel am);
 
 }

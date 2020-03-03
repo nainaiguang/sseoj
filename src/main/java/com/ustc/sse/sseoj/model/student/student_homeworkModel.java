@@ -1,12 +1,11 @@
 package com.ustc.sse.sseoj.model.student;
 
-import com.ustc.sse.sseoj.model.student.student_homeworkModelKey;
-
 import java.util.Date;
+
 /**
  * @author 邱乃光
  * @version 1.0
- * @date 2020/2/4 14:52
+ * @date 2020/3/1 14:52
  */
 public class student_homeworkModel extends student_homeworkModelKey {
     private String answers;
@@ -18,6 +17,8 @@ public class student_homeworkModel extends student_homeworkModelKey {
     private Short answerResult;
 
     private Date sumitTime;
+
+    private Integer solutionId;
 
     public String getAnswers() {
         return answers;
@@ -57,5 +58,13 @@ public class student_homeworkModel extends student_homeworkModelKey {
 
     public void setSumitTime(Date sumitTime) {
         this.sumitTime = sumitTime;
+    }
+
+    public Integer getSolutionId() {
+        return solutionId;
+    }
+
+    public void setSolutionId(Integer solutionId) {
+        this.solutionId = solutionId;
     }
 }

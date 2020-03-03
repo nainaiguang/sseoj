@@ -469,8 +469,8 @@ public class TeacherQuestionController {
     //修改答案
     @RequestMapping(value = "/updateAnswerOrCase", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public  Mes update_answer_or_case(answerModel am){
-        Result result=qsimpl.update_answer_or_case(am);
+    public  Mes update_answer_or_case(questionModel qm,answerModel am){
+        Result result=qsimpl.update_answer_or_case(qm,am);
 
         if(result instanceof Result.Success)
         {
@@ -493,8 +493,8 @@ public class TeacherQuestionController {
     //删除答案
     @RequestMapping(value = "/deleteAnswerOrCase", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes  delete_answer_or_case(answerModel am){
-        Result result=qsimpl.delete_answer_or_case(am);
+    public Mes  delete_answer_or_case(questionModel qm,answerModel am){
+        Result result=qsimpl.delete_answer_or_case(qm,am);
 
         if(result instanceof Result.Success)
         {

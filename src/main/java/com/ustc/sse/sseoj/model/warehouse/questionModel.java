@@ -32,9 +32,9 @@ public class questionModel {
 
     private String annotation;
 
-    private Integer timelimit;
+    private Integer timelimit=-1;
 
-    private Integer memorylimit;
+    private Integer memorylimit=-1;
 
     public String getQuestionid() {
         return questionid;
