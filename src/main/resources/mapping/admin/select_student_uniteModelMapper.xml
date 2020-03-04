@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 沙政鑫 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.admin.student_uniteModelMapper">
+    <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.user.uniteModel.student_uniteModel">
+        <id column="no" jdbcType="VARCHAR" property="no"/>
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="role" jdbcType="CHAR" property="role" />
+        <result column="sage" jdbcType="SMALLINT" property="sage"/>
+        <result column="ssex" jdbcType="CHAR" property="ssex"/>
+        <result column="sgrade" jdbcType="VARCHAR" property="sgrade"/>
+        <result column="sphone_number" jdbcType="VARCHAR" property="sphoneNumber"/>
+        <result column="semail" jdbcType="VARCHAR" property="semail"/>
+        <result column="sdept" jdbcType="VARCHAR" property="sdept"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    no ,name,role,sage, ssex, sgrade, sphone_number, semail, sdept
+    </sql>
+    <select id="selectStudentByChoose" resultMap="BaseResultMap">
+    SELECT
+    s1.no,
+    s1.name,
+    s1.role,
+    s2.sage,
+    s2.ssex,
+    s2.sgrade,
+    s2.sphone_number,
+    s2.semail,
+    s2.sdept
+    FROM student s1 INNER JOIN student_info s2 ON s1.no=s2.no
+    <where>
+        <if test="record.no!=null and record.no!=''">
+            and s1.no=#{record.no,jdbcType=VARCHAR}
+        </if>
+        <if test="record.name!=null and record.name!=''">
+              and s1.name like "%"#{record.name,jdbcType=VARCHAR}"%"
+         </if>
+        <if test="record.sgrade!=null and record.sgrade!=''">
+             and s2.sgrade=#{record.sgrade,jdbcType=VARCHAR}
+         </if>
+        <if test="record.sdept!=null and record.sdept!=''">
+             and s2.sdept=#{record.sdept,jdbcType=VARCHAR}
+        </if>
+    </where>
+    order by s1.no
+     LIMIT #{pl.limit_head},#{pl.limit}
+    </select>
+
+    <select id="selectCountByChoose"  parameterType="com.ustc.sse.sseoj.model.user.uniteModel.student_uniteModel" resultType="com.ustc.sse.sseoj.model.functionClass.count">
+        SELECT
+        count(1) count1
+        FROM student s1 INNER JOIN student_info s2 ON s1.no=s2.no
+        <where>
+            <if test="no!=null and no!=''">
+                and s1.no=#{no,jdbcType=VARCHAR}
+            </if>
+            <if test="name!=null and name!=''">
+                and s1.name like "%"#{name,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="sgrade!=null and sgrade!=''">
+                and s2.sgrade= #{sgrade,jdbcType=VARCHAR}
+            </if>
+            <if test="sdept!=null and sdept!=''">
+                and s2.sdept= #{sdept,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by s1.no
+    </select>
+</mapper>

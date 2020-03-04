@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- @author 沙政鑫 -->
+<mapper namespace="com.ustc.sse.sseoj.dao.admin.teacher_uniteModelMapper">
+    <resultMap id="BaseResultMap" type="com.ustc.sse.sseoj.model.user.uniteModel.teacher_uniteModel">
+        <id column="no" jdbcType="VARCHAR" property="no"/>
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="role" jdbcType="CHAR" property="role" />
+        <result column="tage" jdbcType="SMALLINT" property="tage"/>
+        <result column="tsex" jdbcType="CHAR" property="tsex"/>
+        <result column="tphone_number" jdbcType="VARCHAR" property="tphoneNumber"/>
+        <result column="temail" jdbcType="VARCHAR" property="temail"/>
+        <result column="tdept" jdbcType="VARCHAR" property="tdept"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    no ,name,role,tage, tsex , tphone_number, temail, tdept
+    </sql>
+    <select id="selectTeacherByChoose" resultMap="BaseResultMap">
+        SELECT
+        s1.no,
+        s1.name,
+        s1.role,
+        s2.tage,
+        s2.tsex,
+        s2.tphone_number,
+        s2.temail,
+        s2.tdept
+        FROM teacher s1 INNER JOIN teacher_info s2 ON s1.no=s2.no
+        <where>
+            <if test="record.no!=null and record.no!=''">
+               and s1.no like "%"#{record.no,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="record.name!=null and record.name!=''">
+               and s1.name like "%"#{record.name,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="record.tage!=null and record.tage!=''">
+              and  s2.tage=#{record.tage,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tsex!=null and record.tsex!=''">
+              and  s2.tsex=#{record.tsex,jdbcType=CHAR}
+            </if>
+            <if test="record.tphoneNumber!=null and record.tphoneNumber!=''">
+               and s2.tphone_number like "%"#{record.tphoneNumber,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="record.temail!=null and record.temail!=''">
+               and s2.temail like "%"#{record.temail,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="record.tdept !=null and record.tdept !=''">
+              and  s2.tdept = #{record.tdept,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by s1.no
+        LIMIT #{pl.limit_head},#{pl.limit}
+    </select>
+
+    <select id="selectCountByChoose"  parameterType="com.ustc.sse.sseoj.model.user.uniteModel.teacher_uniteModel" resultType="com.ustc.sse.sseoj.model.functionClass.count">
+        SELECT
+        count(1) count1
+        FROM teacher s1 INNER JOIN teacher_info s2 ON s1.no=s2.no
+        <where>
+            <if test="no!=null and no!=''">
+              and  s1.no like "%"#{no,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="name!=null and name!=''">
+             and  s1.name like "%"#{name,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="tage!=null and tage!=''">
+              and  s2.tage=#{tage,jdbcType=VARCHAR}
+            </if>
+            <if test="tsex!=null and tsex!=''">
+               and s2.tsex=#{tsex,jdbcType=CHAR}
+            </if>
+            <if test="tphoneNumber!=null and tphoneNumber!=''">
+               and s2.tphone_number like "%"#{tphoneNumber,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="temail!=null and temail!=''">
+               and s2.temail like "%"#{temail,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="tdept!=null and tdept!=''">
+              and  s2.tdept = #{tdept,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by s1.no
+    </select>
+</mapper>
