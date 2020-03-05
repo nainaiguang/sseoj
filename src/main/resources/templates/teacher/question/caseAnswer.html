@@ -16,7 +16,8 @@
         <a><button type="button" onclick="addCase()" title="新增Case"id="addCase"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i>Case</button></a>
         <a><button type="button" onclick="addAnswer()" title="新增Answer"id="addAnswer"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i>Answer</button></a>
     </div>
-    <input type="hidden" th:value="${questionid}" id="questionid" />
+    <input type="hidden" th:value="${questionModel.questionid}" id="questionid" />
+    <input type="hidden" th:value="${questionModel.questiontype}" id="questiontype" />
     <div class="layui-field-box">
         <div class="layui-row">
             <div class="layui-tab layui-tab-brief" lay-filter="DemoTest">
@@ -197,14 +198,14 @@
                 if (data.answerType === 'cases'){
                     var index = layer.open({
                         type: 2,
-                        content: '/teacherQuestion/toEditCase?answerid='+data.answerid,
+                        content: '/teacherQuestion/toEditCase?answerid='+data.answerid+'&questionid='+$("#questionid").val(),
                         title: '编辑'
                     });
                     layer.full(index);
                 } else {
                     var index = layer.open({
                         type: 2,
-                        content: '/teacherQuestion/toEditAnswer?answerid='+data.answerid,
+                        content: '/teacherQuestion/toEditAnswer?answerid='+data.answerid+'&questionid='+$("#questionid").val()+'&questiontype='+$("#questiontype").val(),
                         title: '编辑'
                     });
                     layer.full(index);
@@ -213,7 +214,7 @@
                 layer.confirm("确定删除吗？", function(){
                     var index = layer.load();//load动画
                     $.ajax({
-                        url : "/teacher/course/question/deleteAnswerOrCase?answerid="+data.answerid,
+                        url : "/teacher/course/question/deleteAnswerOrCase?answerid="+data.answerid+'&questionid='+$("#questionid").val(),
                         dataType: 'json',
                         method : 'post',
                         contentType : 'application/json; charset=UTF-8',
@@ -246,14 +247,14 @@
                 if (data.answerType === 'cases'){
                     var index = layer.open({
                         type: 2,
-                        content: '/teacherQuestion/toEditCase?answerid='+data.answerid,
+                        content: '/teacherQuestion/toEditCase?answerid='+data.answerid+'&questionid='+$("#questionid").val(),
                         title: '编辑'
                     });
                     layer.full(index);
                 } else {
                     var index = layer.open({
                         type: 2,
-                        content: '/teacherQuestion/toEditAnswer?answerid='+data.answerid,
+                        content: '/teacherQuestion/toEditAnswer?answerid='+data.answerid+'&questionid='+$("#questionid").val()+'&questiontype='+$("#questiontype").val(),
                         title: '编辑'
                     });
                     layer.full(index);
@@ -262,7 +263,7 @@
                 layer.confirm("确定删除吗？", function(){
                     var index = layer.load();//load动画
                     $.ajax({
-                        url : "/teacher/course/question/deleteAnswerOrCase?answerid="+data.answerid,
+                        url : "/teacher/course/question/deleteAnswerOrCase?answerid="+data.answerid+'&questionid='+$("#questionid").val(),
                         dataType: 'json',
                         method : 'post',
                         contentType : 'application/json; charset=UTF-8',
@@ -317,7 +318,7 @@
     function addAnswer(){
         var index = layer.open({
             type: 2,
-            content: '/teacherQuestion/toAddAnswer?questionid='+$("#questionid").val(),
+            content: '/teacherQuestion/toAddAnswer?questionid='+$("#questionid").val()+'&questiontype='+$("#questiontype").val(),
             maxmin: false,
             title: '新增Answer'
         });

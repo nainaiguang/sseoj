@@ -17,7 +17,8 @@
 <body>
 <div style=" margin-top: 30px;">
     <form name="" class="layui-form" action="" method="post">
-        <input type="hidden" th:value="${questionid}" id="questionid" name="questionid" />
+        <input type="hidden" th:value="${questionModel.questionid}" id="questionid" name="questionid" />
+        <input type="hidden" th:value="${questionModel.questiontype}" id="questiontype" name="questiontype" />
         <input type="hidden" value="answers" id="answerType" name="answerType" />
         <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">Input</label>
@@ -25,10 +26,10 @@
                 <input type="text" name="Input" required  lay-verify="Input" placeholder="请输入Input" autocomplete="off" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item layui-form-text" style="margin-bottom:30px;">
+        <div id="outputItem" class="layui-form-item layui-form-text" style="margin-bottom:30px;">
             <label class="layui-form-label">Output</label>
             <div class="layui-input-block">
-                <input type="text" name="Output" required  lay-verify="Output" placeholder="请输入Output" autocomplete="off" class="layui-input">
+                <input type="text" name="Output" placeholder="请输入Output" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item" >
@@ -65,16 +66,6 @@
                 if(value.length < 1) {
                     return '请输入Input';
                 }
-            },
-            Output: function(value) {
-                if(value.length < 1) {
-                    return '请输入Output';
-                }
-            },
-            answerType: function(value) {
-                if(value.length < 1) {
-                    return '请输入类型';
-                }
             }
         });
     }
@@ -106,6 +97,10 @@
                 }
             });
         });
+
+        if ($("#questiontype").val() != 'programming'){
+            $("#outputItem").css('display','none');
+        }
     }
 </script>
 </body>

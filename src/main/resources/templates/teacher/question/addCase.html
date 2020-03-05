@@ -22,19 +22,13 @@
         <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">Input</label>
             <div class="layui-input-block">
-                <input type="hidden" id="InputText" name="Input" required  lay-verify="Input" placeholder="请输入Input" autocomplete="off" class="layui-input">
-                <div id="Input">
-                    <p>请输入Input</p>
-                </div>
+                <textarea  id="Input" name="Input" placeholder="请输入Input" required lay-verify="Input"  class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item layui-form-text" style="margin-bottom:30px;">
             <label class="layui-form-label">Output</label>
             <div class="layui-input-block">
-                <input type="hidden" id="OutputText" name="Output" required  lay-verify="Output" placeholder="请输入Output" autocomplete="off" class="layui-input">
-                <div id="Output">
-                    <p>请输入Output</p>
-                </div>
+                <textarea  id="Output" name="Output" placeholder="请输入Output" required lay-verify="Output"  class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item" >
@@ -64,7 +58,6 @@
             layedit = layui.layedit;
             Valid();
             eventinit();
-            Text();
         });
 
     function Valid(){
@@ -77,11 +70,6 @@
             Output: function(value) {
                 if(value.length < 1) {
                     return '请输入Output';
-                }
-            },
-            answerType: function(value) {
-                if(value.length < 1) {
-                    return '请输入类型';
                 }
             }
         });
@@ -116,26 +104,6 @@
         });
     }
 
-    // 富文本编辑器
-    function Text() {
-        var E = window.wangEditor;
-
-        var editor1 = new E('#Input');
-        var $text1 = $('#InputText');
-        editor1.customConfig.onchange = function (html) {
-            // 监控变化，同步更新到 textarea
-            $text1.val(html);
-        }
-        editor1.create();
-
-        var editor2 = new E('#Output');
-        var $text2 = $('#OutputText');
-        editor2.customConfig.onchange = function (html) {
-            // 监控变化，同步更新到 textarea
-            $text2.val(html);
-        }
-        editor2.create();
-    }
 </script>
 </body>
 </html>

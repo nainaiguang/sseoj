@@ -129,7 +129,7 @@ public class Teacher2QuestionController {
      */
     @RequestMapping("/toCaseAnswer")
     public String toCaseAnswer(Model model, questionModel qm){
-        model.addAttribute("questionid", qm.getQuestionid());
+        model.addAttribute("questionModel", qm);
         return "teacher/question/caseAnswer";
     }
 
@@ -155,7 +155,7 @@ public class Teacher2QuestionController {
      */
     @RequestMapping("/toAddAnswer")
     public String toAddAnswer(Model model, questionModel qm){
-        model.addAttribute("questionid", qm.getQuestionid());
+        model.addAttribute("questionModel", qm);
         return "teacher/question/addAnswer";
     }
 
@@ -167,13 +167,14 @@ public class Teacher2QuestionController {
      * @Date: 2020/2/18 14:07
      */
     @RequestMapping("/toEditCase")
-    public String toEditCase(Model model, answerModel am){
+    public String toEditCase(Model model, answerModel am, questionModel qm){
         Result result=qsimpl.get_answer_detail(am);
         if(result instanceof Result.Success)
         {
             am = (answerModel) ((Result.Success) result).getData();
         }
         model.addAttribute("answerModel", am);
+        model.addAttribute("questionid", qm.getQuestionid());
         return "teacher/question/editCase";
     }
 
@@ -185,13 +186,14 @@ public class Teacher2QuestionController {
      * @Date: 2020/2/25 20:22
      */
     @RequestMapping("/toEditAnswer")
-    public String toEditAnswer(Model model, answerModel am){
+    public String toEditAnswer(Model model, answerModel am, questionModel qm){
         Result result=qsimpl.get_answer_detail(am);
         if(result instanceof Result.Success)
         {
             am = (answerModel) ((Result.Success) result).getData();
         }
         model.addAttribute("answerModel", am);
+        model.addAttribute("questionModel", qm);
         return "teacher/question/editAnswer";
     }
 }

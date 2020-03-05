@@ -18,23 +18,18 @@
 <div style=" margin-top: 30px;">
     <form name="" class="layui-form" action="" method="post">
         <input type="hidden" th:value="${answerModel.answerid}" name="answerid"/>
+        <input type="hidden" th:value="${questionid}" id="questionid" name="questionid" />
         <input type="hidden" value="cases" id="answerType" name="answerType" />
         <div class="layui-form-item" style="margin-bottom:30px;">
             <label class="layui-form-label">Input</label>
             <div class="layui-input-block">
-                <input th:value="${answerModel.input}" type="hidden" id="InputText" name="Input" required  lay-verify="Input" placeholder="请输入Input" autocomplete="off" class="layui-input">
-                <div id="Input">
-                    <p>请输入Input</p>
-                </div>
+                <textarea  th:text="${answerModel.input}" id="Input" name="Input" placeholder="请输入Input" required lay-verify="Input"  class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item layui-form-text" style="margin-bottom:30px;">
             <label class="layui-form-label">Output</label>
             <div class="layui-input-block">
-                <input th:value="${answerModel.output}" type="hidden" id="OutputText" name="Output" required  lay-verify="Output" placeholder="请输入Output" autocomplete="off" class="layui-input">
-                <div id="Output">
-                    <p>请输入Output</p>
-                </div>
+                <textarea  th:text="${answerModel.output}" id="Output" name="Output" placeholder="请输入Output" required lay-verify="Input"  class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item" >
@@ -46,7 +41,6 @@
 </div>
 <!-- js引入 -->
 <script type="text/javascript" src="/static/layui/layui.js"></script>
-<script type="text/javascript" src="/static/wangeditor/wangEditor.js"></script>
 <script type="text/javascript">
     var $;
     var laydate;
@@ -64,7 +58,6 @@
             layedit = layui.layedit;
             Valid();
             eventinit();
-            Text();
         });
 
     function Valid(){
@@ -116,28 +109,6 @@
         });
     }
 
-    // 富文本编辑器
-    function Text() {
-        var E = window.wangEditor;
-
-        var editor1 = new E('#Input');
-        var $text1 = $('#InputText');
-        editor1.customConfig.onchange = function (html) {
-            // 监控变化，同步更新到 textarea
-            $text1.val(html);
-        }
-        editor1.create();
-        editor1.txt.html($text1.val());
-
-        var editor2 = new E('#Output');
-        var $text2 = $('#OutputText');
-        editor2.customConfig.onchange = function (html) {
-            // 监控变化，同步更新到 textarea
-            $text2.val(html);
-        }
-        editor2.create();
-        editor2.txt.html($text2.val());
-    }
 </script>
 </body>
 </html>

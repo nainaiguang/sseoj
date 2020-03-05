@@ -1,0 +1,41 @@
+<!--
+ @author  Qianbw
+ @create 2020-03-05 16:31
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息资料</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <style>
+        table{
+            margin: 20px 20px 20px  0;
+        }
+    </style>
+</head>
+<body>
+    <table class="layui-table">
+        <colgroup>
+            <col width="100">
+            <col width="200">
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>编号</td>
+            <td th:text="${userModel.no}" ></td>
+        </tr>
+        <tr>
+            <td>姓名</td>
+            <td th:text="${userModel.name}" ></td>
+        </tr>
+        <tr>
+            <td>角色</td>
+            <td th:text="${userModel.role}" ></td>
+        </tr>
+        </tbody>
+    </table>
+<!-- js引入 -->
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+</body>
+</html>

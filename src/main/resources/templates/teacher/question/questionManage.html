@@ -160,7 +160,7 @@
             }else if (obj.event === 'toCaseAnswer'){//添加案例
                 var index = layer.open({
                     type: 2,
-                    content: '/teacherQuestion/toCaseAnswer?questionid='+data.questionid,
+                    content: '/teacherQuestion/toCaseAnswer?questionid='+data.questionid+'&questiontype='+data.questiontype,
                     maxmin: false,
                     title: data.title + '-->添加案例'
                 });

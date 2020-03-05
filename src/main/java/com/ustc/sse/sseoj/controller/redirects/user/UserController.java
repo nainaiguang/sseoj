@@ -1,10 +1,13 @@
 package com.ustc.sse.sseoj.controller.redirects.user;
 
+import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author 邱乃光
@@ -63,6 +66,19 @@ public class UserController {
     @RequestMapping("/home")
     public String home() {
         return "home";}
+
+    /**
+     * 功能描述: 跳转用户基本信息
+     * @Param: []
+     * @Return: java.lang.String
+     * @Author: Qianbw
+     * @Date: 2020/3/5 16:30
+     */
+    @RequestMapping("/toUserInfo")
+    public String toUserInfo(Model model, HttpServletRequest request) {
+        UsersModel user = (UsersModel ) request.getSession().getAttribute("user");
+        model.addAttribute("userModel",user);
+        return "userInfo";}
 }
 
 
