@@ -22,4 +22,6 @@ public interface student_uniteModelMapper {
 
      //返回数据数量count
      count selectCountByChoose(student_uniteModel record);
+
+     boolean updateInfoFromStudentID(student_uniteModel record);
 }

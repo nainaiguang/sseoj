@@ -229,18 +229,9 @@ public class AdminServiceImpl implements AdminService {
         if(sum.getNo()==null){
             return new Result.Fail(Code.MISS_STUDENTID);
         }
-        if (sum.getPassword()==null){
-            sum.setPassword(DefaultPassword.get_default_Password(sum.getNo()));
-        }
-        if (sum.getSgrade()==null){
-            return new Result.Fail(Code.MISS_STUDENT_GRADE);
-        }
-        if (sum.getSdept()==null){
-            return new Result.Fail(Code.MISS_STUDENT_DEPT);
-        }
         try {
             boolean success1=true;
-            success1=adminDao.update_info_from_studentID(sum);
+            success1=summ.updateInfoFromStudentID(sum);
 
             if (success1) {
                 return new Result.Success(true);

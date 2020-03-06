@@ -33,7 +33,7 @@ public interface AdminService {
     //获取某学生的详细信息 （已测）
     public Result get_all_info_from_student(studentModel sm);
 
-    //获取该学生的所有基本信息 todo 若不填信息，会将原不改信息覆盖为null
+    //修改该学生的所有基本信息 todo 若不填信息，会将原不改信息覆盖为null
     public Result update_studentinfo(student_uniteModel sum);
 
     //根据学号获取该学生的所有选课信息（已测）
