@@ -7,36 +7,36 @@
 <head>
     <meta charset="utf-8" />
     <title>作业管理</title>
-    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" th:href="@{../static/lib/layui/css/layui.css}">
+    <script th:src="@{../static/lib/layui/layui.js}"></script>
 </head>
 <body>
-<!-- 查询div -->
-<div class=" " style="margin-top: 20px;margin-left: 50px">
-    <div class="layui-row" style="margin-top: 20px;">
-        <form action="" id="queryForm" class="layui-form">
-            <div class="layui-form-item">
-                <label class="layui-form-label">作业名</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="name" id="name" placeholder="请输入作业名" autocomplete="off" class="layui-input" />
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5">
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="name" id="name" placeholder="请输入作业名" autocomplete="off" class="layui-input" />
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <button id="searchBtn" class="layui-btn layui-btn-normal" type="button" onclick="queryCourse()"><i class="layui-icon">&#xe615;</i>查询</button>
+                            <button type="button" class="layui-btn" onclick="queryReset()"><i class="layui-icon">&#x1002;</i>重置</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="layui-input-inline" style="float: right;">
-                    <button id="searchBtn" class="layui-btn layui-btn-normal" type="button" onclick="queryCourse()"><i class="layui-icon">&#xe615;</i>查询</button>
-                    <button type="button" class="layui-btn" onclick="queryReset()"><i class="layui-icon">&#x1002;</i>重置</button>
+                <div class="layui-card-header">
+                    <a><button type="button" onclick="add()" title="添加作业"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
+                </div>
+                <div class="layui-card-body ">
+                    <table id="table" lay-filter="demo" class="layui-table layui-form">
+                    </table>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<!-- 按钮栏 -->
-<div class="" id="toolbar" style="padding:0px 10px">
-    <a><button type="button" onclick="add()" title="添加作业"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
-    <a><button type="button" onclick="del()" title="删除作业" id="delete" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe640;</i></button></a>
-</div>
-
-<!-- 表格栏 -->
-<div style="padding:0px 10px">
-    <table id="table" lay-filter="demo"></table>
 </div>
 
 <script type="text/html" id="barDemo">
@@ -234,15 +234,6 @@
         });
     }
 
-    // function queryParam() {
-    //     return {
-    //         page: this.page,
-    //         limit: this.limit,
-    //         sort: this.sort,
-    //         name: $('#name').val()
-    //     }
-    // }
-
     // 条件查询
     function queryCourse() {
         query();
@@ -268,41 +259,6 @@
         });
         layer.full(index);
     }
-
-    // 批量删除选中行
-    function del() {
-        var data = getSelections().data;
-        if(data.length == 0){
-            layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
-        } else {
-            layer.confirm("确定删除作业吗？", function () {
-                var index = layer.load();//load动画
-                $.ajax({
-                    url: "/teacher/course/homework/deleteHomework",
-                    dataType: 'json',
-                    method: 'post',
-                    contentType : 'application/json; charset=UTF-8',
-                    data:JSON.stringify(data),
-                    traditional: true,  //阻止深度序列化，向后台传送数组
-                    success: function (data) {
-                        if (data.success) {
-                            layer.close(index);
-                            query();
-                            layer.msg('删除成功', {icon: 1});
-                        } else {
-                            layer.close(index);
-                            layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
-                        }
-                    },
-                    error: function () {
-                        layer.close(index);
-                        layer.msg("删除失败！", {icon: 2});
-                    }
-                });
-            });
-        }
-    }
-
 
     var setting = {
         check:{
