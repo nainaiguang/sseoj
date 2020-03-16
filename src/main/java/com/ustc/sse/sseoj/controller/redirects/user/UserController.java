@@ -47,7 +47,7 @@ public class UserController {
     @RequestMapping("/main")
     public String main(Model model) {
         model.addAttribute("msg","查看使用是否可行。");
-        return "main";};
+        return "menu";};
 
     @RequestMapping("/tempLogin")
     public String toTempLogin() {
@@ -63,9 +63,9 @@ public class UserController {
      * @Author: Qianbw
      * @Date: 2020/1/29 18:22
      */
-    @RequestMapping("/home")
-    public String home() {
-        return "home";}
+    @RequestMapping("/welcome")
+    public String welcome() {
+        return "welcome";}
 
     /**
      * 功能描述: 跳转用户基本信息
