@@ -7,20 +7,33 @@
     <id column="courseID" jdbcType="VARCHAR" property="courseid" />
     <id column="homeworkID" jdbcType="VARCHAR" property="homeworkid" />
     <id column="questionID" jdbcType="VARCHAR" property="questionid" />
-    <result column="answers" jdbcType="VARCHAR" property="answers" />
-    <result column="answer_file_location" jdbcType="VARCHAR" property="answerFileLocation" />
-    <result column="langauge" jdbcType="CHAR" property="langauge" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="questionType" jdbcType="CHAR" property="questiontype" />
+    <result column="langauge" jdbcType="INTEGER" property="langauge" />
     <result column="answer_result" jdbcType="SMALLINT" property="answerResult" />
     <result column="sumit_time" jdbcType="TIMESTAMP" property="sumitTime" />
+    <result column="commit" jdbcType="SMALLINT" property="commit" />
     <result column="solution_id" jdbcType="INTEGER" property="solutionId" />
+    <result column="run_time" jdbcType="INTEGER" property="runTime" />
+    <result column="run_memory" jdbcType="INTEGER" property="runMemory" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ustc.sse.sseoj.model.student.student_homeworkModelWithBLOBs">
+    <result column="answers" jdbcType="LONGVARCHAR" property="answers" />
+    <result column="error" jdbcType="LONGVARCHAR" property="error" />
+    <result column="run_mes" jdbcType="LONGVARCHAR" property="runMes" />
   </resultMap>
   <sql id="Base_Column_List">
-    sno, courseID, homeworkID, questionID, answers, answer_file_location, langauge, answer_result, 
-    sumit_time, solution_id
+    sno, courseID, homeworkID, questionID, ip, questionType, langauge, answer_result, 
+    sumit_time, commit, solution_id, run_time, run_memory
   </sql>
-  <select id="selectByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModelKey" resultMap="BaseResultMap">
+  <sql id="Blob_Column_List">
+    answers, error, run_mes
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModelKey" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from student_homework
     where sno = #{sno,jdbcType=VARCHAR}
       and courseID = #{courseid,jdbcType=VARCHAR}
@@ -34,17 +47,21 @@
       and homeworkID = #{homeworkid,jdbcType=VARCHAR}
       and questionID = #{questionid,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
+  <insert id="insert" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModelWithBLOBs">
     insert into student_homework (sno, courseID, homeworkID, 
-      questionID, answers, answer_file_location, 
+      questionID, ip, questionType, 
       langauge, answer_result, sumit_time, 
-      solution_id)
+      commit, solution_id, run_time, 
+      run_memory, answers, error, 
+      run_mes)
     values (#{sno,jdbcType=VARCHAR}, #{courseid,jdbcType=VARCHAR}, #{homeworkid,jdbcType=VARCHAR}, 
-      #{questionid,jdbcType=VARCHAR}, #{answers,jdbcType=VARCHAR}, #{answerFileLocation,jdbcType=VARCHAR}, 
-      #{langauge,jdbcType=CHAR}, #{answerResult,jdbcType=SMALLINT}, #{sumitTime,jdbcType=TIMESTAMP}, 
-      #{solutionId,jdbcType=INTEGER})
+      #{questionid,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{questiontype,jdbcType=CHAR}, 
+      #{langauge,jdbcType=INTEGER}, #{answerResult,jdbcType=SMALLINT}, #{sumitTime,jdbcType=TIMESTAMP}, 
+      #{commit,jdbcType=SMALLINT}, #{solutionId,jdbcType=INTEGER}, #{runTime,jdbcType=INTEGER}, 
+      #{runMemory,jdbcType=INTEGER}, #{answers,jdbcType=LONGVARCHAR}, #{error,jdbcType=LONGVARCHAR}, 
+      #{runMes,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
+  <insert id="insertSelective" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModelWithBLOBs">
     insert into student_homework
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="sno != null">
@@ -59,11 +76,11 @@
       <if test="questionid != null">
         questionID,
       </if>
-      <if test="answers != null">
-        answers,
+      <if test="ip != null">
+        ip,
       </if>
-      <if test="answerFileLocation != null">
-        answer_file_location,
+      <if test="questiontype != null">
+        questionType,
       </if>
       <if test="langauge != null">
         langauge,
@@ -74,8 +91,26 @@
       <if test="sumitTime != null">
         sumit_time,
       </if>
+      <if test="commit != null">
+        commit,
+      </if>
       <if test="solutionId != null">
         solution_id,
+      </if>
+      <if test="runTime != null">
+        run_time,
+      </if>
+      <if test="runMemory != null">
+        run_memory,
+      </if>
+      <if test="answers != null">
+        answers,
+      </if>
+      <if test="error != null">
+        error,
+      </if>
+      <if test="runMes != null">
+        run_mes,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -91,14 +126,14 @@
       <if test="questionid != null">
         #{questionid,jdbcType=VARCHAR},
       </if>
-      <if test="answers != null">
-        #{answers,jdbcType=VARCHAR},
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
       </if>
-      <if test="answerFileLocation != null">
-        #{answerFileLocation,jdbcType=VARCHAR},
+      <if test="questiontype != null">
+        #{questiontype,jdbcType=CHAR},
       </if>
       <if test="langauge != null">
-        #{langauge,jdbcType=CHAR},
+        #{langauge,jdbcType=INTEGER},
       </if>
       <if test="answerResult != null">
         #{answerResult,jdbcType=SMALLINT},
@@ -106,22 +141,40 @@
       <if test="sumitTime != null">
         #{sumitTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="commit != null">
+        #{commit,jdbcType=SMALLINT},
+      </if>
       <if test="solutionId != null">
         #{solutionId,jdbcType=INTEGER},
       </if>
+      <if test="runTime != null">
+        #{runTime,jdbcType=INTEGER},
+      </if>
+      <if test="runMemory != null">
+        #{runMemory,jdbcType=INTEGER},
+      </if>
+      <if test="answers != null">
+        #{answers,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="error != null">
+        #{error,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="runMes != null">
+        #{runMes,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModelWithBLOBs">
     update student_homework
     <set>
-      <if test="answers != null">
-        answers = #{answers,jdbcType=VARCHAR},
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
       </if>
-      <if test="answerFileLocation != null">
-        answer_file_location = #{answerFileLocation,jdbcType=VARCHAR},
+      <if test="questiontype != null">
+        questionType = #{questiontype,jdbcType=CHAR},
       </if>
       <if test="langauge != null">
-        langauge = #{langauge,jdbcType=CHAR},
+        langauge = #{langauge,jdbcType=INTEGER},
       </if>
       <if test="answerResult != null">
         answer_result = #{answerResult,jdbcType=SMALLINT},
@@ -129,8 +182,26 @@
       <if test="sumitTime != null">
         sumit_time = #{sumitTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="commit != null">
+        commit = #{commit,jdbcType=SMALLINT},
+      </if>
       <if test="solutionId != null">
         solution_id = #{solutionId,jdbcType=INTEGER},
+      </if>
+      <if test="runTime != null">
+        run_time = #{runTime,jdbcType=INTEGER},
+      </if>
+      <if test="runMemory != null">
+        run_memory = #{runMemory,jdbcType=INTEGER},
+      </if>
+      <if test="answers != null">
+        answers = #{answers,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="error != null">
+        error = #{error,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="runMes != null">
+        run_mes = #{runMes,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where sno = #{sno,jdbcType=VARCHAR}
@@ -138,14 +209,36 @@
       and homeworkID = #{homeworkid,jdbcType=VARCHAR}
       and questionID = #{questionid,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModelWithBLOBs">
     update student_homework
-    set answers = #{answers,jdbcType=VARCHAR},
-      answer_file_location = #{answerFileLocation,jdbcType=VARCHAR},
-      langauge = #{langauge,jdbcType=CHAR},
+    set ip = #{ip,jdbcType=VARCHAR},
+      questionType = #{questiontype,jdbcType=CHAR},
+      langauge = #{langauge,jdbcType=INTEGER},
       answer_result = #{answerResult,jdbcType=SMALLINT},
       sumit_time = #{sumitTime,jdbcType=TIMESTAMP},
-      solution_id = #{solutionId,jdbcType=INTEGER}
+      commit = #{commit,jdbcType=SMALLINT},
+      solution_id = #{solutionId,jdbcType=INTEGER},
+      run_time = #{runTime,jdbcType=INTEGER},
+      run_memory = #{runMemory,jdbcType=INTEGER},
+      answers = #{answers,jdbcType=LONGVARCHAR},
+      error = #{error,jdbcType=LONGVARCHAR},
+      run_mes = #{runMes,jdbcType=LONGVARCHAR}
+    where sno = #{sno,jdbcType=VARCHAR}
+      and courseID = #{courseid,jdbcType=VARCHAR}
+      and homeworkID = #{homeworkid,jdbcType=VARCHAR}
+      and questionID = #{questionid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustc.sse.sseoj.model.student.student_homeworkModel">
+    update student_homework
+    set ip = #{ip,jdbcType=VARCHAR},
+      questionType = #{questiontype,jdbcType=CHAR},
+      langauge = #{langauge,jdbcType=INTEGER},
+      answer_result = #{answerResult,jdbcType=SMALLINT},
+      sumit_time = #{sumitTime,jdbcType=TIMESTAMP},
+      commit = #{commit,jdbcType=SMALLINT},
+      solution_id = #{solutionId,jdbcType=INTEGER},
+      run_time = #{runTime,jdbcType=INTEGER},
+      run_memory = #{runMemory,jdbcType=INTEGER}
     where sno = #{sno,jdbcType=VARCHAR}
       and courseID = #{courseid,jdbcType=VARCHAR}
       and homeworkID = #{homeworkid,jdbcType=VARCHAR}

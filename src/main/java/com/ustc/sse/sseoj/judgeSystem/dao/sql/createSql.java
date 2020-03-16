@@ -1,6 +1,7 @@
 package com.ustc.sse.sseoj.judgeSystem.dao.sql;
 
 import com.ustc.sse.sseoj.judgeSystem.Model.problemModel;
+import com.ustc.sse.sseoj.model.warehouse.questionModel;
 
 /**
  * @author 邱乃光
@@ -54,6 +55,19 @@ public class createSql {
         }
 
         sql=sql+"where problem_id = '"+pm.getProblem_id()+"'";
+        return sql;
+    }
+
+    public static String getAllAnswerFromQuestion(questionModel qm)
+    {
+        String sql="SELECT\n" +
+                "\tanswer.*\n" +
+                "FROM\n" +
+                "\tquestion_answer\n" +
+                "INNER JOIN answer ON question_answer.answerID = answer.answerID\n" +
+                "WHERE\n" +
+                "\tquestionID = '" +qm.getQuestionid()+"'\n" +
+                "AND answer.answer_type = 'answers'";
         return sql;
     }
 }

@@ -427,7 +427,6 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 
-
     //搜索该老师的，该作业外的其他题目
     @Override
     public Result get_question_except_using(teacherModel tm, homeworkModel hm, pageLimit pl) {

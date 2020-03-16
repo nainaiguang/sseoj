@@ -1,47 +1,52 @@
 package com.ustc.sse.sseoj.model.student;
 
 import java.util.Date;
-
 /**
  * @author 邱乃光
  * @version 1.0
- * @date 2020/3/1 14:52
+ * @date 2020/3/9 14:38
  */
 public class student_homeworkModel extends student_homeworkModelKey {
-    private String answers;
+    private String ip;
 
-    private String answerFileLocation;
+    private String questiontype;
 
-    private String langauge;
+    private Integer langauge;
 
     private Short answerResult;
 
     private Date sumitTime;
 
+    private Short commit;
+
     private Integer solutionId;
 
-    public String getAnswers() {
-        return answers;
+    private Integer runTime;
+
+    private Integer runMemory;
+
+    public String getIp() {
+        return ip;
     }
 
-    public void setAnswers(String answers) {
-        this.answers = answers == null ? null : answers.trim();
+    public void setIp(String ip) {
+        this.ip = ip == null ? null : ip.trim();
     }
 
-    public String getAnswerFileLocation() {
-        return answerFileLocation;
+    public String getQuestiontype() {
+        return questiontype;
     }
 
-    public void setAnswerFileLocation(String answerFileLocation) {
-        this.answerFileLocation = answerFileLocation == null ? null : answerFileLocation.trim();
+    public void setQuestiontype(String questiontype) {
+        this.questiontype = questiontype == null ? null : questiontype.trim();
     }
 
-    public String getLangauge() {
+    public Integer getLangauge() {
         return langauge;
     }
 
-    public void setLangauge(String langauge) {
-        this.langauge = langauge == null ? null : langauge.trim();
+    public void setLangauge(Integer langauge) {
+        this.langauge = langauge;
     }
 
     public Short getAnswerResult() {
@@ -60,11 +65,35 @@ public class student_homeworkModel extends student_homeworkModelKey {
         this.sumitTime = sumitTime;
     }
 
+    public Short getCommit() {
+        return commit;
+    }
+
+    public void setCommit(Short commit) {
+        this.commit = commit;
+    }
+
     public Integer getSolutionId() {
         return solutionId;
     }
 
     public void setSolutionId(Integer solutionId) {
         this.solutionId = solutionId;
+    }
+
+    public Integer getRunTime() {
+        return runTime;
+    }
+
+    public void setRunTime(Integer runTime) {
+        this.runTime = runTime;
+    }
+
+    public Integer getRunMemory() {
+        return runMemory;
+    }
+
+    public void setRunMemory(Integer runMemory) {
+        this.runMemory = runMemory;
     }
 }

@@ -74,8 +74,10 @@ public enum  Code {
     FTP_DELETE_PROBLEM_FAIL(364,"ftp delete problem fail"),
     FTP_DELETE_ANSWER_FAIL(365,"ftp delete answer fail"),
 
+    Question_Miss_ANSWER(801,"this question miss answer,Maybe the teacher forgot to add the answer"),
    //未知错误
-   UNKNOWN_WRONG(999,"unknown wrong");
+    UNKNOWN_WRONG(999,"unknown wrong");
+
 
 
     @Getter
