@@ -42,6 +42,7 @@ public interface StudentDao {
             "	AND t2.courseID = t4.courseID \n" +
             "	AND t4.tno = t5.NO \n" +
             "	AND t1.NO =#{studentModel.no}\n" +
+            "	AND t3.name LIKE '%${studentModel.name}%'\n" +
             "ORDER BY\n" +
             "	t2.courseID \n" +
             "	LIMIT #{pl.limit_head},\n" +
@@ -75,6 +76,7 @@ public interface StudentDao {
             "	INNER JOIN homework t2 ON t1.homeworkID = t2.homeworkID \n" +
             "WHERE\n" +
             "	t1.courseID = #{courseModel.courseID} \n" +
+            "	AND t2.name LIKE '%${courseModel.name}%' \n" +
             "	AND t2.beginTime < NOW( ) \n" +
             "GROUP BY\n" +
             "	endTime < now( ),\n" +

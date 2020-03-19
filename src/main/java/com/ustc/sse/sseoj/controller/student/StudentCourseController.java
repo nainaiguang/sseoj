@@ -41,11 +41,12 @@ public class StudentCourseController {
     //获取该学生的所有选课信息及相应教师
     @RequestMapping(value = "/selectCourseInfoFromStudent", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes selectCourseInfoFromStudent(pageLimit pl, HttpServletRequest request ){
+    public Mes selectCourseInfoFromStudent(pageLimit pl, HttpServletRequest request,String name ){
 
         studentModel sm = new studentModel();
         UsersModel user = (UsersModel ) request.getSession().getAttribute("user");
         sm.setNo(user.getNo());//通过session获取no
+        sm.setName(name);//课程名称，借用name属性
 
         Result result=studentCourseService.select_courseInfo_from_student(sm,pl);
         Result result1=studentCourseService.select_courseInfo_from_student(sm);
@@ -105,7 +106,7 @@ public class StudentCourseController {
     //显示该课程的所有作业
     @RequestMapping(value = "/selectHomeworkInfoFromCourseID", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes selectHomeworkInfoFromCourseID(pageLimit pl, CourseModel cm ){
+    public Mes selectHomeworkInfoFromCourseID(pageLimit pl, CourseModel cm){
 
         Result result=studentCourseService.select_homeworkInfo_from_courseID(cm,pl);
         Result result1=studentCourseService.select_homeworkInfo_from_courseID(cm);

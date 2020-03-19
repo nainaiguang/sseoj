@@ -1,0 +1,172 @@
+<!--
+ @author  Qianbw
+ @create 2020-03-19 18:07
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>作业列表</title>
+    <link rel="stylesheet" th:href="@{../static/lib/layui/css/layui.css}">
+    <script th:src="@{../static/lib/layui/layui.js}"></script>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5">
+                        <input type="hidden" th:value="${courseID}" id="courseID" />
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="name" id="name" placeholder="请输入作业名" autocomplete="off" class="layui-input" />
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <button id="searchBtn" class="layui-btn layui-btn-normal" type="button" onclick="queryCourse()"><i class="layui-icon">&#xe615;</i>查询</button>
+                            <button type="button" class="layui-btn" onclick="queryReset()"><i class="layui-icon">&#x1002;</i>重置</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-header">
+                    <!--<a><button type="button" onclick="add()" title="添加作业"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>-->
+                </div>
+                <div class="layui-card-body ">
+                    <table id="table" lay-filter="demo" class="layui-table layui-form">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="doHomework">开始做题</a>
+</script>
+
+<!-- js引入 -->
+<script src="/static/layui/layui.js"></script>
+<script>
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+            query();
+            optionTool();//监听工具条
+
+
+        });
+
+    function query() {
+        // 执行渲染
+        table.render({
+            elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
+            url : '/student/selectHomeworkInfoFromCourseID' ,
+            id : 'homeworkid', // 设定容器唯一ID
+            page : true, // 是否开启分页
+            loading : true, // 是否显示加载条
+            height : 550, // 容器高度,
+            page: 1,
+            limit: 10,
+            method: 'post',
+            //,where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
+            //,method: 'post' //如果无需自定义HTTP类型，可不加该参数
+            //,request: {} //如果无需自定义请求参数，可不加该参数
+            //,response: {} //如果无需自定义数据响应名称，可不加该参数
+            // where: queryParam(),
+            where: {
+                'name': $('#name').val(),
+                'courseID': $('#courseID').val(),
+                page: this.page,
+                limit: this.limit
+            },
+            cols : [ [ // 标题栏
+                {
+                    field : 'homeworkid',
+                    title : '作业ID',
+                    sort : false,
+                    align : 'center',
+                    width: '150'
+                } // rowspan即纵向跨越的单元格数
+                , {
+                    field : 'name',
+                    title : '作业名',
+                    align : 'center',
+                    width: '150'
+                }, {
+                    field : 'describes',
+                    title : '作业描述',
+                    align : 'center',
+                    minWidth: '300'
+                }, {
+                    field : 'createtimeStr',
+                    title : '创建日期',
+                    align : 'center',
+                    width: '200'
+                }, {
+                    field : 'begintimeStr',
+                    title : '开始时间',
+                    align : 'center',
+                    width: '200'
+                }, {
+                    field : 'endtimeStr',
+                    title : '结束时间',
+                    align : 'center',
+                    width: '200'
+                }, {
+                    fixed : 'right',
+                    title :'操作',
+                    toolbar : '#barDemo',
+                    align : 'center',
+                    width : '150'
+                }
+                // colspan即横跨的单元格数，这种情况下不用设置field和width
+            ]], // 设置表头
+            done : function(res, curr, count) {
+                console.log(res);
+                // 得到当前页码
+                console.log(curr);
+                // 得到数据总量
+                console.log(count);
+            }
+        });
+
+    };
+
+    function optionTool() {
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'doHomework'){//开始做题
+                var homeworkid = data.homeworkid;
+                var index = layer.open({
+                    type: 2,
+                    content: '/studentCourse/toQuestion?homeworkid='+homeworkid,
+                    title: '开始做题'
+                });
+                layer.full(index);
+            }
+        });
+    }
+
+    // 条件查询
+    function queryCourse() {
+        query();
+    }
+
+    // 重置查询
+    function queryReset() {
+        $('#name').val('');
+        query();
+    }
+
+</script>

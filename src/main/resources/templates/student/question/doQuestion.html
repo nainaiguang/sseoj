@@ -1,0 +1,20 @@
+<!--
+ @author  Qianbw
+ @create 2020-03-19 18:55
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{../static/lib/layui/css/layui.css}">
+    <script th:src="@{../static/lib/layui/layui.js}"></script>
+</head>
+<body>
+    <blockquote class="layui-elem-quote layui-quote-nm">
+        <span th:text="${questionModel.questionNumber}"></span>
+        <span th:text="${questionModel.title}"></span><br>
+        <span th:text="${questionModel.description}"></span><br>
+    </blockquote>
+</body>
+</html>
