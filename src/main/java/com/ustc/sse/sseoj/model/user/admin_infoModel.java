@@ -60,7 +60,6 @@ public class admin_infoModel {
     public String getAdept() {
         return adept;
     }
-
     public void setAdept(String adept) {
         this.adept = adept == null ? null : adept.trim();
     }

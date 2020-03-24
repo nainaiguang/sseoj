@@ -1,5 +1,8 @@
 package com.ustc.sse.sseoj.model.student;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 /**
  * @author 邱乃光
@@ -17,9 +20,17 @@ public class student_homeworkModel extends student_homeworkModelKey {
 
     private Date sumitTime;
 
-    private Short commit;
+    private Short commit=0;
 
     private Integer solutionId;
+
+    @Setter
+    @Getter
+    private Integer oldSolutionId;
+
+    @Setter
+    @Getter
+    private Integer problemId;
 
     private Integer runTime;
 

@@ -58,6 +58,7 @@ public interface QuestionDao {
             "\tORDER BY homework_link_bank.questionNumber  LIMIT #{pl.limit_head},#{pl.limit} ")
     public ArrayList<questionModel> get_all_question_from_course_on_teacher(@Param("tm") teacherModel tm, @Param("hm") homeworkModel hm, @Param("qm") questionModel qm, @Param("pl")pageLimit pl);
 
+
     //得到教师某作业下的所有问题数量
     @Select("SELECT\n" +
             "\tcount(1) count1\n" +

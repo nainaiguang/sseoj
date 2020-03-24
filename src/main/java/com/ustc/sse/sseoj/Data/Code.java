@@ -66,6 +66,7 @@ public enum  Code {
     MISS_STUDENT_GRADE(352,"miss studentGrade"),
     MISS_STUDENT_DEPT(353,"miss studentDept"),
 
+    MISS_LANGUAGE(354,"miss programming language"),
     //ftp 错误
     FTP_CREATE_PROBLEM_FAIL(360,"ftp create problem fail"),
     FTP_CREATE_ANSWER_FAIL(361,"ftp create answer fail"),
@@ -75,6 +76,8 @@ public enum  Code {
     FTP_DELETE_ANSWER_FAIL(365,"ftp delete answer fail"),
 
     Question_Miss_ANSWER(801,"this question miss answer,Maybe the teacher forgot to add the answer"),
+    OUT_OF_TIME(802,"summit out of time"),
+    DUPUlCATE_SUMMIT(803,"The problem has already been submitted"),
    //未知错误
     UNKNOWN_WRONG(999,"unknown wrong");
 

@@ -28,4 +28,7 @@ public class constant {
     public static String cacheFileLocation="data\\cacheFile\\";
 
     public static int threadnumber=30;
+
+    public static int pollerSleepTime=2000;//轮询器工作3循环时间
+
 }

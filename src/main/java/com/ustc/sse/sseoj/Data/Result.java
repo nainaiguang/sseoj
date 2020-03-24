@@ -19,7 +19,13 @@ public class Result<T> {
     public String toString() {
         if (this instanceof Result.Success) {
             Success success = (Success) this;
-            return "Success[data=" + success.getData().toString() + "]";
+            if(success.getData()==null)
+            {
+                return "Success[data=null]";
+            }
+            else {
+                return "Success[data=" + success.getData().toString() + "]";
+            }
         }
         else if(this instanceof Result.Fail)
         {

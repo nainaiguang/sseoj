@@ -45,7 +45,7 @@ public class chooseJudger implements judgerInterface {
             else {
                 for (answerModel resam : reslist)//填空题只要第一个答案
                 {
-                    if (resam.getInput().equals(shmb.getAnswers())) {
+                    if (resam.getInput().equals(shmb.getAnswers().toUpperCase())) {
                         return new Result.Success(JudgeCode.RIGHT_ANSWER);//结果正确
                     } else {
                         return new Result.Success(JudgeCode.ERROR_ANSWER);//结果错误
