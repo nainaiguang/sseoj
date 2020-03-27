@@ -272,10 +272,10 @@ public class AdminController {
     //根据学号批量删除该学生选课信息
     @RequestMapping(value = "/deleteBranchStudentCourseInfo", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes deleteBranchStudentCourseInfo(@RequestBody ArrayList<select_courseModelKey> arrayList)
+    public Mes deleteBranchStudentCourseInfo(@RequestBody ArrayList<select_courseModelKey> arrayList,studentModel sm)
     {
 
-        Result result=adminService.delete_branch_student_courseInfo(arrayList);
+        Result result=adminService.delete_branch_student_courseInfo(arrayList,sm);
         ArrayList<Result> ar=(ArrayList<Result>) ((Result.Success) result).getData();
         boolean success=true;//是否成功
         for(Result result1:ar)

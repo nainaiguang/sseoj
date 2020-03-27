@@ -281,8 +281,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Result delete_student_courseInfo(select_courseModelKey scmk) {
-        if(scmk.getSno()==null)
+    public Result delete_student_courseInfo(select_courseModelKey scmk,studentModel sm) {
+        if(sm.getNo()==null)
         {
             return new Result.Fail(Code.MISS_STUDENTID);
         }
@@ -290,8 +290,9 @@ public class AdminServiceImpl implements AdminService {
         {
             return new Result.Fail(Code.MISS_COURSEID);
         }
+
         try {
-            boolean success = adminDao.delete_selectCourseModelKey_from_studentID(scmk);
+            boolean success = adminDao.delete_selectCourseModelKey_from_studentID(scmk,sm);
             if (success) {
                 return new Result.Success(true);
             } else {
@@ -305,15 +306,20 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Result delete_branch_student_courseInfo(ArrayList<select_courseModelKey> arrayList) {
+    public Result delete_branch_student_courseInfo(ArrayList<select_courseModelKey> arrayList,studentModel sm) {
         if(arrayList.size()==0)
         {
             return new Result.Fail(Code.EMPTY_LIST);
         }
+        if(sm.getNo()==null)
+        {
+            return new Result.Fail(Code.MISS_STUDENTID);
+        }
+
         ArrayList<Result> array=new ArrayList<>();
         for(select_courseModelKey select_courseModelKey:arrayList)//检查是否存在空值
         {
-            array.add(delete_student_courseInfo(select_courseModelKey));
+            array.add(delete_student_courseInfo(select_courseModelKey,sm));
         }
 
         return new Result.Success(array);
