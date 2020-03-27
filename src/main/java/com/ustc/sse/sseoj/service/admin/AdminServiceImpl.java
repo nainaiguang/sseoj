@@ -286,7 +286,10 @@ public class AdminServiceImpl implements AdminService {
         {
             return new Result.Fail(Code.MISS_STUDENTID);
         }
-
+        if(scmk.getCourseid()==null)
+        {
+            return new Result.Fail(Code.MISS_COURSEID);
+        }
         try {
             boolean success = adminDao.delete_selectCourseModelKey_from_studentID(scmk);
             if (success) {
