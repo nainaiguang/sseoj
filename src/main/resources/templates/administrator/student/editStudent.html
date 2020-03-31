@@ -1,0 +1,233 @@
+<!--
+ @author  Wangning
+ @create 2020-03-23  13:54
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>查看学生信息</title>
+    <link rel="stylesheet" th:href="@{../static/lib/layui/css/layui.css}">
+    <script th:src="@{../static/lib/layui/layui.js}"></script>
+</head>
+<body>
+<div style=" margin-top: 30px;padding-right: 20px">
+    <form name="showStudentInfo" class="layui-form" action="" method="post" >
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">姓名：</label>
+                <div class="layui-input-inline" style="width: 450px;">
+                    <input th:value="${studentModel.name}" type="text" name="name" class="layui-input"  >
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">学号：</label>
+                <div class="layui-input-inline" style="width:450px;">
+                    <input th:value="${studentModel.no}" type="text" name="no"  class="layui-input">
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">院系：</label>
+                <div class="layui-input-inline" style="width:450px;">
+                    <select id="sdept" name="sdept" lay-verify="sdept" >
+                        <option value=""></option>
+                        <option th:selected="${studentModel.sdept eq '计算机'}" value="计算机">计算机</option>
+                        <option th:selected="${studentModel.sdept eq '化学'}" value="化学">化学</option>
+                        <option th:selected="${studentModel.sdept eq '物理'}" value="物理">物理</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">年级：</label>
+                <div class="layui-input-inline" style="width:450px;">
+                    <select id="sgrade" name="sgrade" readonly="readonly" >
+                        <option value=""></option>
+                        <option th:selected="${studentModel.sgrade eq '2019级'}" value="2019级">2019级</option>
+                        <option th:selected="${studentModel.sgrade eq '2018级'}" value="2018级">2018级</option>
+                        <option th:selected="${studentModel.sgrade eq '2017级'}" value="2017级">2017级</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">性别：</label>
+                <div class="layui-input-inline" style="width:450px;">
+                    <select id="ssex" name="ssex" readonly="readonly" >
+                        <option value=""></option>
+                        <option th:selected="${studentModel.ssex eq 'female'}" value="female">female</option>
+                        <option th:selected="${studentModel.ssex eq 'male'}" value="male">male</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">年龄：</label>
+                <div class="layui-input-inline" style="width:450px;">
+                    <input th:value="${studentModel.sage}" id="sage" name="sage" placeholder="请输入年龄" class="layui-input">
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">密码：</label>
+                <div class="layui-input-inline" style="width:450px;">
+                    <input th:value="${judge_defaultpassword}==true? ${studentModel.password}:${defaultpassword}" id="password" name="password" placeholder="123456"  class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">角色：</label>
+                <div class="layui-input-inline" style="width:450px;">
+                    <input th:value="${studentModel.role}"  id="role" name="role" placeholder="请输入角色"   class="layui-input" readonly="readonly">
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">手机号码：</label>
+                <div class="layui-input-inline" style="width:450px;">
+
+                    <input th:value="${studentModel.sphoneNumber}" id="sphoneNumber" name="sphoneNumber" lay-verify="phone" placeholder="请输入手机号码" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">邮箱：</label>
+                <div class="layui-input-inline" style="width:450px;">
+
+                    <input th:value="${studentModel.semail}" id="semail" name="semail" lay-verify="email" placeholder="请输入邮箱" class="layui-input">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-submit lay-filter="form" style="margin-left: 550px">提交修改</button>
+
+        </div>
+    </form>
+</div>
+
+<!-- js引入 -->
+<script type="text/javascript">
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    var upload;
+    layui.use(['upload', 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+            upload = layui.upload;
+            Valid();
+            eventinit();
+
+        });
+
+    function Valid(){
+        form.verify({
+            name: function(value) {
+                if(value.length < 1) {
+                    return '请填写姓名';
+                }
+            },
+            no:function(value) {
+                if(value.length < 1) {
+                    return '请填写学号';
+                }
+            }
+
+        });
+    }
+
+    function eventinit(){
+        form.on('submit(form)', function(data){
+            var index = layer.load();//load动画
+            console.log(data.field);
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/Admin/updateStudentInfo',
+                data: data.field,
+                success: function(data){
+                    if(data.success){
+                        layer.close(index);
+                        layer.msg('修改成功',{icon: 1});
+                        // setTimeout(function(){
+                        //     parent.layer.closeAll();
+                        // }, 500);
+                        parent.query();
+                    } else {
+                        layer.close(index);
+                        layer.msg("修改失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                    }
+                },
+                error: function(){
+                    layer.close(index);
+                    layer.msg("修改失败！", {icon: 2});
+                }
+            });
+        });
+
+        /* //执行实例
+         var uploadInst = upload.render({
+             elem: '#upimg' //绑定元素
+             ,url: '/upload/' //上传接口
+             ,done: function(res){
+                 //上传完毕回调
+             }
+             ,error: function(){
+                 //请求异常回调
+             }
+         });
+
+         // 监听问题类型select变换表单
+         form.on('select(sdept)',function (data) {
+             if (data.value === '计算机' || data.value === ''){
+                 $("#3Item").css('display','block');
+             } else {
+                 $("#3Item").css('display','none');
+             }
+         });
+
+         if ($("#sdept").val() === '化学'){
+             $("#3Item").css('display','block');
+         } else {
+             $("#3Item").css('display','none');
+         }*/
+
+    }
+
+    // 判断正负正数就返回true
+    function isIntNum(val){
+        var regPos = / ^\d+$/; // 非负整数
+        var regNeg = /^\-[1-9][0-9]*$/; // 负整数
+        if(regPos.test(val) || regNeg.test(val)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+</script>
+
+
+
+</body>
+</html>

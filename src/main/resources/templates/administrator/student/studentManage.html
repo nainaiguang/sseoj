@@ -1,0 +1,334 @@
+<!--
+ @author  Wangning
+ @create 2020-03-23  13:54
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>学生管理</title>
+    <link rel="stylesheet" th:href="@{../static/lib/layui/css/layui.css}">
+    <script th:src="@{../static/lib/layui/layui.js}"></script>
+</head>
+<body>
+<!-- 查询div style="margin-top: 20px;margin-left: 50px style="margin-top: 20px;"-->
+<!--<div class="layui-container" >-->
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                      <form class="layui-form layui-col-space5" id="queryForm" action="">
+                          <div class="layui-inline layui-show-xs-block">
+                              <input type="text" name="name" id="name" placeholder="请输入姓名" autocomplete="off" class="layui-input" />
+                          </div>
+                          <div class="layui-inline layui-show-xs-block">
+                              <input type="text" name="no" id="no" placeholder="请输入学号" autocomplete="off" class="layui-input" />
+                          </div>
+
+<!--            筛选下拉框--院系-->
+                          <div class="layui-inline layui-show-xs-block">
+                                   <select class="layui-input" name="sdept" id="sdept" lay-verify=" " lay-search>
+                                  <option value="">请选择院系</option>
+                        <option value="0">计算机</option>
+                        <option value="1">化学</option>
+                        <option value="2">物理</option>
+                        <option value="3">软件工程</option>
+                        <option value="4">电子信息</option>
+                    </select>
+                </div>
+                          <div class="layui-inline layui-show-xs-block">
+
+                    <select name="sgrade" id="sgrade" lay-verify=" " lay-search>
+                        <option value="">请选择年级</option>
+                        <option value="1">2019级</option>
+                        <option value="1">2018级</option>
+                        <option value="2">2017级</option>
+                        <option value="3">2016级</option>
+                        <option value="4">2015级</option>
+                    </select>
+                </div>
+                          <div class="layui-inline layui-show-xs-block">
+                                       <button id="searchBtn" type="button" class="layui-btn layui-btn-primary" onclick="queryStudent()">查询</button>
+                          </div>
+
+        </form>
+                    <!-- 左边按钮栏 -->
+                    <div class="layui-card-header">
+
+                        <a><button type="button" onclick="add()" title="添加学生"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
+                        <a><button type="button" onclick="del()" title="删除学生" id="delete" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe640;</i></button></a>
+                    </div>
+
+
+                    <!-- 表格栏 -->
+                    <div class="layui-card-body ">
+                        <table id="table" lay-filter="demo" class="layui-table layui-form"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="show">查看</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="course">选课</a>
+</script>
+
+<!-- js引入 -->
+<!--<script src="/static/layui/layui.js"></script>-->
+<script>
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    var queryUrl = '/Admin/selectStudentAccordingCondition';
+    layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+            query();
+            optionTool();//监听工具条
+
+
+        });
+
+    function query() {
+        // 执行渲染
+        table.render({
+            elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
+            url : queryUrl ,
+            id : 'no', // 设定容器唯一ID
+            page : true, // 是否开启分页
+            loading : true, // 是否显示加载条
+            height : 550, // 容器高度,
+            page: 1,
+            limit: 10,
+            method: 'post',
+            //,where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
+            //,method: 'post' //如果无需自定义HTTP类型，可不加该参数
+            //,request: {} //如果无需自定义请求参数，可不加该参数
+            //,response: {} //如果无需自定义数据响应名称，可不加该参数
+            // where: queryParam(),
+            where: {
+
+                'name': $("#name").val(),
+                'sdept':$('#sdept').val(),
+                'sgrade':$('#sgrade').val(),
+                'no':$('#no').val(),
+                page : this.page,
+                limit : this.limit
+            },
+            cols : [ [ // 标题栏
+                {
+                    field : 'no',
+                    checkbox : true,
+                    LAY_CHECKED : false,
+                    width: '50'
+                } // rowspan即纵向跨越的单元格数
+                , {
+                    field : 'no',
+                    title : '学号',
+                    align : 'center',
+                    width: '150'
+                }, {
+                    field : 'name',
+                    title : '姓名',
+                    align : 'center',
+                    minWidth: '300'
+                }, {
+                    field : 'ssex',
+                    title : '性别',
+                    align : 'center',
+                    width: '200'
+                }, {
+                    field : 'sdept',
+                    title : '院系',
+                    align : 'center',
+                    width: '200'
+                }, {
+                    field : 'role',
+                    title : '角色',
+                    align : 'center',
+                    width: '200'
+                }, {
+                    fixed : 'right',
+                    title :'操作',
+                    toolbar : '#barDemo',
+                    align : 'center',
+                    width : '300'
+                }
+                // colspan即横跨的单元格数，这种情况下不用设置field和width
+            ]], // 设置表头
+            done : function(res, curr, count) {
+                console.log(res);
+                // 得到当前页码
+                console.log(curr);
+                // 得到数据总量
+                console.log(count);
+            }
+        });
+
+    };
+
+    function optionTool() {
+        table.on('tool(demo)', function(obj){
+            var data1 = obj.data;
+            if(obj.event === 'show'){//显示学生详细信息
+                var index = layer.open({
+                    type: 2,
+                     content: '/administratorStudent/toShowStudentInfo?no='+data1.no,
+                    maxmin: false,
+                    title: obj.data.name + '-->查看学生信息'
+                });
+                layer.full(index);
+                // layer.msg('ID：'+ data.id + ' 的查看操作');
+            } else if(obj.event === 'edit'){//编辑该学生信息
+                var index1=layer.open({
+                    type: 2,
+                    content: '/administratorStudent/toEditStudentInfo?no='+data1.no,
+                    // maxmin: false,
+                    title: obj.data.name + '-->编辑学生信息'
+                });
+                layer.full(index1);
+                }
+            else
+            {   var index=layer.open({
+                type: 2,
+                content: '/administratorStudent/toEditStudentCourse?no='+data1.no,
+                // maxmin: false,
+                title: obj.data.name + '-->编辑学生选课信息'
+            });
+                layer.full(index);
+
+            }
+        });
+    }
+
+
+    // 条件查询
+    function queryStudent() {
+        // queryUrl = '/teacher/course/searchCourseFully';
+        query();
+    }
+
+
+
+    // 获取选中行
+    function getSelections() {
+        return table.checkStatus('no');
+    };
+
+    // 新增
+    function add(){
+        layer.open({
+            type: 2,
+            content: '/teacherCourse/toAddCourse',
+            maxmin: true,
+            title: '添加学生',
+            area : ['600px', '400px']
+        });
+    }
+
+    // 编辑
+    function edit(){
+        var data = getSelections().data;
+        if(data.length === 0){
+            layer.alert('请选择一条数据进行编辑！', {icon: 2});
+        } else if(data.length > 1){
+            layer.alert('请选择一条数据进行编辑！', {icon: 2});
+        } else {
+            var no = data[0].no;
+            layer.open({
+                type: 2,
+                content: '/Admin/getAllStudentInfo?no='+no,
+                maxmin: true,
+                title: '编辑课程',
+                area : ['600px', '400px']
+            });
+        }
+    }
+
+    // 批量删除选中行
+    function del() {
+        var data = getSelections().data;
+        if(data.length == 0){
+            layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
+        } else {
+            layer.confirm("学生下可能有课程，确定删除学生吗？", function () {
+                var index = layer.load();//load动画
+                $.ajax({
+                    url: "/Admin/deleteBranchStudentInfo",
+                    dataType: 'json',
+                    method: 'post',
+                    contentType : 'application/json; charset=UTF-8',
+                    data:JSON.stringify(data),
+                    traditional: true,  //阻止深度序列化，向后台传送数组
+                    success: function (data) {
+                        if (data.success) {
+                            layer.close(index);
+                            query();
+                            layer.msg('删除成功', {icon: 1});
+                        } else {
+                            layer.close(index);
+                            layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
+                        }
+                    },
+                    error: function () {
+                        layer.close(index);
+                        layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
+                    }
+                });
+            });
+        }
+    }
+
+
+    var setting = {
+        check:{
+            enable: true,
+            nocheckInherit: false
+        },
+        view:{
+            selectedMulti: false
+        },
+        edit: {
+            enable: true,
+            showRenameBtn:false,
+            showRemoveBtn:false,
+        },
+        data: {
+            simpleData: {
+                enable: true,
+            }
+        },
+        callback: {
+
+        }
+    };
+
+
+    function warnTip(content) {
+        layer.open({
+            title:'提示',
+            content:content,
+            btn:['确定'],
+            icon:2,
+            yes:function(index){
+                layer.close(index);
+            }
+        });
+    };
+
+</script>
+</body>

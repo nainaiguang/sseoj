@@ -1,0 +1,272 @@
+<!--
+ @author  Wangning
+ @create 2020-03-23  13:54
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>学生选课管理</title>
+    <link rel="stylesheet" th:href="@{../static/lib/layui/css/layui.css}">
+    <script th:src="@{../static/lib/layui/layui.js}"></script>
+</head>
+<body>
+<div class=" " style="margin-top: 20px;margin-left: 50px">
+    <div class="layui-row" style="margin-top: 20px;">
+        <form action="" id="queryForm" class="layui-form">
+            <div class="layui-form-item">
+                <input th:value="${no}" type="hidden" id="no"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 按钮栏 -->
+<div class="layui-card-header">
+
+    <a><button type="button" onclick="add()" title="添加课程"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
+    <a><button type="button" onclick="del()" title="删除课程" id="delete" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe640;</i></button></a>
+</div>
+
+
+<!-- 表格栏 -->
+<div style="padding:0px 10px">
+    <table id="table" lay-filter="demo"></table>
+</div>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">移除</a>
+</script>
+
+<script>
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+            query();
+            optionTool();//监听工具条
+
+
+        });
+
+    function query() {
+        // 执行渲染
+        table.render({
+            elem : '#table', // 指定原始表格元素选择器（推荐id选择器）
+            url : '/Admin/selectCourseFromStudent' ,
+            id : 'courseID', // 设定容器唯一ID
+            page : true, // 是否开启分页
+            loading : true, // 是否显示加载条
+            height : 550, // 容器高度,
+            page: 1,
+            limit: 10,
+            method: 'post',
+            //,where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
+            //,method: 'post' //如果无需自定义HTTP类型，可不加该参数
+            //,request: {} //如果无需自定义请求参数，可不加该参数
+            //,response: {} //如果无需自定义数据响应名称，可不加该参数
+            // where: queryParam(),
+            where: {
+                'no': $('#no').val(),
+                page: this.page,
+                limit: this.limit
+            },
+            cols : [ [ // 标题栏
+                {
+                    field : 'courseID',
+                    checkbox : true,
+                    LAY_CHECKED : false,
+                    width: '50'
+                } ,
+                {
+                    field : 'courseID',
+                    title : '课程ID',
+                    sort : false,
+                    align : 'center',
+                    width: '300'
+                } // rowspan即纵向跨越的单元格数
+                , {
+                    field : 'name',
+                    title : '课程名',
+                    align : 'center',
+                    sort: true,
+                    width: '300'
+                }, {
+                    field : 'presentation',
+                    title : '课程描述',
+                    align : 'center',
+                    minWidth: '300'
+                },  {
+                    fixed : 'right',
+                    title :'操作',
+                    toolbar : '#barDemo',
+                    align : 'center',
+                    width : '300'
+                }
+                // colspan即横跨的单元格数，这种情况下不用设置field和width
+            ]], // 设置表头
+            done : function(res, curr, count) {
+                console.log(res);
+                // 得到当前页码
+                console.log(curr);
+                // 得到数据总量
+                console.log(count);
+            }
+        });
+
+    };
+
+    function optionTool() {
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            data.courseid = $('#courseID').val();
+            var datas = [];
+            datas.push(data);
+            if(obj.event === 'del'){// 移除此作业
+                layer.confirm("确定移除此作业吗？", function(){
+                    var index = layer.load();//load动画
+                    $.ajax({
+                        url : "/teacher/course/homework/deleteHomeworkLinkCourse",
+                        dataType: 'json',
+                        method : 'post',
+                        contentType : 'application/json; charset=UTF-8',
+                        data : JSON.stringify(datas),
+                        traditional: true,  //阻止深度序列化，向后台传送数组
+                        success : function(data){
+                            if (data.success) {
+                                layer.close(index);
+                                query();
+                                layer.msg('移除成功', {icon: 1});
+                            } else {
+                                layer.close(index);
+                                layer.msg("移除失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
+                            }
+                        },
+                        error: function(){
+                            layer.close(index);
+                            layer.msg("移除失败！", {icon: 2});
+                        }
+                    });
+                });
+            } else if(obj.event === 'edit'){//编辑作业
+                var homeworkid = data.homeworkid;
+                var index =layer.open({
+                    type: 2,
+                    content: '/teacherHomework/toEditCourseHomework?homeworkid='+homeworkid,
+                    title: '编辑作业'
+                });
+                layer.full(index);
+                // layer.alert('编辑行：<br>'+ JSON.stringify(data))
+            }
+        });
+    }
+
+
+    // 条件查询
+    function queryCourse() {
+        query();
+    }
+
+    // 重置查询
+    function queryReset() {
+        $('#name').val('');
+        query();
+    }
+
+
+    // 新建作业
+    function addNew(){
+        var index =layer.open({
+            type: 2,
+            content: '/teacherHomework/toAddCourseHomework?courseID='+$("#courseID").val(),
+            title: '新建作业'
+        });
+        layer.full(index);
+    }
+
+    // 获取选中行
+    function getSelections() {
+        return table.checkStatus('courseID');
+    };
+
+    // 批量删除选中行
+    function del() {
+        var data = getSelections().data;
+        if(data.length == 0){
+            layer.alert('请选择一条或多条数据进行删除！', {icon: 2});
+        } else {
+            layer.confirm("确定删除选课吗？", function () {
+                var index = layer.load();//load动画
+                $.ajax({
+                    url: "/Admin/deleteBranchStudentCourseInfo",
+                    dataType: 'json',
+                    method: 'post',
+                    contentType : 'application/json; charset=UTF-8',
+                    data:JSON.stringify(data),
+                    traditional: true,  //阻止深度序列化，向后台传送数组
+                    success: function (data) {
+                        if (data.success) {
+                            layer.close(index);
+                            query();
+                            layer.msg('删除成功', {icon: 1});
+                        } else {
+                            layer.close(index);
+                            layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
+                        }
+                    },
+                    error: function () {
+                        layer.close(index);
+                        layer.msg("删除失败！code:" + data.code + ",msg:" + data.msg, {icon: 2});
+                    }
+                });
+            });
+        }
+    }
+    var setting = {
+        check:{
+            enable: true,
+            nocheckInherit: false
+        },
+        view:{
+            selectedMulti: false
+        },
+        edit: {
+            enable: true,
+            showRenameBtn:false,
+            showRemoveBtn:false,
+        },
+        data: {
+            simpleData: {
+                enable: true,
+            }
+        },
+        callback: {
+
+        }
+    };
+
+
+    function warnTip(content) {
+        layer.open({
+            title:'提示',
+            content:content,
+            btn:['确定'],
+            icon:2,
+            yes:function(index){
+                layer.close(index);
+            }
+        });
+    };
+
+</script>
