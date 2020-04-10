@@ -24,6 +24,7 @@ public enum  Code {
     SUCCESS_INSERT_COURSE(15,"success insert course"),
     SUCCESS_DELETE_TEACHERINFO(16,"success delete teacherInfo"),
     //冲突信息
+    SUCCESS_SELECT_COURSE_(17,"success select course"),
     ACCOUNT_ALREADY_EXISTS(100,"Account already exists"),
     COURSE_ALREADY_EXISTS(110,"course already exists"),
 

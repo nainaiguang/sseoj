@@ -144,9 +144,9 @@ public interface AdminDao {
             "FROM\n" +
             "	select_course \n" +
             "WHERE\n" +
-            "	sno = #{studentModel.no} \n" +
+            "	sno = #{scmk.sno} \n" +
             "	AND courseID = #{scmk.courseid};")
-    public boolean delete_selectCourseModelKey_from_studentID(@Param("scmk") select_courseModelKey scmk,@Param("studentModel") studentModel studentModel);
+    public boolean delete_selectCourseModelKey_from_studentID(@Param("scmk") select_courseModelKey scmk);
 
     //删除学生账号
     @Delete("DELETE student,\n" +
@@ -214,7 +214,7 @@ public interface AdminDao {
     //可以某学生进行添加选课
     @Insert("INSERT INTO select_course ( sno, courseID )\n" +
             "VALUES\n" +
-            "	( #{scmk.sno}, #{scmk.courseid} );")
+            "	( #{scmk.sno}, #{scmk.courseid});")
     public boolean insert_course_for_student(@Param("scmk") select_courseModelKey scmk);
 
     //删除教师账号
@@ -226,6 +226,10 @@ public interface AdminDao {
             "WHERE\n" +
             "	teacher.NO = #{no};")
     public boolean delete_teacherInfo_from_teacherID(String no);
+
+
+    //待交作业显示提醒功能
+
 
 
 //    //增加教师账号

@@ -200,7 +200,7 @@ public class AdminController {
         }
     }
 
-    //根据学号修改该学生信息(有bug，准备用xml解决）
+    //根据学号修改该学生信息
     @RequestMapping(value = "/updateStudentInfo", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
     public Mes updateStudentInfo (student_uniteModel sum){
@@ -272,10 +272,10 @@ public class AdminController {
     //根据学号批量删除该学生选课信息
     @RequestMapping(value = "/deleteBranchStudentCourseInfo", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes deleteBranchStudentCourseInfo(@RequestBody ArrayList<select_courseModelKey> arrayList,studentModel sm)
+    public Mes deleteBranchStudentCourseInfo(@RequestBody ArrayList<select_courseModelKey> arrayList)
     {
 
-        Result result=adminService.delete_branch_student_courseInfo(arrayList,sm);
+        Result result=adminService.delete_branch_student_courseInfo(arrayList);
         ArrayList<Result> ar=(ArrayList<Result>) ((Result.Success) result).getData();
         boolean success=true;//是否成功
         for(Result result1:ar)
@@ -298,6 +298,36 @@ public class AdminController {
             return new Mes(false,Code.ERROR,0,null);
         }
     }
+
+    //批量为学生选课
+//    @RequestMapping(value = "/selectBranchCourseForStudent", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+//    @ResponseBody//返回json格式
+//    public Mes selectBranchCourseForStudent(@RequestBody ArrayList<select_courseModelKey> arrayList)
+//    {
+//
+//        Result result=adminService.select_branchCourse_forStudent(arrayList);
+//        ArrayList<Result> ar=(ArrayList<Result>) ((Result.Success) result).getData();
+//        boolean success=true;//是否成功
+//        for(Result result1:ar)
+//        {
+//            if(result1 instanceof Result.Success)
+//            {
+//                continue;
+//            }
+//            else
+//            {
+//                success=false;
+//            }
+//        }
+//        if(success)
+//        {
+//            return new Mes(true,Code.SUCCESS_SELECT_COURSE_,arrayList.size(),null);
+//        }
+//        else
+//        {
+//            return new Mes(false,Code.ERROR,0,null);
+//        }
+//    }
 
 
     //根据学号批量删除学生信息
@@ -476,5 +506,32 @@ public class AdminController {
         {
             return new Mes(false,Code.ERROR,0,null);
         }
+    }
+
+    //根据学号修改该教师信息
+    @RequestMapping(value = "/updateTeacherInfo", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes updateTeacherInfo (teacher_uniteModel tum){
+
+        Result result=adminService.update_teacherinfo(tum);
+        if(result instanceof Result.Success)
+        {
+            Mes mes=new Mes(true,Code.SUCCESS_DELETE_STUDENTINFO,1,tum);
+            System.out.println(mes.toString());
+            return mes;
+        }
+        else if(result instanceof Result.Fail)
+        {
+            Mes mes=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+        else
+        {
+            Mes mes=new Mes(false,Code.ERROR,0,null);
+            System.out.println(mes.toString());
+            return mes;
+        }
+
     }
 }

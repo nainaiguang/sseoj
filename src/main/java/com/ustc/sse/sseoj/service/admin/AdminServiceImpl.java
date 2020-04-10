@@ -6,6 +6,7 @@ import com.ustc.sse.sseoj.Data.Role;
 import com.ustc.sse.sseoj.dao.admin.AdminDao;
 import com.ustc.sse.sseoj.dao.admin.student_uniteModelMapper;
 import com.ustc.sse.sseoj.dao.admin.teacher_uniteModelMapper;
+import com.ustc.sse.sseoj.dao.singleModel.student.select_courseModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.users.adminModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.users.studentModelMapper;
 import com.ustc.sse.sseoj.dao.singleModel.users.student_infoModelMapper;
@@ -54,6 +55,8 @@ public class AdminServiceImpl implements AdminService {
     student_uniteModelMapper summ;
     @Autowired(required = false)
     teacher_uniteModelMapper tumm;
+    @Autowired(required = false)
+    select_courseModelMapper scmm;
 
     @Override
     public Result select_student_according_condition(student_uniteModel sum,pageLimit pl) {
@@ -281,8 +284,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Result delete_student_courseInfo(select_courseModelKey scmk,studentModel sm) {
-        if(sm.getNo()==null)
+    public Result delete_student_courseInfo(select_courseModelKey scmk) {
+        if(scmk.getNo()==null)
         {
             return new Result.Fail(Code.MISS_STUDENTID);
         }
@@ -292,7 +295,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         try {
-            boolean success = adminDao.delete_selectCourseModelKey_from_studentID(scmk,sm);
+            boolean success = adminDao.delete_selectCourseModelKey_from_studentID(scmk);
             if (success) {
                 return new Result.Success(true);
             } else {
@@ -306,20 +309,16 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Result delete_branch_student_courseInfo(ArrayList<select_courseModelKey> arrayList,studentModel sm) {
+    public Result delete_branch_student_courseInfo(ArrayList<select_courseModelKey> arrayList) {
         if(arrayList.size()==0)
         {
             return new Result.Fail(Code.EMPTY_LIST);
-        }
-        if(sm.getNo()==null)
-        {
-            return new Result.Fail(Code.MISS_STUDENTID);
         }
 
         ArrayList<Result> array=new ArrayList<>();
         for(select_courseModelKey select_courseModelKey:arrayList)//检查是否存在空值
         {
-            array.add(delete_student_courseInfo(select_courseModelKey,sm));
+            array.add(delete_student_courseInfo(select_courseModelKey));
         }
 
         return new Result.Success(array);
@@ -356,6 +355,44 @@ public class AdminServiceImpl implements AdminService {
         for(studentModel studentModel:arrayList)//检查是否存在空值
         {
             array.add(delete_studentInfo(studentModel));
+        }
+
+        return new Result.Success(array);
+    }
+
+    @Override
+    public Result select_course_for_student(select_courseModelKey scmk) {
+        if(scmk.getSno()==null){
+            return new Result.Fail(Code.MISS_STUDENTID);
+        }
+        if(scmk.getCourseid()==null){
+            return new Result.Fail(Code.MISS_COURSEID);
+        }
+
+        try {
+            int count1 = scmm.insertSelective(scmk);
+            if (count1==1) {
+                return new Result.Success(true);
+            } else {
+                return new Result.Fail(Code.UNKNOWN_WRONG);
+            }
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
+
+    @Override
+    public Result select_branchCourse_forStudent(ArrayList<select_courseModelKey> arrayList) {
+        if(arrayList.size()==0)
+        {
+            return new Result.Fail(Code.EMPTY_LIST);
+        }
+        ArrayList<Result> array=new ArrayList<>();
+        for(select_courseModelKey select_courseModelKey:arrayList)//检查是否存在空值
+        {
+            array.add(select_course_for_student(select_courseModelKey));
         }
 
         return new Result.Success(array);
@@ -438,7 +475,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Result insert_course_toStudent(select_courseModelKey scmk) {
-        if(scmk.getSno()==null){
+        if(scmk.getNo()==null){
             return new Result.Fail(Code.MISS_STUDENTID);
         }
         if(scmk.getCourseid()==null){
@@ -465,9 +502,9 @@ public class AdminServiceImpl implements AdminService {
             return new Result.Fail(Code.EMPTY_LIST);
         }
         ArrayList<Result> array=new ArrayList<>();
-        for(select_courseModelKey select_courseModelKey:arrayList)//检查是否存在空值
+        for(select_courseModelKey scmk:arrayList)//检查是否存在空值
         {
-            array.add(insert_course_toStudent(select_courseModelKey));
+            array.add(insert_course_toStudent(scmk));
         }
 
         return new Result.Success(array);
@@ -509,5 +546,25 @@ public class AdminServiceImpl implements AdminService {
         return new Result.Success(array);
     }
 
+    @Override
+    public Result update_teacherinfo(teacher_uniteModel tum) {
+        if(tum.getNo()==null){
+            return new Result.Fail(Code.MISS_TNO);
+        }
+        try {
+            boolean success1=true;
+            success1=tumm.updateInfoFromTeacherID(tum);
+
+            if (success1) {
+                return new Result.Success(true);
+            } else {
+                return new Result.Fail(Code.UNKNOWN_WRONG);
+            }
+        }
+        catch (Exception e)
+        {
+            return new Result.Error(e);
+        }
+    }
 
 }
