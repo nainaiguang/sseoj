@@ -451,10 +451,10 @@ public class AdminController {
     //批量为学生选课
     @RequestMapping(value = "/insertBranchStudentCourseInfo", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody//返回json格式
-    public Mes insertBranchStudentCourseInfo(@RequestBody ArrayList<select_courseModelKey> arrayList)
+    public Mes insertBranchStudentCourseInfo(@RequestBody ArrayList<select_courseModelKey> arrayList,CourseModel cm)
     {
 
-        Result result=adminService.insert_branch_course_toStudent(arrayList);
+        Result result=adminService.insert_branch_course_toStudent(arrayList,cm);
         ArrayList<Result> ar=(ArrayList<Result>) ((Result.Success) result).getData();
         boolean success=true;//是否成功
         for(Result result1:ar)

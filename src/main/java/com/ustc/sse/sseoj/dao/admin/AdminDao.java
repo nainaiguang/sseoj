@@ -214,8 +214,8 @@ public interface AdminDao {
     //可以某学生进行添加选课
     @Insert("INSERT INTO select_course ( sno, courseID )\n" +
             "VALUES\n" +
-            "	( #{scmk.sno}, #{scmk.courseid});")
-    public boolean insert_course_for_student(@Param("scmk") select_courseModelKey scmk);
+            "	( #{scmk.sno}, #{cm.courseID});")
+    public boolean insert_course_for_student(@Param("scmk") select_courseModelKey scmk,@Param("cm") CourseModel cm);
 
     //删除教师账号
     @Delete("DELETE teacher,\n" +

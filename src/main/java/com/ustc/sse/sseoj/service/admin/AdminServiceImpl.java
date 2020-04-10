@@ -474,15 +474,15 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Result insert_course_toStudent(select_courseModelKey scmk) {
+    public Result insert_course_toStudent(select_courseModelKey scmk,CourseModel cm) {
         if(scmk.getNo()==null){
             return new Result.Fail(Code.MISS_STUDENTID);
         }
-        if(scmk.getCourseid()==null){
+        if(cm.getCourseID()==null){
             return new Result.Fail(Code.MISS_COURSEID);
         }
         try {
-            boolean success = adminDao.insert_course_for_student(scmk);
+            boolean success = adminDao.insert_course_for_student(scmk,cm);
             if (success) {
                 return new Result.Success(true);
             } else {
@@ -496,7 +496,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Result insert_branch_course_toStudent(ArrayList<select_courseModelKey> arrayList) {
+    public Result insert_branch_course_toStudent(ArrayList<select_courseModelKey> arrayList,CourseModel cm) {
         if(arrayList.size()==0)
         {
             return new Result.Fail(Code.EMPTY_LIST);
@@ -504,7 +504,7 @@ public class AdminServiceImpl implements AdminService {
         ArrayList<Result> array=new ArrayList<>();
         for(select_courseModelKey scmk:arrayList)//检查是否存在空值
         {
-            array.add(insert_course_toStudent(scmk));
+            array.add(insert_course_toStudent(scmk,cm));
         }
 
         return new Result.Success(array);

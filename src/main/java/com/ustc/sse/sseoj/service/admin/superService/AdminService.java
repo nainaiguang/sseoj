@@ -70,9 +70,9 @@ public interface AdminService {
     public Result get_all_info_from_teacher(teacher_uniteModel tum);
 
     //根据学号和课程号为学生选课（已测）
-    public Result insert_course_toStudent(select_courseModelKey scmk);
+    public Result insert_course_toStudent(select_courseModelKey scmk,CourseModel cm);
     //根据学号和课程号批量为学生选课（已测）
-    public Result insert_branch_course_toStudent(ArrayList<select_courseModelKey> arrayList);
+    public Result insert_branch_course_toStudent(ArrayList<select_courseModelKey> arrayList,CourseModel cm);
 
     //删除某教师账号（已测）
     public Result delete_teacherInfo(teacherModel tm);
