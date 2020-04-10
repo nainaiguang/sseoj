@@ -51,7 +51,6 @@ public class pollerBlocksQueue extends Thread{
            while(true)
            {
 
-
                synchronized(this){ //锁对象
 
                    if(polledNumber.size()==0)

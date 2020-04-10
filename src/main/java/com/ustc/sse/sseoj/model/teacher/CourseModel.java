@@ -12,11 +12,24 @@ import lombok.ToString;
  * 课程model
  */
 @Getter
-@Setter
 @ToString
 public class CourseModel {
 
    private String courseID;
+   private String courseid;
+   @Setter
    private String name;
+   @Setter
    private String presentation;
+
+   public void setCourseID(String courseID) {
+      this.courseID = courseID;
+      this.courseid=courseID;
+   }
+
+   public void setCourseid(String courseid)
+   {
+      this.courseID = courseid;
+      this.courseid=courseid;
+   }
 }

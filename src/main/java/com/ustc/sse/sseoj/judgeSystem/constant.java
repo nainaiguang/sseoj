@@ -14,13 +14,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class constant {
 
-    public static String ftpServer="119.23.36.85";
+    public static String ftpServer="39.108.177.133";
 
     public static String ftpUser="nainaiguang";
     public static String ftpPassword="Guang110507";
     public static String ftpWorkPlace="/home/judge/data/";
 
-    public static String judgeMysqlServer="119.23.36.85";
+    public static String judgeMysqlServer="39.108.177.133";
     public static String judgeMysqlPort="3306";
     public static String judgeMysqlUser="root";
     public static String judgeMysqlPassword="Guang110507";
