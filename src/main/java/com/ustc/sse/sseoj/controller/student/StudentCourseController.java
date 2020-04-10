@@ -17,6 +17,7 @@ import com.ustc.sse.sseoj.service.student.StudentCourseServiceImpl;
 import com.ustc.sse.sseoj.service.student.superService.StudentCourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,7 +36,6 @@ import java.util.ArrayList;
 public class StudentCourseController {
     @Autowired
     StudentCourseServiceImpl studentCourseService;
-
 
 
     //获取该学生的所有选课信息及相应教师

@@ -6,9 +6,11 @@ import com.ustc.sse.sseoj.Data.Mes;
 import com.ustc.sse.sseoj.Data.Result;
 import com.ustc.sse.sseoj.model.functionClass.count;
 import com.ustc.sse.sseoj.model.functionClass.pageLimit;
+import com.ustc.sse.sseoj.model.student.select_courseModelKey;
 import com.ustc.sse.sseoj.model.teacher.CourseModel;
 import com.ustc.sse.sseoj.model.teacher.Curricula_variableModel;
 import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
+import com.ustc.sse.sseoj.service.admin.AdminServiceImpl;
 import com.ustc.sse.sseoj.service.teacher.TeacherCourseServiceImpl;
 import com.ustc.sse.sseoj.util.CreatId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ import java.util.ArrayList;
 public class TeacherCourseController<T> {
     @Autowired
     private TeacherCourseServiceImpl teacherCourseService;
+    @Autowired
+    AdminServiceImpl adminService;
 
     //获取某个课程详细信息
     @RequestMapping(value = "/searchOneCourseDetail", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
@@ -266,4 +270,65 @@ public class TeacherCourseController<T> {
         }
 
     }
+
+    //批量为学生选课
+    @RequestMapping(value = "/selectBranchCourseForStudent", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes selectBranchCourseForStudent(@RequestBody ArrayList<select_courseModelKey> arrayList)
+    {
+
+        Result result=adminService.select_branchCourse_forStudent(arrayList);
+        ArrayList<Result> ar=(ArrayList<Result>) ((Result.Success) result).getData();
+        boolean success=true;//是否成功
+        for(Result result1:ar)
+        {
+            if(result1 instanceof Result.Success)
+            {
+                continue;
+            }
+            else
+            {
+                success=false;
+            }
+        }
+        if(success)
+        {
+            return new Mes(true,Code.SUCCESS_SELECT_COURSE_,arrayList.size(),null);
+        }
+        else
+        {
+            return new Mes(false,Code.ERROR,0,null);
+        }
+    }
+
+    //根据学号批量删除该学生选课信息
+    @RequestMapping(value = "/deleteBranchStudentCourseInfo", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @ResponseBody//返回json格式
+    public Mes deleteBranchStudentCourseInfo(@RequestBody ArrayList<select_courseModelKey> arrayList)
+    {
+
+        Result result=adminService.delete_branch_student_courseInfo(arrayList);
+        ArrayList<Result> ar=(ArrayList<Result>) ((Result.Success) result).getData();
+        boolean success=true;//是否成功
+        for(Result result1:ar)
+        {
+            if(result1 instanceof Result.Success)
+            {
+                continue;
+            }
+            else
+            {
+                success=false;
+            }
+        }
+        if(success)
+        {
+            return new Mes(true,Code.SUCCESS_DETETE_COURSE,0,null);
+        }
+        else
+        {
+            return new Mes(false,Code.ERROR,0,null);
+        }
+    }
+
 }

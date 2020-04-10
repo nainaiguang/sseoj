@@ -82,4 +82,35 @@
         </where>
         order by s1.no
     </select>
+
+    <update id="updateInfoFromTeacherID" parameterType="com.ustc.sse.sseoj.model.user.uniteModel.teacher_uniteModel"  >
+        update teacher t1 inner join teacher_info t2
+        <set>
+            <if test="password != null and password !=''">
+                t1.password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null and name !=''">
+                t1.name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null and role !=''">
+                t1.role = #{role,jdbcType=CHAR},
+            </if>
+            <if test="tage != null and tage !=''">
+                t2.tage = #{tage,jdbcType=SMALLINT},
+            </if>
+            <if test="tsex != null and tsex !=''">
+                t2.tsex = #{tsex,jdbcType=CHAR},
+            </if>
+            <if test="tphoneNumber != null and tphoneNumber !=''">
+                t2.tphone_number = #{tphoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="temail != null and temail != ''">
+                t2.temail = #{temail,jdbcType=VARCHAR},
+            </if>
+            <if test="tdept != null and tdept != ''">
+                t2.tdept = #{tdept,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where t1.no=t2.no and t1.no = #{no,jdbcType=VARCHAR}
+    </update>
 </mapper>
