@@ -144,9 +144,9 @@ public interface AdminDao {
             "FROM\n" +
             "	select_course \n" +
             "WHERE\n" +
-            "	sno = #{scmk.sno} \n" +
+            "	sno = #{sm.no} \n" +
             "	AND courseID = #{scmk.courseid};")
-    public boolean delete_selectCourseModelKey_from_studentID(@Param("scmk") select_courseModelKey scmk);
+    public boolean delete_selectCourseModelKey_from_studentID(@Param("scmk") select_courseModelKey scmk,@Param("sm") studentModel sm);
 
     //删除学生账号
     @Delete("DELETE student,\n" +

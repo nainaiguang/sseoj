@@ -42,10 +42,10 @@ public interface AdminService {
     public Result select_courses_from_student(studentModel sm);
 
     //通过学生ID可以删除学生的选课信息（已测）
-    public Result delete_student_courseInfo(select_courseModelKey scmk);
+    public Result delete_student_courseInfo(select_courseModelKey scmk,studentModel sm);
 
     //通过学生ID批量删除学生选课信息（）
-    public Result delete_branch_student_courseInfo(ArrayList<select_courseModelKey> arrayList);
+    public Result delete_branch_student_courseInfo(ArrayList<select_courseModelKey> arrayList,studentModel sm);
 
     //删除学生账号信息（已测）
     public Result delete_studentInfo(studentModel sm);
