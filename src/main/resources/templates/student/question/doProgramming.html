@@ -94,13 +94,13 @@ public class Solution {
             },
             success: function(data){
                 if(data.success){
-
+                    layer.msg('保存成功，请稍后查看',{icon: 1});
                 } else {
-
+                    layer.msg("保存失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
                 }
             },
             error: function(){
-
+                layer.msg("保存失败！code:"+data.code+",msg:"+data.msg,{icon: 2});
             }
         });
     }
