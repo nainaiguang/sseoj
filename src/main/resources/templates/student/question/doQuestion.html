@@ -9,12 +9,73 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{../static/lib/layui/css/layui.css}">
     <script th:src="@{../static/lib/layui/layui.js}"></script>
+    <link rel="stylesheet" th:href="@{../static/lib/codemirror/lib/codemirror.css}"/>
+    <!--引入css文件，用以支持主题-->
+    <link rel="stylesheet" th:href="@{../static/lib/codemirror/theme/dracula.css}"/>
+    <script th:src="@{../static/lib/codemirror/lib/codemirror.js}"></script>
+    <script th:src="@{../static/lib/codemirror/mode/clike/clike.js}"></script>
+    <!--支持代码折叠-->
+    <link rel="stylesheet" th:href="@{../static/lib/codemirror/addon/fold/foldgutter.css}"/>
+    <script th:src="@{../static/lib/codemirror/addon/fold/foldcode.js}"></script>
+    <script th:src="@{../static/lib/codemirror/addon/fold/foldgutter.js}"></script>
+    <script th:src="@{../static/lib/codemirror/addon/fold/brace-fold.js}"></script>
+    <script th:src="@{../static/lib/codemirror/addon/fold/comment-fold.js}"></script>
+    <!--自动补全提示框-->
+    <script  th:src="@{../static/lib/codemirror/addon/hint/show-hint.js}"></script>
+    <link rel="stylesheet"  th:href="@{../static/lib/codemirror/addon/hint/show-hint.css}">
+    <!--左右括号颜色高亮-->
+    <script  th:src="@{../static/lib/codemirror/addon/edit/matchbrackets.js}"></script>
 </head>
 <body>
-    <blockquote class="layui-elem-quote layui-quote-nm">
-        <span th:text="${questionModel.questionNumber}"></span>
-        <span th:text="${questionModel.title}"></span><br>
-        <span th:text="${questionModel.description}"></span><br>
-    </blockquote>
+<blockquote class="layui-elem-quote layui-quote-nm">
+    <span th:text="${questionModel.questionNumber}"></span>.
+    <span th:text="${questionModel.title}"></span><br>
+    description<span th:text="${questionModel.description}"></span><br>
+</blockquote>
+<!-- begin code -->
+<textarea class="form-control" id="code" name="code">
+public class Solution {
+
+}
+</textarea>
+<!-- end code-->
+<button type="button" class="layui-btn" onclick="run()">保存并运行</button>
+<button type="button" class="layui-btn" onclick="run()">上一题</button>
+<button type="button" class="layui-btn" style="right: 10px" onclick="run()">下一题</button>
 </body>
+<script>
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+
+        });
+
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: "text/x-java", //实现Java代码高亮
+        lineNumbers: true,	//显示行号
+        theme: "dracula",	//设置主题
+        lineWrapping: true,	//代码折叠
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        matchBrackets: true,	//括号匹配
+        extraKeys:{"Ctrl-Space":"autocomplete"}//ctrl-space唤起智能提示
+        //readOnly: true,        //只读
+    });
+
+    function run() {
+        var code = editor.getValue();
+        layer.msg(code);
+    }
+</script>
 </html>

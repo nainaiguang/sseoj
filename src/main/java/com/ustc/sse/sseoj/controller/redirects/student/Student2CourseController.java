@@ -58,8 +58,10 @@ public class Student2CourseController {
      * @Date: 2020/3/19 17:28
      */
     @RequestMapping("/toQuestion")
-    public String toQuestion(Model model, String homeworkid){
+    public String toQuestion(Model model, String homeworkid, String courseid, String homeworkName){
         model.addAttribute("homeworkid",homeworkid);
+        model.addAttribute("courseid",courseid);
+        model.addAttribute("homeworkName",homeworkName);
         return "student/question/stuQuestion";
     }
 
@@ -71,11 +73,23 @@ public class Student2CourseController {
      * @Date: 2020/3/19 17:28
      */
     @RequestMapping("/toDoQuestion")
-    public String toDoQuestion(Model model, homework_link_bankModel hlbm){
+    public String toDoQuestion(Model model, homework_link_bankModel hlbm, String courseid, String count){
 
         Result result=studentCourseService.select_question_from_num(hlbm);
         questionModel questionModel= (questionModel) ((Result.Success) result).getData();
+        questionModel.setQuestionNumber(hlbm.getQuestionnumber());
         model.addAttribute("questionModel", questionModel);
-        return "student/question/doQuestion";
+        model.addAttribute("hlbm", hlbm);
+        model.addAttribute("courseid", courseid);
+        model.addAttribute("count", count);
+        StringBuffer view = new StringBuffer("student/question");
+        if("programming".equals(questionModel.getQuestiontype())){//判断题目类型跳转不同页面
+            view.append("/doProgramming");
+        }else if ("choose".equals(questionModel.getQuestiontype())){
+            view.append("/doChoose");
+        }else {
+            view.append("/doBlank");
+        }
+        return view.toString();
     }
 }

@@ -9,9 +9,14 @@
     <title>题库管理</title>
     <link rel="stylesheet" th:href="@{../static/lib/layui/css/layui.css}">
     <script th:src="@{../static/lib/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{../static/js/xadmin.js}"></script>
+    <link rel="stylesheet" th:href="@{../css/xadmin.css}">
 </head>
 <body>
 <input type="hidden" th:value="${homeworkid}" id="homeworkid" />
+<input type="hidden" th:value="${courseid}" id="courseid" />
+<input type="hidden" th:value="${homeworkName}" id="homeworkName" />
+<input type="hidden" id="count" />
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
@@ -109,6 +114,7 @@
                 console.log(curr);
                 // 得到数据总量
                 console.log(count);
+                $("#count").val(count);
             }
         });
 
@@ -118,12 +124,11 @@
         table.on('tool(demo)', function(obj){
             var data = obj.data;
             if(obj.event === 'doQuestion'){//题目
-                var index = layer.open({
-                    type: 2,
-                    content: '/studentCourse/toDoQuestion?homeworkid='+$("#homeworkid").val()+'&questionnumber='+data.questionNumber,
-                    title: '题目'
-                });
-                layer.full(index);
+                parent.parent.parent.xadmin.open($("#homeworkName").val() ,'/studentCourse/toDoQuestion?homeworkid='
+                    +$("#homeworkid").val()+
+                    '&questionnumber='+data.questionNumber+
+                    '&courseid='+$("#courseid").val()+
+                    '&count='+$("#count").val());
             }
         });
     }

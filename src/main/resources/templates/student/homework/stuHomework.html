@@ -9,6 +9,8 @@
     <title>作业列表</title>
     <link rel="stylesheet" th:href="@{../static/lib/layui/css/layui.css}">
     <script th:src="@{../static/lib/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{../static/js/xadmin.js}"></script>
+    <link rel="stylesheet" th:href="@{../css/xadmin.css}">
 </head>
 <body>
 
@@ -43,9 +45,6 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="doHomework">开始做题</a>
 </script>
-
-<!-- js引入 -->
-<script src="/static/layui/layui.js"></script>
 <script>
     var $;
     var laydate;
@@ -150,7 +149,7 @@
                 var homeworkid = data.homeworkid;
                 var index = layer.open({
                     type: 2,
-                    content: '/studentCourse/toQuestion?homeworkid='+homeworkid,
+                    content: '/studentCourse/toQuestion?homeworkid='+homeworkid+'&courseid='+$('#courseID').val()+'&homeworkName='+data.name,
                     title: '开始做题'
                 });
                 layer.full(index);
