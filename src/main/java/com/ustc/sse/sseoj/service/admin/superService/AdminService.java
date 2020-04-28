@@ -10,6 +10,7 @@ import com.ustc.sse.sseoj.model.user.superUser.UsersModel;
 import com.ustc.sse.sseoj.model.user.teacherModel;
 import com.ustc.sse.sseoj.model.user.uniteModel.student_uniteModel;
 import com.ustc.sse.sseoj.model.user.uniteModel.teacher_uniteModel;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 
@@ -81,5 +82,9 @@ public interface AdminService {
 
     //修改该教师的所有基本信息
     public Result update_teacherinfo(teacher_uniteModel tum);
+
+    Result insertTeacherByExcel(MultipartFile file);
+
+    Result insertStudentByExcel(MultipartFile file);
 
 }

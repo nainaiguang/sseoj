@@ -113,4 +113,52 @@
         </set>
         where t1.no=t2.no and t1.no = #{no,jdbcType=VARCHAR}
     </update>
+
+    <insert id="insertTeacherByExcel" parameterType="java.util.List">
+        insert into teacher(
+        no,
+        password,
+        name,
+        role
+        )
+        values
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            <if test="item.no != null and item.password != null and item.role != null and item.name != null ">
+                (
+                #{item.no},
+                #{item.password},
+                #{item.name},
+                #{item.role}
+                )
+            </if>
+        </foreach>
+
+    </insert>
+
+    <insert id="insertTeacherInfoByExcel" parameterType="java.util.List">
+        insert into teacher_info(
+        no,
+        tage,
+        tsex,
+        tphone_number,
+        temail,
+        tdept
+        )
+        values
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            <if test="item.no != null and item.tage != null and item.tsex != null and item.tphoneNumber != null and item.temail != null and item.tdept != null ">
+                (
+                #{item.no},
+                #{item.tage},
+                #{item.tsex},
+                #{item.tphoneNumber},
+                #{item.temail},
+                #{item.tdept}
+                )
+            </if>
+        </foreach>
+
+    </insert>
 </mapper>

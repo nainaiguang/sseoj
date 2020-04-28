@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Description TODO 获取目前的所有老师(可以根据院系，年级来筛选,名字，教师号查询)
@@ -23,4 +24,9 @@ public interface teacher_uniteModelMapper {
     count selectCountByChoose(teacher_uniteModel record);
 
     boolean updateInfoFromTeacherID(teacher_uniteModel record);
+
+    //批量导入教师
+    int insertTeacherByExcel(List<teacher_uniteModel> teacherList);
+    //批量导入教师信息
+    int insertTeacherInfoByExcel(List<teacher_uniteModel> teacherList);
 }

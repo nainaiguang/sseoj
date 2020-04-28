@@ -58,6 +58,8 @@
 
                         <a><button type="button" onclick="add()" title="添加学生"id="add"  class="layui-btn layui-btn-primary layui-btn-small" ><i class="layui-icon">&#xe654;</i></button></a>
                         <a><button type="button" onclick="del()" title="删除学生" id="delete" class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon">&#xe640;</i></button></a>
+                        <a class="layui-btn  layui-btn-primary" id="downloadExcel" th:href="@{../excelTemplate/学生模板.xlsx}" download="学生Excel模板.xlsx"><i class="layui-icon"></i>下载Excel模板</a>
+                        <button type="button" class="layui-btn  layui-btn-normal" id="uploadExcel"><i class="layui-icon"></i>导入Excel</button>
                     </div>
 
 
@@ -88,8 +90,9 @@
     var form;
     var table;
     var layedit;
+    var upload;
     var queryUrl = '/Admin/selectStudentAccordingCondition';
-    layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+    layui.use([ 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit', 'upload' ],
         function() {
             layer = layui.layer;
             form = layui.form;
@@ -97,9 +100,10 @@
             $ = layui.jquery;
             table = layui.table;
             layedit = layui.layedit;
+            upload = layui.upload;
             query();
             optionTool();//监听工具条
-
+            doupload();
 
         });
 
@@ -215,6 +219,28 @@
         });
     }
 
+    function doupload() {
+        var index;
+        //指定允许上传的文件类型
+        upload.render({
+            elem: '#uploadExcel'
+            ,url: '../Admin/inputStudentExcel' //改成您自己的上传接口
+            ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                index = layer.load(); //上传loading
+                console.log(obj);
+            }
+            ,accept: 'file' //普通文件
+            ,done: function(res){
+                layer.close(index);
+                layer.msg('添加成功',{icon: 1});
+                setTimeout(function(){
+                    parent.layer.closeAll();
+                }, 500);
+                query();//只重载数据
+                console.log(res);
+            }
+        });
+    }
 
     // 条件查询
     function queryStudent() {

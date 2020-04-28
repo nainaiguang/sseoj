@@ -25,10 +25,13 @@ import com.ustc.sse.sseoj.model.user.uniteModel.student_uniteModel;
 import com.ustc.sse.sseoj.service.admin.superService.AdminService;
 
 import com.ustc.sse.sseoj.util.DefaultPassword;
+import com.ustc.sse.sseoj.util.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -565,6 +568,63 @@ public class AdminServiceImpl implements AdminService {
         {
             return new Result.Error(e);
         }
+    }
+
+    @Override
+    public Result insertTeacherByExcel(MultipartFile file) {
+        List<List<Object>> test = null;
+        List<teacher_uniteModel> teacherList = new ArrayList<>();
+        try {
+            test = ExcelUtil.importExcel(file, 0);
+            for(int i = 0; i < test.size(); i++){
+                teacher_uniteModel teacher = new teacher_uniteModel();
+                teacher.setNo((String) test.get(i).get(0));
+                teacher.setName((String) test.get(i).get(1));
+                teacher.setPassword((String) test.get(i).get(2));
+                teacher.setRole((String)test.get(i).get(3));
+                teacher.setTage(Short.valueOf((String) test.get(i).get(4)));
+                teacher.setTsex((String)test.get(i).get(5));
+                teacher.setTphoneNumber((String)test.get(i).get(6));
+                teacher.setTemail((String)test.get(i).get(7));
+                teacher.setTdept((String)test.get(i).get(8));
+                teacherList.add(teacher);
+            }
+            tumm.insertTeacherByExcel(teacherList);
+            tumm.insertTeacherInfoByExcel(teacherList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  new Result.Error(e);
+        }
+        return  new Result.Success(true);
+    }
+
+    @Override
+    public Result insertStudentByExcel(MultipartFile file) {
+        List<List<Object>> test = null;
+        List<student_uniteModel> studentList = new ArrayList<>();
+        try {
+            test = ExcelUtil.importExcel(file, 0);
+            for(int i = 0; i < test.size(); i++){
+                student_uniteModel student = new student_uniteModel();
+                student.setNo((String) test.get(i).get(0));
+                student.setName((String) test.get(i).get(1));
+                student.setPassword((String) test.get(i).get(2));
+                student.setRole((String)test.get(i).get(3));
+                student.setSage(Short.valueOf((String) test.get(i).get(4)));
+                student.setSsex((String)test.get(i).get(5));
+                student.setSgrade((String)test.get(i).get(6));
+                student.setSphoneNumber((String)test.get(i).get(7));
+                student.setSemail((String)test.get(i).get(8));
+                student.setSdept((String)test.get(i).get(9));
+                studentList.add(student);
+            }
+            summ.insertStudentByExcel(studentList);
+            summ.insertStudentInfoByExcel(studentList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  new Result.Error(e);
+        }
+        return  new Result.Success(true);
     }
 
 }

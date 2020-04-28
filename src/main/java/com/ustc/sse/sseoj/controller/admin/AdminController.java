@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -533,5 +534,58 @@ public class AdminController {
             return mes;
         }
 
+    }
+
+    /**
+     * 功能描述: 导入教师Excel
+     * @Param: [file, request]
+     * @Return: com.ustc.sse.sseoj.Data.Mes
+     * @Author: Qianbw
+     * @Date: 2020/4/28 11:22
+     */
+    @RequestMapping("/inputTeacherExcel")
+    @ResponseBody
+    public Mes inputTeacherExcel(MultipartFile file, HttpServletRequest request) {
+        Result result = adminService.insertTeacherByExcel(file);
+        if (result instanceof Result.Success){
+            return new Mes(true,Code.SUCCESS,1,true);
+        }else if(result instanceof Result.Fail)
+        {
+            Mes message=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(message.toString());
+            return message;
+        }
+        else
+        {
+            Mes message=new Mes(false,Code.ERROR,0,null);
+            System.out.println(message.toString());
+            return message;
+        }
+    }
+    /**
+     * 功能描述: 导入学生Excel
+     * @Param: [file, request]
+     * @Return: com.ustc.sse.sseoj.Data.Mes
+     * @Author: Qianbw
+     * @Date: 2020/4/28 11:22
+     */
+    @RequestMapping("/inputStudentExcel")
+    @ResponseBody
+    public Mes inputStudentExcel(MultipartFile file, HttpServletRequest request) {
+        Result result = adminService.insertStudentByExcel(file);
+        if (result instanceof Result.Success){
+            return new Mes(true,Code.SUCCESS,1,true);
+        }else if(result instanceof Result.Fail)
+        {
+            Mes message=new Mes(false,((Result.Fail) result).getReason(),0,null);
+            System.out.println(message.toString());
+            return message;
+        }
+        else
+        {
+            Mes message=new Mes(false,Code.ERROR,0,null);
+            System.out.println(message.toString());
+            return message;
+        }
     }
 }
