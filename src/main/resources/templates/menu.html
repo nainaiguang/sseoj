@@ -26,6 +26,7 @@
             // var is_remember = false;
         </script>
     </head>
+    <input id="userRole" type="hidden" th:value="${session.user.role}">
     <body class="index">
         <!-- 顶部开始 -->
         <div class="container">
@@ -95,8 +96,8 @@
         <!-- 左侧菜单开始 -->
         <div class="left-nav">
             <div id="side-nav">
-                <ul id="nav">
-                    <li>
+                <ul id="nav" >
+                    <li id="teacherManage">
                         <a href="javascript:;">
                             <i class="iconfont left-nav-li" lay-tips="教师管理">&#xe723;</i>
                             <cite>教师管理</cite>
@@ -119,7 +120,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li id="myLesson">
                         <a href="javascript:;">
                             <i class="iconfont left-nav-li" lay-tips="我的课程">&#xe723;</i>
                             <cite>我的课程</cite>
@@ -133,7 +134,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li id="admin">
                         <a href="javascript:;">
                             <i class="iconfont left-nav-li" lay-tips="管理员">&#xe723;</i>
                             <cite>管理员</cite>
@@ -196,6 +197,28 @@
                     type: "text/css",
                     href:  "../static/css/theme"+ index +".css"
                 });
+            }
+        </script>
+        <script>
+            var $;
+            layui.use(['jquery'], function(){
+                $ = layui.jquery;
+
+                roleManage();// 角色权限
+            });
+
+            function roleManage() {
+                var userRole = $("#userRole").val();
+                if (userRole == "student"){
+                    $("#teacherManage").css("display","none");
+                    $("#admin").css("display","none");
+                }else if (userRole == "teacher"){
+                    $("#myLesson").css("display","none");
+                    $("#admin").css("display","none");
+                }else {
+                    $("#myLesson").css("display","none");
+                    $("#teacherManage").css("display","none");
+                }
             }
         </script>
     </body>
