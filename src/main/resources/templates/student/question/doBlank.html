@@ -1,0 +1,70 @@
+<!--
+ @author  Wangning
+ @create 2020-03-31 13:54
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>填空题</title>
+    <link rel="stylesheet" th:href="@{../../../static/lib/layui/css/layui.css}">
+    <script th:src="@{../../../static/lib/layui/layui.js}"></script>
+</head>
+<body>
+<blockquote class="layui-elem-quote layui-quote-nm">
+    <span id="questionNumber" th:text="${questionModel.questionNumber}"></span>.
+    <span th:text="${questionModel.title}"></span><br>
+    <span th:text="${questionModel.description}"></span><br>
+</blockquote>
+<input type="hidden" id="questionid" th:value="${questionModel.questionid}" />
+<input type="hidden" id="questiontype" th:value="${questionModel.questiontype}" />
+<input type="hidden" id="courseid" th:value="${courseid}" />
+<input type="hidden" id="homeworkid" th:value="${hlbm.homeworkid}" />
+<input type="hidden" id="langauge" value="3" />
+<input type="hidden" id="count" th:value="${count}" />
+
+</div>
+<div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">请输入答案</label>
+    <div class="layui-input-block">
+        <textarea name="answer"  class="layui-textarea"></textarea>
+    </div>
+</div>
+
+<button type="button" th:classappend="${questionModel.questionNumber == 1 ? 'layui-btn-disabled' : '' }" class="layui-btn" th:onclick="'javascript:next(\''+${questionModel.questionNumber - 1}+'\')'">上一题</button>
+<button type="button" th:classappend="${(questionModel.questionNumber+'') == count ? 'layui-btn-disabled' : '' }" class="layui-btn" th:onclick="'javascript:next(\''+${questionModel.questionNumber + 1}+'\')'">下一题</button>
+
+</body>
+<script>
+    var $;
+    var laydate;
+    var layer;
+    var form;
+    var table;
+    var layedit;
+    var element;
+    layui.use(['element', 'layer', 'form', 'laydate', 'jquery', 'table', 'layedit' ],
+        function() {
+            layer = layui.layer;
+            form = layui.form;
+            laydate = layui.laydate;
+            $ = layui.jquery;
+            table = layui.table;
+            layedit = layui.layedit;
+            element = layui.element;
+
+
+        });
+
+    function next(questionNumber){
+        window.location.href = '/studentCourse/toDoQuestion?homeworkid='
+            +$("#homeworkid").val()+
+            '&questionnumber='+questionNumber+
+            '&courseid='+$("#courseid").val()+
+            '&count='+$("#count").val();
+    }
+
+
+
+</script>
+</html>
